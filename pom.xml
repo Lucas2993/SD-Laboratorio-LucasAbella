@@ -17,6 +17,11 @@
         <module>Monitor</module>
     </modules>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <compiler.version>3.8.0</compiler.version>
+    </properties>
+
     <dependencies>
         <!-- RabbitMQ -->
         <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
@@ -27,4 +32,23 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
