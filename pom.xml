@@ -6,7 +6,16 @@
 
     <groupId>ar.edu.unp.madryn</groupId>
     <artifactId>LivreMarket</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>Purchases</module>
+        <module>Products</module>
+        <module>Payments</module>
+        <module>Deliveries</module>
+        <module>Infractions</module>
+        <module>Monitor</module>
+    </modules>
 
 
 </project>
