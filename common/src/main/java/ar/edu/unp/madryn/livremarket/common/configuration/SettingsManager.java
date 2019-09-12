@@ -1,6 +1,6 @@
-package ar.edu.unp.madryn.livremarket.common.managers;
+package ar.edu.unp.madryn.livremarket.common.configuration;
 
-import ar.edu.unp.madryn.livremarket.common.utils.FileGeneralUtils;
+import ar.edu.unp.madryn.livremarket.common.configuration.files.FileGeneralUtils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

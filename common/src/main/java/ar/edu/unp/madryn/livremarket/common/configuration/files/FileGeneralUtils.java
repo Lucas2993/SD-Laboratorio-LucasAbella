@@ -1,4 +1,4 @@
-package ar.edu.unp.madryn.livremarket.common.utils;
+package ar.edu.unp.madryn.livremarket.common.configuration.files;
 
 import java.io.File;
 
