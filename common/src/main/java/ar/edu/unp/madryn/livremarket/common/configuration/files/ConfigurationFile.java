@@ -1,6 +1,6 @@
-package ar.edu.unp.madryn.livremarket.common.configuration;
+package ar.edu.unp.madryn.livremarket.common.configuration.files;
 
-import ar.edu.unp.madryn.livremarket.common.configuration.files.FileGeneralUtils;
+import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -9,25 +9,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class SettingsManager {
+public class ConfigurationFile extends ConfigurationSection {
+    private static final String FILE_EXTENSION = "properties";
 
-    private Properties settingsPropertiesContent;
     private ClassLoader classLoader;
 
-    private static SettingsManager instance;
-
-    public static SettingsManager getInstance() {
-        if (instance == null) {
-            instance = new SettingsManager();
-        }
-        return instance;
-    }
-
-    private SettingsManager() {
+    public ConfigurationFile(String name) {
+        super(name);
         this.classLoader = this.getClass().getClassLoader();
     }
 
-    public boolean loadSettings(String fileName) {
+    @Override
+    public boolean load() {
+        String fileName = this.name + "." + FILE_EXTENSION;
         File file = new File(fileName);
         if (!FileGeneralUtils.fileExist(file)) {
             InputStream resourceFileContent = this.classLoader.getResourceAsStream(fileName);
@@ -42,26 +36,19 @@ public class SettingsManager {
             }
         }
 
-        this.settingsPropertiesContent = new Properties();
+        Properties propertiesFileContent = new Properties();
 
         try {
             InputStream input = new FileInputStream(file);
 
             // load a properties file
-            this.settingsPropertiesContent.load(input);
+            propertiesFileContent.load(input);
 
+            propertiesFileContent.forEach((key, value) -> this.data.put((String) key, (String) value));
         } catch (IOException ex) {
             return false;
         }
 
         return true;
-    }
-
-    public String getSetting(String name) {
-        if (this.settingsPropertiesContent == null || this.settingsPropertiesContent.isEmpty()) {
-            return null;
-        }
-
-        return this.settingsPropertiesContent.getProperty(name);
     }
 }
