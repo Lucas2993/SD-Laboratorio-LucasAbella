@@ -25,7 +25,7 @@ public class AMQPMessageHandler implements MessageServer {
 
     @Override
     public boolean connect() {
-        if (this.connection == null) {
+        if (!(this.connection == null)) {
             return false;
         }
 
