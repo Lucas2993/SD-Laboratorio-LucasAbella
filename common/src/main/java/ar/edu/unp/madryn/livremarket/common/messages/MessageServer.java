@@ -1,14 +1,9 @@
 package ar.edu.unp.madryn.livremarket.common.messages;
 
-import lombok.Getter;
+public interface MessageServer {
+    boolean connect();
+    boolean disconnect();
 
-public abstract class MessageServer {
-    @Getter
-    private String topic;
-
-    public MessageServer(String topic) {
-        this.topic = topic;
-    }
-
-    public abstract boolean connect();
+    boolean registerProcessor(String bindingKey, MessageDelivery messageProcessor);
+    boolean sendMessage(String routingKey, String message);
 }
