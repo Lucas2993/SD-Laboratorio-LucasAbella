@@ -68,6 +68,10 @@ public class AMQPMessageHandler implements MessageServer {
             return false;
         }
 
+        if(StringUtils.isEmpty(this.exchangeName)){
+            return false;
+        }
+
         try {
             Channel channel = this.connection.createChannel();
             String queueName = channel.queueDeclare().getQueue();
@@ -90,6 +94,10 @@ public class AMQPMessageHandler implements MessageServer {
     @Override
     public boolean sendMessage(String routingKey, String message) {
         if (this.connection == null) {
+            return false;
+        }
+
+        if(StringUtils.isEmpty(this.exchangeName)){
             return false;
         }
 
