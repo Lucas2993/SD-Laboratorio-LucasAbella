@@ -21,11 +21,11 @@ public class ConfigurationManager {
         this.configurations = new HashMap<>();
     }
 
-    public ConfigurationSection loadConfiguration(String name){
+    public ConfigurationSection loadConfiguration(String name, String... folders){
         if(this.configurations.containsKey(name)) {
             return this.configurations.get(name);
         }
-        ConfigurationSection configurationSection = new ConfigurationFile(name);
+        ConfigurationSection configurationSection = new ConfigurationFile(name, folders);
 
         if(!configurationSection.load()){
             return null;
