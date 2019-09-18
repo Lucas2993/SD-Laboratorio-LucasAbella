@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.configuration.files;
 
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,19 +13,25 @@ import java.util.Properties;
 public class ConfigurationFile extends ConfigurationSection {
     private static final String FILE_EXTENSION = "properties";
 
+    private String filePath;
     private ClassLoader classLoader;
 
-    public ConfigurationFile(String name) {
+    public ConfigurationFile(String name, String... folders) {
         super(name);
+        this.filePath = "";
+        if(folders != null && !ArrayUtils.isEmpty(folders)){
+            this.filePath += String.join(File.separator, folders);
+            this.filePath += File.separator;
+        }
+        this.filePath += this.name + "." + FILE_EXTENSION;
         this.classLoader = this.getClass().getClassLoader();
     }
 
     @Override
     public boolean load() {
-        String fileName = this.name + "." + FILE_EXTENSION;
-        File file = new File(fileName);
+        File file = new File(this.filePath);
         if (!FileGeneralUtils.fileExist(file)) {
-            InputStream resourceFileContent = this.classLoader.getResourceAsStream(fileName);
+            InputStream resourceFileContent = this.classLoader.getResourceAsStream(this.filePath);
             if (resourceFileContent == null) {
                 return false;
             }
