@@ -80,7 +80,7 @@ public class AMQPMessageHandler implements MessageServer {
 
             channel.basicConsume(queueName, true, (consumerTag, delivery) -> {
                 String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                messageProcessor.processMessage(consumerTag, message);
+                messageProcessor.processMessage(delivery.getEnvelope().getRoutingKey(), message);
             }, consumerTag -> {
             });
         } catch (Exception e) {
