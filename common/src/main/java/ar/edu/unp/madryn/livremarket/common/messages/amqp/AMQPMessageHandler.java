@@ -76,6 +76,7 @@ public class AMQPMessageHandler implements MessageServer {
             Channel channel = this.connection.createChannel();
             String queueName = channel.queueDeclare().getQueue();
 
+            //TODO Si la exchange no esta creada falla el binding...
             channel.queueBind(queueName, this.exchangeName, bindingKey);
 
             channel.basicConsume(queueName, true, (consumerTag, delivery) -> {
