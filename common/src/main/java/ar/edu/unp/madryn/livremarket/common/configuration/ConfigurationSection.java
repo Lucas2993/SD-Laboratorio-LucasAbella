@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class ConfigurationSection {
+    public static final String CONFIGURATION_FOLDER = "configuration";
+
     protected String name;
     protected Map<String,String> data;
 
