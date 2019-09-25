@@ -19,7 +19,7 @@ public enum MessageType {
     public static MessageType fromTopic(String topic){
         MessageType result = null;
         for(MessageType messageType : values()){
-            if(topic.equals(messageType.topic)){
+            if(topic.equalsIgnoreCase(messageType.topic)){
                 result = messageType;
                 break;
             }

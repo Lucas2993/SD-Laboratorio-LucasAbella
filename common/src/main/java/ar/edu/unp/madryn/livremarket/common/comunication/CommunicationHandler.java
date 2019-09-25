@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class CommunicationHandler {
     private static final String ROUTING_KEY_SEPARATOR = ".";
+    private static final String ROUTING_KEY_SEPARATOR_REGEX = "\\.";
     private static final String ROUTING_KEY_ANY_WILDCARD = "*";
 
     private MessageServer messageServer;
@@ -73,7 +74,7 @@ public class CommunicationHandler {
         this.messageServer.registerProcessor(bindingKey, new MessageDelivery() {
             @Override
             public void processMessage(String consumerTag, String message) {
-                String [] tags = consumerTag.split(ROUTING_KEY_SEPARATOR);
+                String [] tags = consumerTag.split(ROUTING_KEY_SEPARATOR_REGEX);
                 if(ArrayUtils.isEmpty(tags)){
                     return;
                 }
