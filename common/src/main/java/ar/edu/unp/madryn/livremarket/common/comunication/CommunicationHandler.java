@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommunicationHandler {
@@ -16,6 +17,8 @@ public class CommunicationHandler {
     private static final String ROUTING_KEY_ANY_WILDCARD = "*";
 
     private MessageServer messageServer;
+
+    private Map<MessageType,MessageHandler> handlers;
 
     private static CommunicationHandler instance;
 
@@ -27,8 +30,25 @@ public class CommunicationHandler {
     }
 
     private CommunicationHandler(){
-
+        this.handlers = new HashMap<>();
     }
+
+    // Handlers
+
+    public boolean registerHandler(MessageType type, MessageHandler handler){
+        if(this.handlers.containsKey(type)){
+            return false;
+        }
+
+        this.handlers.put(type, handler);
+        return true;
+    }
+
+    private MessageHandler getHandlerForType(MessageType type){
+        return this.handlers.get(type);
+    }
+
+    // Mensajes
 
     public boolean connect(){
         if(this.messageServer != null){
@@ -67,43 +87,33 @@ public class CommunicationHandler {
         return this.messageServer.sendMessage(routingKey, message);
     }
 
-    public void registerHandler(String serverName, MessageHandler handler){
+    public void registerReceiver(String serverName){
         // TODO Comprobar no haber recibido parametros invalidos...
         String bindingKey = ROUTING_KEY_ANY_WILDCARD + ROUTING_KEY_SEPARATOR + serverName;
 
-        this.messageServer.registerProcessor(bindingKey, new MessageDelivery() {
-            @Override
-            public void processMessage(String consumerTag, String message) {
-                String [] tags = consumerTag.split(ROUTING_KEY_SEPARATOR_REGEX);
-                if(ArrayUtils.isEmpty(tags)){
-                    return;
-                }
-
-                String type = tags[0];
-                MessageType messageType = MessageType.fromTopic(type);
-                if(messageType == null){
-                    return;
-                }
-
-                Gson gson = new Gson();
-                Type dataType = new TypeToken<Map<String, String>>(){}.getType();
-                Map<String,String> data = gson.fromJson(message, dataType);
-
-                switch (messageType){
-                    case CONTROL:
-                        handler.processControl(data);
-                        break;
-                    case MONITOR:
-                        handler.processMonitor(data);
-                        break;
-                    case REQUEST:
-                        handler.processRequest(data);
-                        break;
-                    case INFORMATION:
-                        handler.processInformation(data);
-                        break;
-                }
+        this.messageServer.registerProcessor(bindingKey, (consumerTag, message) -> {
+            String [] tags = consumerTag.split(ROUTING_KEY_SEPARATOR_REGEX);
+            if(ArrayUtils.isEmpty(tags)){
+                return;
             }
+
+            String type = tags[0];
+            MessageType messageType = MessageType.fromTopic(type);
+            if(messageType == null){
+                return;
+            }
+
+            Gson gson = new Gson();
+            Type dataType = new TypeToken<Map<String, String>>(){}.getType();
+            Map<String,String> data = gson.fromJson(message, dataType);
+
+            MessageHandler handler = getHandlerForType(messageType);
+            if(handler == null){
+                // TODO Mensaje de error
+                return;
+            }
+
+            handler.handle(data);
         });
     }
 }

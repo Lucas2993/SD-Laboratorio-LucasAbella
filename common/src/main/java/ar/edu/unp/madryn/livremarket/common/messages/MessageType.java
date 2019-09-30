@@ -1,8 +1,9 @@
 package ar.edu.unp.madryn.livremarket.common.messages;
 
 public enum MessageType {
-    REQUEST("request"),
-    INFORMATION("information"),
+    STATUS("status"),
+    RESULT("result"),
+    GENERAL("general"),
     CONTROL("control"),
     MONITOR("monitor");
 
