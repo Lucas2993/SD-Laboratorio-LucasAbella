@@ -42,6 +42,15 @@ public class AMQPMessageHandler implements MessageServer {
             System.out.println(e.getMessage());
             return false;
         }
+
+        try {
+            Channel channel = this.connection.createChannel();
+
+            channel.exchangeDeclare(this.exchangeName, EXCHANGE_TYPE);
+        } catch (Exception e) {
+            System.out.println("Informacion: La exchange ya existe!");
+        }
+
         return true;
     }
 
@@ -68,7 +77,7 @@ public class AMQPMessageHandler implements MessageServer {
             return false;
         }
 
-        if(StringUtils.isEmpty(this.exchangeName)){
+        if (StringUtils.isEmpty(this.exchangeName)) {
             return false;
         }
 
@@ -98,14 +107,12 @@ public class AMQPMessageHandler implements MessageServer {
             return false;
         }
 
-        if(StringUtils.isEmpty(this.exchangeName)){
+        if (StringUtils.isEmpty(this.exchangeName)) {
             return false;
         }
 
         try {
             Channel channel = this.connection.createChannel();
-
-            channel.exchangeDeclare(this.exchangeName, EXCHANGE_TYPE);
 
             channel.basicPublish(this.exchangeName, routingKey, null, message.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
