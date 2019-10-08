@@ -23,8 +23,6 @@
     <build>
         <plugins>
             <plugin>
-                <!--Relocate all lib we use in order to fix class loading errors if we use different versions
-                than already loaded libs (i.e. by Mojang -> gson)-->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>${shade.version}</version>

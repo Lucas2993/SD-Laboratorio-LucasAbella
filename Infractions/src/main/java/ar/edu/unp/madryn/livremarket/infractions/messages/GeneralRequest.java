@@ -25,6 +25,7 @@ public class GeneralRequest extends Request {
 
     @Override
     public void execute(String operation, Map<String, String> data) {
+        System.out.println("Llego la operacion general '" + operation + "' con los datos: " + data);
         switch (operation) {
             case Operations.GET_INFRACTIONS_OPERATION:
                 Map<String, String> responseData = new HashMap<>();
