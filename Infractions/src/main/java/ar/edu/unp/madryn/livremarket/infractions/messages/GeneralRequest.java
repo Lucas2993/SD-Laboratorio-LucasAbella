@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.infractions.messages;
 
 import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
+import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
@@ -9,13 +10,18 @@ import ar.edu.unp.madryn.livremarket.common.messages.types.Request;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GeneralRequest extends Request {
+    private static final double DEFAULT_INFRACTION_PROBABILITY = 0.5;
+
     @Setter
     private CommunicationHandler communicationHandler;
+    @Setter
+    private ConfigurationSection simulationConfiguration;
 
     @Override
     public void execute(String operation, Map<String, String> data) {
@@ -37,7 +43,9 @@ public class GeneralRequest extends Request {
     }
 
     private boolean hasInfraction() {
-        double probability = 0.5;
+        String probabilityString = simulationConfiguration.getValue("infraction_probability");
+        double probability = NumberUtils.toDouble(probabilityString, DEFAULT_INFRACTION_PROBABILITY);
+
         return (Math.random() < probability);
     }
 }
