@@ -60,6 +60,20 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
+        <!-- MongoJack -->
+        <!-- https://mvnrepository.com/artifact/org.mongojack/mongojack -->
+        <dependency>
+            <groupId>org.mongojack</groupId>
+            <artifactId>mongojack</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+        <!-- MongoDB -->
+        <!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.11.0</version>
+        </dependency>
     </dependencies>
 
     <build>
