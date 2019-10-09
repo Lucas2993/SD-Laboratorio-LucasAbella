@@ -6,4 +6,7 @@ public class Definitions {
     public static final String PAYMENTS_SERVER_NAME = "payments";
     public static final String PRODUCTS_SERVER_NAME = "products";
     public static final String PURCHASES_SERVER_NAME = "purchases";
+
+    public static final String REQUEST_OPERATION_KEY = "op";
+    public static final String INFORMATION_REFERENCE_KEY = "id";
 }

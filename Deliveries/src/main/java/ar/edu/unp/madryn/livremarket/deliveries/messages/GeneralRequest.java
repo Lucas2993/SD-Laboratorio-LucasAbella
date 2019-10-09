@@ -28,11 +28,12 @@ public class GeneralRequest extends Request {
     @Override
     public void execute(String operation, Map<String, String> data) {
         System.out.println("Llego la operacion general '" + operation + "' con los datos: " + data);
+        String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
         switch (operation) {
             case Operations.GET_DELIVERY_COST_OPERATION:
                 Map<String, String> responseData = new HashMap<>();
 
-                String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
+                responseData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.DELIVERY_COST_REFERENCE_ID);
                 responseData.put(Results.DELIVERY_COST_RESULT, String.valueOf(this.calculateCost()));
                 if (!StringUtils.isEmpty(purchaseID)) {
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
@@ -40,6 +41,16 @@ public class GeneralRequest extends Request {
 
                 communicationHandler.sendMessage(MessageType.RESULT, Definitions.PURCHASES_SERVER_NAME, responseData);
 
+                break;
+            case Operations.BOOK_SHIPMENT_OPERATION:
+                Map<String, String> resultData = new HashMap<>();
+
+                resultData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.BOOK_SHIPMENT_REFERENCE_ID);
+                if (!StringUtils.isEmpty(purchaseID)) {
+                    resultData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+                }
+
+                communicationHandler.sendMessage(MessageType.RESULT, Definitions.PRODUCTS_SERVER_NAME, resultData);
                 break;
         }
     }
