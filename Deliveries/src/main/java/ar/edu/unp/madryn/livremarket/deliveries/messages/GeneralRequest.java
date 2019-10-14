@@ -65,7 +65,7 @@ public class GeneralRequest extends Request {
 
                 deliveryDetail.setDate(DateUtils.addDays(new Date(), 3));
 
-                MongoCollection collection = database.getCollection("booked_deliveries");
+                MongoCollection collection = database.getCollection(Definitions.BOOKED_DELIVERIES_COLLECTION_NAME);
                 Gson gson = new Gson();
 
                 collection.insertOne(Document.parse(gson.toJson(deliveryDetail)));

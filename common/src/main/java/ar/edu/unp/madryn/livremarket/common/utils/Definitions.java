@@ -9,4 +9,6 @@ public class Definitions {
 
     public static final String REQUEST_OPERATION_KEY = "op";
     public static final String INFORMATION_REFERENCE_KEY = "id";
+
+    public static final String BOOKED_DELIVERIES_COLLECTION_NAME = "booked_deliveries";
 }
