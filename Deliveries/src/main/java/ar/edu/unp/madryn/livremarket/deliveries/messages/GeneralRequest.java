@@ -8,12 +8,19 @@ import ar.edu.unp.madryn.livremarket.common.messages.Operations;
 import ar.edu.unp.madryn.livremarket.common.messages.Results;
 import ar.edu.unp.madryn.livremarket.common.messages.types.Request;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.deliveries.models.DeliveryDetail;
+import com.google.gson.Gson;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.bson.Document;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +31,9 @@ public class GeneralRequest extends Request {
     private CommunicationHandler communicationHandler;
     @Setter
     private ConfigurationSection simulationConfiguration;
+
+    @Setter
+    private MongoDatabase database;
 
     @Override
     public void execute(String operation, Map<String, String> data) {
@@ -45,10 +55,20 @@ public class GeneralRequest extends Request {
             case Operations.BOOK_SHIPMENT_OPERATION:
                 Map<String, String> resultData = new HashMap<>();
 
+                DeliveryDetail deliveryDetail = new DeliveryDetail();
+
                 resultData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.BOOK_SHIPMENT_REFERENCE_ID);
                 if (!StringUtils.isEmpty(purchaseID)) {
                     resultData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+                    deliveryDetail.setPurchaseID(purchaseID);
                 }
+
+                deliveryDetail.setDate(DateUtils.addDays(new Date(), 3));
+
+                MongoCollection collection = database.getCollection("booked_deliveries");
+                Gson gson = new Gson();
+
+                collection.insertOne(Document.parse(gson.toJson(deliveryDetail)));
 
                 communicationHandler.sendMessage(MessageType.RESULT, Definitions.PRODUCTS_SERVER_NAME, resultData);
                 break;

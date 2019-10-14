@@ -6,6 +6,8 @@ import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.deliveries.messages.GeneralRequest;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 
 public class Main {
     public static void main(String [] args){
@@ -29,6 +31,11 @@ public class Main {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
             return;
         }
+
+        MongoClient mongoClient = new MongoClient("localhost", 27017);
+        MongoDatabase database = mongoClient.getDatabase(Definitions.DELIVERIES_SERVER_NAME);
+
+        generalRequest.setDatabase(database);
 
         communicationHandler.registerReceiver(Definitions.DELIVERIES_SERVER_NAME);
 
