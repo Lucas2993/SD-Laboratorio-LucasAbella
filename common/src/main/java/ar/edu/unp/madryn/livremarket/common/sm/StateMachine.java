@@ -10,6 +10,9 @@ import java.util.List;
  * Representa la organizacion y funcionamiento de una maquina de estados.
  */
 public class StateMachine {
+    static final String INITIAL_STATE_ID = "_init";
+    static final String FINAL_STATE_ID = "_end";
+
     private Template template;
     @Getter
     private State currentState;
