@@ -3,7 +3,9 @@ package ar.edu.unp.madryn.livremarket.common.sm;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author iMinecrafting
@@ -19,16 +21,20 @@ public class StateMachine {
     @Getter
     private List<State> history;
 
+    private Map<String, Object> data;
+
     public StateMachine(Template template) {
         this.template = template;
         this.history = new ArrayList<>();
         this.currentState = template.getInitialState();
+        this.data = new HashMap<>();
     }
 
     public StateMachine(Template template, State initialState) {
         this.template = template;
         this.history = new ArrayList<>();
         this.changeCurrentState(initialState, false);
+        this.data = new HashMap<>();
     }
 
     /**
@@ -42,7 +48,7 @@ public class StateMachine {
         }
 
         // Se evalua si existe una transicion posible partiendo del estado actual.
-        return this.template.hasTransition(this.currentState);
+        return this.template.hasTransition(this.currentState, this.data);
     }
 
     /**
@@ -56,7 +62,7 @@ public class StateMachine {
         }
 
         // Se busca una transicion que parta del estado actual y de la cual se cumpla la condicion.
-        Transition transition = this.template.searchTransition(this.currentState);
+        Transition transition = this.template.searchTransition(this.currentState, this.data);
         // Si se encontro una transicion.
         if (transition == null) {
             return false;
@@ -100,7 +106,7 @@ public class StateMachine {
         // Si no se desea realizar el proceso al realizar el cambio.
         if(withinProcess) {
             // Se ejecuta el proceso del nuevo estado.
-            this.currentState.process();
+            this.currentState.process(this.data);
         }
 
         return true;

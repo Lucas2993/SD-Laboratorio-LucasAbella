@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -48,7 +49,7 @@ public class Template {
      * @param transition Transicion a agregar.
      * @return Verdadero si la transicion pudo ser agregada correctamente.
      */
-    public Boolean addTransition(Transition transition) {
+    private Boolean addTransition(Transition transition) {
         // Si la maquina ya contenia la transicion.
         if (this.transitions.contains(transition)) {
             return false;
@@ -61,13 +62,32 @@ public class Template {
     }
 
     /**
+     * Agrega una transicion a la maquina de estados.
+     * @param from Estado de origen.
+     * @param to Estado de destino.
+     * @param condition Condicion a evaluar para realizar la transicion.
+     * @return Verdadero si la transicion pudo ser agregada correctamente.
+     */
+    public Boolean addTransition(State from, State to, Transition.Evaluable condition) {
+        if(from == null || to == null || condition == null){
+            return false;
+        }
+
+        if(!this.containsState(from) || !this.containsState(to)){
+            return false;
+        }
+
+        return this.addTransition(new Transition(from, to, condition));
+    }
+
+    /**
      * Realiza la busqueda de una transicion mediante el estado de origen. En el proceso se evalua si la condicion se cumple.
      * @param from Estado del cual se desea transicionar.
      * @return La transicion encontrada. Si no se encontro una transicion valida, se devuelve null.
      */
-    Transition searchTransition(State from) {
+    Transition searchTransition(State from, Map<String, Object> data) {
         Optional<Transition> result = this.transitions.stream()
-                .filter(transition -> transition.getFrom().equals(from) && transition.condition())
+                .filter(transition -> transition.getFrom().equals(from) && transition.condition(data))
                 .findFirst();
 
         return result.orElse(null);
@@ -78,9 +98,9 @@ public class Template {
      * @param from Estado del cual se desea transicionar.
      * @return Verdadero si es posible transicionar.
      */
-    Boolean hasTransition(State from) {
+    Boolean hasTransition(State from, Map<String, Object> data) {
         return this.transitions.stream()
-                .anyMatch(transition -> transition.getFrom().equals(from) && transition.condition());
+                .anyMatch(transition -> transition.getFrom().equals(from) && transition.condition(data));
     }
 
     /**

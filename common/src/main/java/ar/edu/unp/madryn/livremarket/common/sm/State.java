@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.sm;
 
 import lombok.Getter;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -20,13 +21,13 @@ public abstract class State {
      * Permite resetear el estado interno del estado.
      * @return Verdadero si el reseteo pudo realizarse correctamente.
      */
-    public abstract Boolean reset();
+    public abstract Boolean reset(Map<String, Object> data);
 
     /**
      * Ejecuta un proceso correspondiente al ingreso al estado.
      * @return Verdadero si el proceso se ejecuto sin ningun inconveniente.
      */
-    public abstract Boolean process();
+    public abstract Boolean process(Map<String, Object> data);
 
     @Override
     public boolean equals(Object o) {
