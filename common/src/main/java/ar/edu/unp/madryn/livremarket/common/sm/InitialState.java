@@ -8,12 +8,12 @@ public class InitialState extends State {
     }
 
     @Override
-    public Boolean reset(Map<String, Object> data) {
+    public Boolean reset(Map<String, String> data) {
         return true;
     }
 
     @Override
-    public Boolean process(Map<String, Object> data) {
+    public Boolean process(Map<String, String> data) {
         return true;
     }
 }

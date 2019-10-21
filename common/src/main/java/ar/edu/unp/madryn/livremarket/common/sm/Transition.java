@@ -25,9 +25,10 @@ public class Transition {
 
     /**
      * Condicion que debe cumplirse para que la transicion pueda realizarse.
+     *
      * @return Verdadero si la condicion se cumple.
      */
-    Boolean condition(Map<String, Object> data){
+    Boolean condition(Map<String, String> data) {
         return this.evaluable.condition(data);
     }
 
@@ -46,6 +47,6 @@ public class Transition {
     }
 
     public interface Evaluable {
-        Boolean condition(Map<String, Object> data);
+        Boolean condition(Map<String, String> data);
     }
 }

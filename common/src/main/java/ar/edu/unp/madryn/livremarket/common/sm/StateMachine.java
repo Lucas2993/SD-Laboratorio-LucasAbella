@@ -21,7 +21,7 @@ public class StateMachine {
     @Getter
     private List<State> history;
     @Getter
-    private Map<String, Object> data;
+    private Map<String, String> data;
 
     public StateMachine(Template template) {
         this.template = template;
@@ -39,6 +39,7 @@ public class StateMachine {
 
     /**
      * Determina si la maquina puede realizar una transicion a partir del estado actual.
+     *
      * @return Verdadero si es posible transicionar.
      */
     public Boolean canDoStep() {
@@ -53,6 +54,7 @@ public class StateMachine {
 
     /**
      * Determina y ejecuta una transicion posible desde el estado actual.
+     *
      * @return Verdadero si fue posible realizar una transicion.
      */
     public Boolean doStep() {
@@ -77,6 +79,7 @@ public class StateMachine {
 
     /**
      * Realiza el cambio del estado actual hacia uno especifico.
+     *
      * @param state Estado al cual se evoluciona.
      * @return Verdadero si fue posible cambiar de estado.
      */
@@ -86,13 +89,14 @@ public class StateMachine {
 
     /**
      * Realiza el cambio del estado actual hacia uno especifico.
-     * @param state Estado al cual se evoluciona.
+     *
+     * @param state         Estado al cual se evoluciona.
      * @param withinProcess Define si al cambiar de estado se realiza el proceso.
      * @return Verdadero si fue posible cambiar de estado.
      */
     private Boolean changeCurrentState(State state, boolean withinProcess) {
         // Si no hay estado.
-        if(state == null){
+        if (state == null) {
             return false;
         }
 
@@ -104,7 +108,7 @@ public class StateMachine {
         // Se cambia el estado actual.
         this.currentState = state;
         // Si no se desea realizar el proceso al realizar el cambio.
-        if(withinProcess) {
+        if (withinProcess) {
             // Se ejecuta el proceso del nuevo estado.
             this.currentState.process(this.data);
         }
@@ -112,7 +116,11 @@ public class StateMachine {
         return true;
     }
 
-    public void addData(String key, Object value){
+    public void addData(String key, String value) {
         this.data.put(key, value);
+    }
+
+    public void addData(Map<String, String> data) {
+        this.data.putAll(data);
     }
 }
