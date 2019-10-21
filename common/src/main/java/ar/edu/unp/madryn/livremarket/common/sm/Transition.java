@@ -14,6 +14,11 @@ public abstract class Transition {
     @Getter
     private State to;
 
+    public Transition(State from, State to) {
+        this.from = from;
+        this.to = to;
+    }
+
     /**
      * Condicion que debe cumplirse para que la transicion pueda realizarse.
      * @return Verdadero si la condicion se cumple.
