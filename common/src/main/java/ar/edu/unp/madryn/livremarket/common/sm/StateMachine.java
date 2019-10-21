@@ -20,7 +20,7 @@ public class StateMachine {
     private State currentState;
     @Getter
     private List<State> history;
-
+    @Getter
     private Map<String, Object> data;
 
     public StateMachine(Template template) {
@@ -110,5 +110,9 @@ public class StateMachine {
         }
 
         return true;
+    }
+
+    public void addData(String key, Object value){
+        this.data.put(key, value);
     }
 }
