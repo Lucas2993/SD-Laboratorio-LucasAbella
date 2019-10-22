@@ -16,5 +16,5 @@ public class Definitions {
     public static final String COMMON_DATABASE_NAME = "common_data";
 
     public static final String CONNECTION_CONFIGURATION_FILE = "connection";
-    public static final String SIMULATION_CONFIGURATION_FILE = "common_data";
+    public static final String SIMULATION_CONFIGURATION_FILE = "simulation";
 }
