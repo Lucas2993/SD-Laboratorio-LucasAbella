@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.deliveries.messages;
 
 import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
+import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
@@ -33,7 +34,7 @@ public class GeneralRequest extends Request {
     private ConfigurationSection simulationConfiguration;
 
     @Setter
-    private MongoDatabase database;
+    private DataProvider dataProvider;
 
     @Override
     public void execute(String operation, Map<String, String> data) {
@@ -65,10 +66,7 @@ public class GeneralRequest extends Request {
 
                 deliveryDetail.setDate(DateUtils.addDays(new Date(), 3));
 
-                MongoCollection collection = database.getCollection(Definitions.BOOKED_DELIVERIES_COLLECTION_NAME);
-                Gson gson = new Gson();
-
-                collection.insertOne(Document.parse(gson.toJson(deliveryDetail)));
+                this.dataProvider.insertElement(deliveryDetail, Definitions.BOOKED_DELIVERIES_COLLECTION_NAME);
 
                 communicationHandler.sendMessage(MessageType.RESULT, Definitions.PRODUCTS_SERVER_NAME, resultData);
                 break;
