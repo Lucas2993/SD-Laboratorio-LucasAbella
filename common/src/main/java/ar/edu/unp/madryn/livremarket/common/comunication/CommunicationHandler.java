@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageHandler;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageServerFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.ArrayUtils;
@@ -61,7 +62,7 @@ public class CommunicationHandler {
 
         // Configurar la conexion al servidor de mensajes.
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-        ConfigurationSection connectionConfiguration = configurationManager.loadConfiguration("connection", ConfigurationSection.CONFIGURATION_FOLDER);
+        ConfigurationSection connectionConfiguration = configurationManager.loadConfiguration(Definitions.CONNECTION_CONFIGURATION_FILE, ConfigurationSection.CONFIGURATION_FOLDER);
         if (connectionConfiguration == null) {
             // TODO Mensaje de error sobre que no hay configuracion de conexion...
             return false;

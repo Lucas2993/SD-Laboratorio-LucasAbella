@@ -11,4 +11,10 @@ public class Definitions {
     public static final String INFORMATION_REFERENCE_KEY = "id";
 
     public static final String BOOKED_DELIVERIES_COLLECTION_NAME = "booked_deliveries";
+    public static final String PRODUCTS_COLLECTION_NAME = "products_list";
+
+    public static final String COMMON_DATABASE_NAME = "common_data";
+
+    public static final String CONNECTION_CONFIGURATION_FILE = "connection";
+    public static final String SIMULATION_CONFIGURATION_FILE = "common_data";
 }
