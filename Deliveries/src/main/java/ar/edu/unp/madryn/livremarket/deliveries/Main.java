@@ -12,13 +12,13 @@ import ar.edu.unp.madryn.livremarket.deliveries.messages.GeneralRequest;
 public class Main {
     public static void main(String[] args) {
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-        ConfigurationSection simulationConfiguration = configurationManager.loadConfiguration("simulation", ConfigurationSection.CONFIGURATION_FOLDER);
+        ConfigurationSection simulationConfiguration = configurationManager.loadConfiguration(Definitions.SIMULATION_CONFIGURATION_FILE, ConfigurationSection.CONFIGURATION_FOLDER);
         if (simulationConfiguration == null) {
             System.err.println("Error: La configuracion de la simulacion no existe!");
             return;
         }
 
-        ConfigurationSection connectionConfiguration = configurationManager.loadConfiguration("connection", ConfigurationSection.CONFIGURATION_FOLDER);
+        ConfigurationSection connectionConfiguration = configurationManager.loadConfiguration(Definitions.CONNECTION_CONFIGURATION_FILE, ConfigurationSection.CONFIGURATION_FOLDER);
         if (connectionConfiguration == null) {
             System.err.println("Error: La configuracion de la conexion a la base de datos no existe!");
             return;
