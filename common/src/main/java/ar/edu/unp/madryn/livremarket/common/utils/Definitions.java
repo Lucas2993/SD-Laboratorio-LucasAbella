@@ -13,6 +13,9 @@ public class Definitions {
     public static final String BOOKED_DELIVERIES_COLLECTION_NAME = "booked_deliveries";
     public static final String PRODUCTS_COLLECTION_NAME = "products_list";
 
+    public static final String PRODUCTS_STATE_COLLECTION_NAME = "states";
+    public static final String SM_CURRENT_STATE_REFERENCE = "current_state";
+
     public static final String COMMON_DATABASE_NAME = "common_data";
 
     public static final String CONNECTION_CONFIGURATION_FILE = "connection";
