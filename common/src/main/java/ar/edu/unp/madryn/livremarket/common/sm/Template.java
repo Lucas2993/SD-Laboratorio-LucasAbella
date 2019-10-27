@@ -118,4 +118,11 @@ public class Template {
         // Si el estado se encuentra registrado.
         return this.states.contains(state);
     }
+
+    public State searchStateByIdentifier(String identifier){
+        return this.states.stream()
+                .filter(state -> state.getIdentifier().equals(identifier))
+                .findFirst()
+                .orElse(null);
+    }
 }
