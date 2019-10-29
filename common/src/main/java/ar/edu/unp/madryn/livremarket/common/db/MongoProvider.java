@@ -2,80 +2,75 @@ package ar.edu.unp.madryn.livremarket.common.db;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.UpdateResult;
+import com.mongodb.client.model.Filters;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MongoProvider implements DataProvider {
-    private String ip;
-
-    private int port;
+    private MongoConnection connection;
 
     private String databaseName;
 
     private MongoDatabase mongoDatabase;
 
-    public MongoProvider(String ip, int port, String databaseName) {
-        this.ip = ip;
-        this.port = port;
+    private Gson gson;
+
+    public MongoProvider(MongoConnection connection, String databaseName) {
+        this.connection = connection;
         this.databaseName = databaseName;
+        this.gson = new Gson();
     }
 
     @Override
     public boolean connect() {
-        if (StringUtils.isEmpty(this.ip) || this.port < 0 || StringUtils.isEmpty(this.databaseName)) {
+        if(this.connection == null){
             return false;
         }
 
-        MongoClient mongoClient = new MongoClient(this.ip, this.port);
-        this.mongoDatabase = mongoClient.getDatabase(this.databaseName);
+        if(!this.connection.isConnected()){
+            if(!this.connection.connect()){
+                return false;
+            }
+        }
 
+        if(StringUtils.isEmpty(this.databaseName)){
+            return false;
+        }
+
+        this.mongoDatabase = this.connection.getClient().getDatabase(this.databaseName);
         return true;
     }
 
     @Override
     public boolean insertElement(Object elementToInsert, String collectionName) {
         MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
-        Gson gson = new Gson();
 
         collection.insertOne(Document.parse(gson.toJson(elementToInsert)));
         return true;
     }
 
     @Override
-    public boolean updateElement(String id, Object elementToUpdate, String collectionName) {
+    public boolean updateElement(String searchField, String searchValue, Object elementToUpdate, String collectionName) {
         MongoCollection<Document> collection = this.mongoDatabase.getCollection(collectionName);
 
-        Gson gson = new Gson();
+        Document updated = collection.findOneAndReplace(Filters.eq(searchField, searchValue), Document.parse(gson.toJson(elementToUpdate)));
 
-        Document document = new Document();
-
-        ObjectId objectId = new ObjectId(id);
-
-        document.put(DataProvider.DEFAULT_ID_FIELD, objectId);
-
-        Document toUpdate = Document.parse(gson.toJson(elementToUpdate));
-
-        UpdateResult updateResult = collection.updateOne(document, toUpdate);
-
-        return updateResult.wasAcknowledged();
+        return updated != null;
     }
 
     @Override
     public <T> Collection<T> getCollection(String collectionName, Class<T> elementsType) {
         MongoCollection<Document> databaseCollection = this.mongoDatabase.getCollection(collectionName);
-
-        Gson gson = new Gson();
 
         Collection<T> result = new ArrayList<>();
 
@@ -95,8 +90,6 @@ public class MongoProvider implements DataProvider {
     public Map<String, String> getDataFromCollectionByField(String collectionName, String fieldName, String value) {
         MongoCollection<Document> collection = this.mongoDatabase.getCollection(collectionName);
 
-        Gson gson = new Gson();
-
         Document document = new Document();
 
         document.put(fieldName, value);
@@ -109,6 +102,11 @@ public class MongoProvider implements DataProvider {
             return new HashMap<>();
         }
 
-        return gson.fromJson(found.toJson(), new TypeToken<Map<String,String>>(){}.getType());
+        found.remove(DataProvider.DEFAULT_ID_FIELD);
+
+        Type dataType = new TypeToken<Map<String, String>>() {
+        }.getType();
+
+        return gson.fromJson(found.toJson(), dataType);
     }
 }

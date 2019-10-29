@@ -1,11 +1,13 @@
 package ar.edu.unp.madryn.livremarket.common.models;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 
 public class Product {
     @Getter
+    @Expose(serialize = false, deserialize = false)
     private ObjectId _id;
     @Getter
     private String id;

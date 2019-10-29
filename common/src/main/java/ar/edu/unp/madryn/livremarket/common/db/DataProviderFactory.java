@@ -30,6 +30,8 @@ public class DataProviderFactory {
         String ip = connectionConfiguration.getValue(CONNECTION_IP);
         String port = connectionConfiguration.getValue(CONNECTION_PORT);
 
-        return new MongoProvider(ip, NumberUtils.toInt(port, DEFAULT_PORT), databaseName);
+        MongoConnection connection = new MongoConnection(ip, NumberUtils.toInt(port, DEFAULT_PORT));
+
+        return new MongoProvider(connection, databaseName);
     }
 }

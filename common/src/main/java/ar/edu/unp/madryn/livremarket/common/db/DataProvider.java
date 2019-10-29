@@ -9,7 +9,7 @@ public interface DataProvider {
     boolean connect();
 
     boolean insertElement(Object elementToInsert, String collectionName);
-    boolean updateElement(String id, Object elementToUpdate, String collectionName);
+    boolean updateElement(String searchField, String searchValue, Object elementToUpdate, String collectionName);
 
     <T> Collection<T> getCollection(String collectionName, Class<T> elementsType);
 
