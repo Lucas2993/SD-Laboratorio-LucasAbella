@@ -10,6 +10,7 @@ import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.sm.StateMachine;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 
@@ -35,8 +36,11 @@ public class GeneralRequest extends Request {
         /* Recuperar registro de la base de datos. */
         Map<String,String> storedState = this.stateDataProvider.getDataFromCollectionByField(Definitions.PRODUCTS_STATE_COLLECTION_NAME, MessageCommonFields.PURCHASE_ID, purchaseID);
 
+        boolean isNewPurchase = false;
+
         if(MapUtils.isEmpty(storedState)){
             storedState = new HashMap<>();
+            isNewPurchase = true;
         }
 
         /* Actualizar estado interno. */
@@ -71,19 +75,23 @@ public class GeneralRequest extends Request {
         machine.addData(storedState);
 
         /* Intentar trasicionar la maquina de estados. */
-
         while(machine.canDoStep()){
             machine.doStep();
         }
 
+        /* Actualizar estado con lo modificado por la maquina de estados */
+        storedState.putAll(machine.getData());
+        storedState.put(MessageCommonFields.CURRENT_STATE, machine.getCurrentState().getIdentifier());
+
         /* Guardar estado */
-        if(storedState.containsKey(DataProvider.DEFAULT_ID_FIELD)) {
-            this.stateDataProvider.updateElement(storedState.get(DataProvider.DEFAULT_ID_FIELD),
-                    storedState,
-                    Definitions.PRODUCTS_STATE_COLLECTION_NAME);
+        if(isNewPurchase) {
+            this.stateDataProvider.insertElement(storedState, Definitions.PRODUCTS_STATE_COLLECTION_NAME);
         }
         else{
-            this.stateDataProvider.insertElement(storedState, Definitions.PRODUCTS_STATE_COLLECTION_NAME);
+            this.stateDataProvider.updateElement(MessageCommonFields.PURCHASE_ID,
+                    purchaseID,
+                    storedState,
+                    Definitions.PRODUCTS_STATE_COLLECTION_NAME);
         }
     }
 }

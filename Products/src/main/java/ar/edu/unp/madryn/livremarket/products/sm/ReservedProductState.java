@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.products.data.ProductManager;
+import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,11 +46,10 @@ public class ReservedProductState extends State {
 
         // Descontar Stock.
         product.subtractStock();
-
         this.productManager.updateProduct(product);
-
-        data.put(MessageCommonFields.CURRENT_STATE, this.getIdentifier());
         // TODO Guardar datos de la transaccion en la base de datos.
+
+        data.put(LocalDefinitions.RESERVED_PRODUCT_FIELD, String.valueOf(true));
 
         return true;
     }

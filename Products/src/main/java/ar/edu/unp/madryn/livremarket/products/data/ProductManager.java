@@ -41,7 +41,8 @@ public class ProductManager {
     }
 
     public boolean updateProduct(Product product) {
-        return this.dataProvider.updateElement(product.getId(), product, Definitions.PRODUCTS_COLLECTION_NAME);
+        // TODO No dejar este texto re duro...
+        return this.dataProvider.updateElement("id", product.getId(), product, Definitions.PRODUCTS_COLLECTION_NAME);
     }
 
     public boolean storeProduct(Product product) {

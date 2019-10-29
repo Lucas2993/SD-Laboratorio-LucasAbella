@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
+import ar.edu.unp.madryn.livremarket.common.db.MongoConnection;
 import ar.edu.unp.madryn.livremarket.common.db.MongoProvider;
 import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
@@ -63,7 +64,9 @@ public class FillProductsDB {
         product7.setDescription("Impresora multifuncion marca Samsung");
         product7.setStock(20);
 
-        DataProvider dataProvider = new MongoProvider("localhost", 27017, Definitions.COMMON_DATABASE_NAME);
+        MongoConnection mongoConnection = new MongoConnection("localhost", 27017);
+
+        DataProvider dataProvider = new MongoProvider(mongoConnection, Definitions.COMMON_DATABASE_NAME);
 
         if(!dataProvider.connect()){
             System.err.println("No se pudo establecer conexion con el servidor de base de datos!");
