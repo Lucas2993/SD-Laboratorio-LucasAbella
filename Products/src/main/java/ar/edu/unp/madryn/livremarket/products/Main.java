@@ -89,6 +89,9 @@ public class Main {
         AuthorizedPaymentState authorizedPaymentState = new AuthorizedPaymentState();
         smTemplate.addState(authorizedPaymentState);
 
+        WaitingBookedShipmentState waitingBookedShipmentState = new WaitingBookedShipmentState();
+        smTemplate.addState(waitingBookedShipmentState);
+
         SendingProductState sendingProductState = new SendingProductState();
         smTemplate.addState(sendingProductState);
 
@@ -101,7 +104,8 @@ public class Main {
         smTemplate.addTransition(noInfractionsState, releasingProductState, data -> !MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
         smTemplate.addTransition(noInfractionsState, authorizedPaymentState, data -> MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
         smTemplate.addTransition(releasingProductState, finalState, data -> !MapUtils.getBoolean(data, LocalDefinitions.RESERVED_PRODUCT_FIELD));
-        smTemplate.addTransition(authorizedPaymentState, sendingProductState, data -> MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(authorizedPaymentState, waitingBookedShipmentState, data -> MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(waitingBookedShipmentState, sendingProductState, data -> MapUtils.getBoolean(data, MessageCommonFields.BOOKED_SHIPPING));
         smTemplate.addTransition(authorizedPaymentState, finalState, data -> !MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
         smTemplate.addTransition(sendingProductState, finalState, data -> data.containsKey(LocalDefinitions.PRODUCT_SENT_FIELD));
 
