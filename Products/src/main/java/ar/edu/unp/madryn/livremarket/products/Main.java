@@ -12,8 +12,9 @@ import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.products.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.products.messages.GeneralRequest;
 import ar.edu.unp.madryn.livremarket.products.messages.ResultInformation;
-import ar.edu.unp.madryn.livremarket.products.sm.ReservedProductState;
+import ar.edu.unp.madryn.livremarket.products.sm.*;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
+import org.apache.commons.collections4.MapUtils;
 
 public class Main {
     public static void main(String[] args) {
@@ -71,12 +72,38 @@ public class Main {
         ReservedProductState reservedProductState = new ReservedProductState();
         ProductManager productManager = ProductManager.getInstance();
         reservedProductState.setProductManager(productManager);
-
         smTemplate.addState(reservedProductState);
+
+        ReportedInfractionsState reportedInfractionsState = new ReportedInfractionsState();
+        smTemplate.addState(reportedInfractionsState);
+
+        ReportedPaymentState reportedPaymentState = new ReportedPaymentState();
+        smTemplate.addState(reportedPaymentState);
+
+        ReleasingProductState releasingProductState = new ReleasingProductState();
+        smTemplate.addState(releasingProductState);
+
+        NoInfractionsState noInfractionsState = new NoInfractionsState();
+        smTemplate.addState(noInfractionsState);
+
+        AuthorizedPaymentState authorizedPaymentState = new AuthorizedPaymentState();
+        smTemplate.addState(authorizedPaymentState);
+
+        SendingProductState sendingProductState = new SendingProductState();
+        smTemplate.addState(sendingProductState);
 
         /* Transiciones */
         smTemplate.addTransition(initialState, reservedProductState, data -> data.containsKey(MessageCommonFields.PURCHASE_ID) && data.containsKey(MessageCommonFields.PRODUCT_ID));
-        smTemplate.addTransition(reservedProductState, finalState, data -> data.containsKey(LocalDefinitions.RESERVED_PRODUCT_FIELD));
+        smTemplate.addTransition(reservedProductState, reportedInfractionsState, data -> data.containsKey(MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(reportedInfractionsState, reportedPaymentState, data -> data.containsKey(MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(reportedPaymentState, releasingProductState, data -> MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(reportedPaymentState, noInfractionsState, data -> !MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(noInfractionsState, releasingProductState, data -> !MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(noInfractionsState, authorizedPaymentState, data -> MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(releasingProductState, finalState, data -> !MapUtils.getBoolean(data, LocalDefinitions.RESERVED_PRODUCT_FIELD));
+        smTemplate.addTransition(authorizedPaymentState, sendingProductState, data -> MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(authorizedPaymentState, finalState, data -> !MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(sendingProductState, finalState, data -> data.containsKey(LocalDefinitions.PRODUCT_SENT_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
         generalRequest.setSmTemplate(smTemplate);
