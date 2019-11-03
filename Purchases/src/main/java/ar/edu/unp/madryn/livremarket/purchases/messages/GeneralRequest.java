@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.purchases.messages;
 
 import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
+import ar.edu.unp.madryn.livremarket.common.data.PurchaseManager;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
@@ -30,6 +31,8 @@ public class GeneralRequest extends Request {
     private DataProvider stateDataProvider;
     @Setter
     private Template smTemplate;
+    @Setter
+    private PurchaseManager purchaseManager;
 
     @Override
     public void execute(String operation, Map<String, String> data) {
@@ -41,9 +44,15 @@ public class GeneralRequest extends Request {
         Purchase purchase;
 
         if(!StringUtils.isEmpty(purchaseID)){
+            /* Recuperar compra de la base de datos */
+            purchase = this.purchaseManager.findProductByID(purchaseID);
+            if(purchase == null){
+                // TODO Error de ID de compra invalido
+                return;
+            }
+
             /* Recuperar registro de la base de datos. */
              storedState = this.stateDataProvider.getDataFromCollectionByField(Definitions.PURCHASES_STATE_COLLECTION_NAME, MessageCommonFields.PURCHASE_ID, purchaseID);
-             // TODO Buscar la compra
         }
 
         boolean isNewPurchase = MapUtils.isEmpty(storedState);
@@ -60,15 +69,13 @@ public class GeneralRequest extends Request {
 
                 // TODO Verificar si el cliente no existe
 
-                // TODO Si se creo hay que guardar el cliente
-
                 purchase.setClientID(clientID);
 
                 // TODO Buscar el producto segun su id
 
                 purchase.setProductID(productID);
 
-                // TODO Guardar compra en la base de datos
+                this.purchaseManager.storeProduct(purchase);
 
                 /* Actualizacion del estado */
                 storedState.put(MessageCommonFields.PURCHASE_ID, purchase.getId());
@@ -81,8 +88,6 @@ public class GeneralRequest extends Request {
                 // TODO Error por tipo de mensaje no reconocido...
                 return;
         }
-
-        // TODO Si no hay id de compra quiere decir que el mensaje fue erroneo...
 
         State currentState;
 
