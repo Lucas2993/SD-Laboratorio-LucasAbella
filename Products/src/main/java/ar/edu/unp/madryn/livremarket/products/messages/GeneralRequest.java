@@ -41,21 +41,32 @@ public class GeneralRequest extends Request {
         if(MapUtils.isEmpty(storedState)){
             storedState = new HashMap<>();
             isNewPurchase = true;
+            storedState.put(MessageCommonFields.PURCHASE_ID, purchaseID);
         }
 
         /* Actualizar estado interno. */
         switch (operation) {
             case Operations.PRODUCT_RESERVATION_OPERATION:
-                if(!storedState.containsKey(MessageCommonFields.PURCHASE_ID)) {
-                    storedState.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+                if(storedState.containsKey(MessageCommonFields.PRODUCT_ID)) {
+                    // TODO Error de operacion duplicada
+                    return;
                 }
 
-                if(!storedState.containsKey(MessageCommonFields.PRODUCT_ID)) {
-                    String productID = data.get(MessageCommonFields.PRODUCT_ID);
-                    storedState.put(MessageCommonFields.PRODUCT_ID, productID);
-                }
-
+                String productID = data.get(MessageCommonFields.PRODUCT_ID);
+                storedState.put(MessageCommonFields.PRODUCT_ID, productID);
                 break;
+            case Operations.BOOK_SHIPMENT_OPERATION:
+                if(storedState.containsKey(MessageCommonFields.BOOKED_SHIPPING)) {
+                    // TODO Error de operacion duplicada
+                    return;
+                }
+
+                // TODO Registrar envio en la base de datos
+                storedState.put(MessageCommonFields.BOOKED_SHIPPING, String.valueOf(true));
+                break;
+            default:
+                // TODO Error de operacion no reconocida
+                return;
         }
 
         State currentState;

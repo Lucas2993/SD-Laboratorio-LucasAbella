@@ -40,11 +40,19 @@ public class ResultInformation extends Information {
         /* Actualizar estado interno. */
         switch (id) {
             case Results.INFRACTIONS_REFERENCE_ID:
+                if(storedState.containsKey(MessageCommonFields.HAS_INFRACTIONS)) {
+                    // TODO Error de informacion duplicada
+                    return;
+                }
                 String infractionsResult = data.get(MessageCommonFields.HAS_INFRACTIONS);
 
                 storedState.put(MessageCommonFields.HAS_INFRACTIONS, infractionsResult);
                 break;
             case Results.PAYMENT_AUTHORIZATION_REFERENCE_ID:
+                if(storedState.containsKey(MessageCommonFields.AUTHORIZED_PAYMENT)) {
+                    // TODO Error de informacion duplicada
+                    return;
+                }
                 String paymentResult = data.get(MessageCommonFields.AUTHORIZED_PAYMENT);
 
                 storedState.put(MessageCommonFields.AUTHORIZED_PAYMENT, paymentResult);
