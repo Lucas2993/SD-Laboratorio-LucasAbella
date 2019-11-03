@@ -1,4 +1,4 @@
-package ar.edu.unp.madryn.livremarket.products.data;
+package ar.edu.unp.madryn.livremarket.common.data;
 
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.models.Product;

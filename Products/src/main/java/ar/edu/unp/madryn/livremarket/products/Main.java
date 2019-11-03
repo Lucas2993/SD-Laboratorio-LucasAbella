@@ -9,7 +9,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.sm.*;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.products.data.ProductManager;
+import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.products.messages.GeneralRequest;
 import ar.edu.unp.madryn.livremarket.products.messages.ResultInformation;
 import ar.edu.unp.madryn.livremarket.products.sm.*;

@@ -1,14 +1,11 @@
 package ar.edu.unp.madryn.livremarket.products.seeds;
 
-import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
-import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
-import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.db.MongoConnection;
 import ar.edu.unp.madryn.livremarket.common.db.MongoProvider;
 import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.products.data.ProductManager;
+import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 
 public class FillProductsDB {
     public static void main(String [] args){

@@ -3,7 +3,7 @@ package ar.edu.unp.madryn.livremarket.products.sm;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
-import ar.edu.unp.madryn.livremarket.products.data.ProductManager;
+import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
