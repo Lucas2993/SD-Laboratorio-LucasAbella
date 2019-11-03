@@ -45,7 +45,7 @@ public class GeneralRequest extends Request {
                 Map<String, String> responseData = new HashMap<>();
 
                 responseData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.DELIVERY_COST_REFERENCE_ID);
-                responseData.put(Results.DELIVERY_COST_RESULT, String.valueOf(this.calculateCost()));
+                responseData.put(MessageCommonFields.DELIVERY_COST, String.valueOf(this.calculateCost()));
                 if (!StringUtils.isEmpty(purchaseID)) {
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
                 }
