@@ -32,7 +32,7 @@ public class GeneralRequest extends Request {
 
                 String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
                 responseData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.INFRACTIONS_REFERENCE_ID);
-                responseData.put(Results.INFRACTIONS_RESULT, Boolean.toString(this.hasInfraction()));
+                responseData.put(MessageCommonFields.HAS_INFRACTIONS, Boolean.toString(this.hasInfraction()));
                 if (!StringUtils.isEmpty(purchaseID)) {
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
                 }
