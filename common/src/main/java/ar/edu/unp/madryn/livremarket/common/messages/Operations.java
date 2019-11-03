@@ -7,4 +7,6 @@ public class Operations {
     public static final String BOOK_SHIPMENT_OPERATION = "book_shipment";
 
     public static final String PRODUCT_RESERVATION_OPERATION = "book_product";
+
+    public static final String INIT_PURCHASE = "init_purchase";
 }

@@ -14,10 +14,10 @@ public class Purchase {
     private int units;
     @Getter
     @Setter
-    private Client client;
+    private String clientID;
     @Getter
     @Setter
-    private Product product;
+    private String productID;
     @Getter
     @Setter
     private PaymentDetail paymentDetail;

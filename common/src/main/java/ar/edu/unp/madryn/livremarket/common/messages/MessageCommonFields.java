@@ -9,4 +9,8 @@ public class MessageCommonFields {
     public static final String BOOKED_SHIPPING = "booked_shipping";
 
     public static final String CURRENT_STATE = "current_state";
+
+    public static final String CLIENT_ID = "client_name";
+    public static final String PRODUCT_AMOUNT = "amount";
+
 }
