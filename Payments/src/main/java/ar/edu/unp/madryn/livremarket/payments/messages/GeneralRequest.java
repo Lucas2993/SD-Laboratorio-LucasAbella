@@ -32,7 +32,7 @@ public class GeneralRequest extends Request {
 
                 String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
                 responseData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.PAYMENT_AUTHORIZATION_REFERENCE_ID);
-                responseData.put(Results.PAYMENT_RESULT, Boolean.toString(this.isAuthorized()));
+                responseData.put(MessageCommonFields.AUTHORIZED_PAYMENT, Boolean.toString(this.isAuthorized()));
                 if (!StringUtils.isEmpty(purchaseID)) {
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
                 }
