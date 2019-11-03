@@ -1,4 +1,4 @@
-package ar.edu.unp.madryn.livremarket.products.seeds;
+package ar.edu.unp.madryn.livremarket.common.seeds;
 
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.MongoConnection;
