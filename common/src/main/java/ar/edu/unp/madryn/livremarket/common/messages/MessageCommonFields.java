@@ -7,6 +7,7 @@ public class MessageCommonFields {
     public static final String AUTHORIZED_PAYMENT = "authorized_payment";
     public static final String NEEDS_SHIPPING = "needs_shipping";
     public static final String BOOKED_SHIPPING = "booked_shipping";
+    public static final String DELIVERY_COST = "delivery_cost";
 
     public static final String CURRENT_STATE = "current_state";
 
