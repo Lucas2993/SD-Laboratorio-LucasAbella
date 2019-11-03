@@ -41,7 +41,7 @@ public class GeneralRequest extends Request {
 
         Map<String,String> storedState = new HashMap<>();
 
-        Purchase purchase;
+        Purchase purchase = null;
 
         if(!StringUtils.isEmpty(purchaseID)){
             /* Recuperar compra de la base de datos */
@@ -60,6 +60,10 @@ public class GeneralRequest extends Request {
         /* Actualizar estado interno. */
         switch (operation) {
             case Operations.INIT_PURCHASE:
+                if(purchase != null){
+                    // TODO Error de operacion duplicada
+                    return;
+                }
                 String clientID = data.get(MessageCommonFields.CLIENT_ID);
                 String productID = data.get(MessageCommonFields.PRODUCT_ID);
                 int amount = NumberUtils.toInt(data.get(MessageCommonFields.PRODUCT_AMOUNT), 1);
