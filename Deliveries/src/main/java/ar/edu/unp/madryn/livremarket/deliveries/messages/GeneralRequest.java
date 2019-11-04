@@ -48,8 +48,10 @@ public class GeneralRequest extends Request {
                 double cost = this.calculateCost();
                 responseData.put(MessageCommonFields.DELIVERY_COST, String.valueOf(cost));
                 if (!StringUtils.isEmpty(purchaseID)) {
-                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+                }
+                else{
+                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                 }
 
                 System.out.println("Costo calculado: '" + cost + "' (ID =" + purchaseID + ")");
@@ -66,8 +68,10 @@ public class GeneralRequest extends Request {
                 resultData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.BOOK_SHIPMENT_REFERENCE_ID);
                 if (!StringUtils.isEmpty(purchaseID)) {
                     resultData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
-                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                     deliveryDetail.setPurchaseID(purchaseID);
+                }
+                else{
+                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                 }
 
                 deliveryDetail.setDate(DateUtils.addDays(new Date(), 3));

@@ -113,6 +113,9 @@ public class Main {
         generalRequest.setSmTemplate(smTemplate);
         generalRequest.setStateDataProvider(productsDataProvider);
 
+        resultInformation.setSmTemplate(smTemplate);
+        resultInformation.setStateDataProvider(productsDataProvider);
+
         productManager.setDataProvider(commonDataProvider);
 
         productManager.load();

@@ -31,6 +31,8 @@ public class ReservedProductState extends State {
         Descontar Stock.
         Guardar datos en la base de datos.
          */
+
+        String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
         String productID = data.get(MessageCommonFields.PRODUCT_ID);
         int amount = MapUtils.getIntValue(data, MessageCommonFields.PRODUCT_AMOUNT, 1);
 
@@ -38,6 +40,8 @@ public class ReservedProductState extends State {
             System.err.println("Error: No existe un ID de producto a reservar!");
             return false;
         }
+
+        System.out.println("Reservando producto! (ID = " + purchaseID + ")");
 
         Product product = productManager.findProductByID(productID);
 
@@ -53,6 +57,8 @@ public class ReservedProductState extends State {
         }
 
         this.productManager.updateProduct(product);
+
+        System.out.println("Producto reservado correctamente! (ID = " + purchaseID + ")");
 
         data.put(LocalDefinitions.RESERVED_PRODUCT_FIELD, String.valueOf(true));
 

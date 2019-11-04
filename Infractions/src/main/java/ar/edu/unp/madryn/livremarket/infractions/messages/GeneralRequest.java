@@ -35,8 +35,10 @@ public class GeneralRequest extends Request {
                 boolean hasInfraction = this.hasInfraction();
                 responseData.put(MessageCommonFields.HAS_INFRACTIONS, Boolean.toString(hasInfraction));
                 if (!StringUtils.isEmpty(purchaseID)) {
-                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+                }
+                else{
+                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                 }
 
                 System.out.println("Resultado de infracciones: '" + hasInfraction + "' (ID =" + purchaseID + ")");

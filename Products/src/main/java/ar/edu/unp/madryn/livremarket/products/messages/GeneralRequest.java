@@ -10,7 +10,6 @@ import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.sm.StateMachine;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 
@@ -48,7 +47,7 @@ public class GeneralRequest extends Request {
         switch (operation) {
             case Operations.PRODUCT_RESERVATION_OPERATION:
                 if(storedState.containsKey(MessageCommonFields.PRODUCT_ID)) {
-                    // TODO Error de operacion duplicada
+                    System.err.println("Error: Operacion duplicada!");
                     return;
                 }
 
@@ -57,7 +56,7 @@ public class GeneralRequest extends Request {
                 break;
             case Operations.BOOK_SHIPMENT_OPERATION:
                 if(storedState.containsKey(MessageCommonFields.BOOKED_SHIPPING)) {
-                    // TODO Error de operacion duplicada
+                    System.err.println("Error: Operacion duplicada!");
                     return;
                 }
 

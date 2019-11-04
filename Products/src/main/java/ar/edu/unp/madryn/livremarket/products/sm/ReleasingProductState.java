@@ -32,10 +32,7 @@ public class ReleasingProductState extends State {
         Actualizar stock
          */
 
-        System.out.println("Liberando producto!");
-
-        // TODO Implementar liberacion del producto
-
+        String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
         String productID = data.get(MessageCommonFields.PRODUCT_ID);
         int amount = MapUtils.getIntValue(data, MessageCommonFields.PRODUCT_AMOUNT, 1);
 
@@ -43,6 +40,8 @@ public class ReleasingProductState extends State {
             System.err.println("Error: No existe un ID de producto a liberar!");
             return false;
         }
+
+        System.out.println("Liberando producto! (ID = " + purchaseID + ")");
 
         Product product = productManager.findProductByID(productID);
 
@@ -56,7 +55,7 @@ public class ReleasingProductState extends State {
 
         this.productManager.updateProduct(product);
 
-        System.out.println("Producto liberado correctamente!");
+        System.out.println("Producto liberado correctamente! (ID = " + purchaseID + ")");
 
         data.put(LocalDefinitions.RESERVED_PRODUCT_FIELD, String.valueOf(false));
 

@@ -35,8 +35,10 @@ public class GeneralRequest extends Request {
                 boolean isAuthorized = this.isAuthorized();
                 responseData.put(MessageCommonFields.AUTHORIZED_PAYMENT, Boolean.toString(isAuthorized));
                 if (!StringUtils.isEmpty(purchaseID)) {
-                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+                }
+                else{
+                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                 }
 
                 System.out.println("Resultado de autorizacion de pago: '" + isAuthorized + "' (ID =" + purchaseID + ")");
