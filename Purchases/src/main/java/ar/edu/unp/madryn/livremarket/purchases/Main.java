@@ -6,12 +6,17 @@ import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.data.PurchaseManager;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.purchases.messages.GeneralRequest;
+import ar.edu.unp.madryn.livremarket.purchases.sm.*;
+import ar.edu.unp.madryn.livremarket.purchases.utils.LocalDefinitions;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 public class Main {
     public static void main(String [] args){
@@ -64,9 +69,57 @@ public class Main {
         FinalState finalState = new FinalState();
         smTemplate.addState(finalState);
 
+        SelectingProductState selectingProductState = new SelectingProductState();
+
+        RequestingProductReservationState requestingProductReservationState = new RequestingProductReservationState();
+
+        RequestingInfractionsState requestingInfractionsState = new RequestingInfractionsState();
+
+        SelectingDeliveryState selectingDeliveryState = new SelectingDeliveryState();
+
+        RequestingDeliveryCostState requestingDeliveryCostState = new RequestingDeliveryCostState();
+
+        SelectingPaymentState selectingPaymentState = new SelectingPaymentState();
+
+        PurchaseConfirmedState purchaseConfirmedState = new PurchaseConfirmedState();
+
+        ReportedInfractionsState reportedInfractionsState = new ReportedInfractionsState();
+
+        ReportingInfractionsState reportingInfractionsState = new ReportingInfractionsState();
+
+        RequestingPaymentAuthorizationState requestingPaymentAuthorizationState = new RequestingPaymentAuthorizationState();
+
+        ReportedPaymentAuthorizationState reportedPaymentAuthorizationState = new ReportedPaymentAuthorizationState();
+
+        ReportingRejectedPaymentState reportingRejectedPaymentState = new ReportingRejectedPaymentState();
+
+        AuthorizedPaymentState authorizedPaymentState = new AuthorizedPaymentState();
+
+        RequestingShippingScheduleState requestingShippingScheduleState = new RequestingShippingScheduleState();
+
+        PurchaseCompletedState purchaseCompletedState = new PurchaseCompletedState();
+
 
         /* Transiciones */
-
+        smTemplate.addTransition(initialState, selectingProductState, data -> data.containsKey(MessageCommonFields.CLIENT_ID));
+        smTemplate.addTransition(selectingProductState, requestingProductReservationState, data -> data.containsKey(MessageCommonFields.PRODUCT_ID) && data.containsKey(MessageCommonFields.PRODUCT_AMOUNT));
+        smTemplate.addTransition(requestingProductReservationState, requestingInfractionsState, data -> MapUtils.getBoolean(data, LocalDefinitions.PRODUCT_RESERVATION_REQUESTED_FIELD));
+        smTemplate.addTransition(requestingInfractionsState, selectingDeliveryState, data -> MapUtils.getBoolean(data, LocalDefinitions.INFRACTIONS_REQUESTED_FIELD));
+        smTemplate.addTransition(selectingDeliveryState, requestingDeliveryCostState, data -> MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(selectingDeliveryState, selectingPaymentState, data -> !MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(requestingDeliveryCostState, selectingPaymentState, data -> data.containsKey(MessageCommonFields.DELIVERY_COST));
+        smTemplate.addTransition(selectingPaymentState, purchaseConfirmedState, data -> data.containsKey(MessageCommonFields.PAYMENT_METHOD));
+        smTemplate.addTransition(purchaseConfirmedState, reportedInfractionsState, data -> data.containsKey(MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(reportedInfractionsState, reportingInfractionsState, data -> MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(reportingInfractionsState, finalState, data -> true);
+        smTemplate.addTransition(reportedInfractionsState, requestingPaymentAuthorizationState, data -> !MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(requestingPaymentAuthorizationState, reportedPaymentAuthorizationState, data -> data.containsKey(MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(reportedPaymentAuthorizationState, reportingRejectedPaymentState, data -> !MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(reportingRejectedPaymentState, finalState, data -> true);
+        smTemplate.addTransition(reportedPaymentAuthorizationState, authorizedPaymentState, data -> MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(authorizedPaymentState, requestingShippingScheduleState, data -> MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(requestingShippingScheduleState, purchaseCompletedState, data -> data.containsKey(LocalDefinitions.SHIPPING_SCHEDULE_REQUESTED_FIELD));
+        smTemplate.addTransition(authorizedPaymentState, purchaseCompletedState, data -> !MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
 
 
         /* Datos faltante dentro del manejador de request generales */
