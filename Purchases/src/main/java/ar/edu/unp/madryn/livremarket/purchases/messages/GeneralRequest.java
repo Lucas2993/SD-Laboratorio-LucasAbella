@@ -47,7 +47,7 @@ public class GeneralRequest extends Request {
             /* Recuperar compra de la base de datos */
             purchase = this.purchaseManager.findProductByID(purchaseID);
             if(purchase == null){
-                // TODO Error de ID de compra invalido
+                System.err.println("Error: El ID de la compra es invalido!");
                 return;
             }
 
@@ -61,7 +61,7 @@ public class GeneralRequest extends Request {
         switch (operation) {
             case Operations.INIT_PURCHASE:
                 if(purchase != null){
-                    // TODO Error de operacion duplicada
+                    System.err.println("Error: La compra ya existe!");
                     return;
                 }
                 String clientID = data.get(MessageCommonFields.CLIENT_ID);
@@ -90,6 +90,7 @@ public class GeneralRequest extends Request {
                 break;
             default:
                 // TODO Error por tipo de mensaje no reconocido...
+                System.err.println("Error: Operacion no reconocida!");
                 return;
         }
 

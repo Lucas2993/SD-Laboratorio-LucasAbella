@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.purchases.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 
@@ -50,6 +51,8 @@ public class RequestingProductReservationState extends State {
             System.err.println("Error: No se pudo enviar el mensaje al servidor de productos!");
             return false;
         }
+
+        data.put(LocalDefinitions.PRODUCT_RESERVATION_REQUESTED_FIELD, String.valueOf(true));
 
         return true;
     }

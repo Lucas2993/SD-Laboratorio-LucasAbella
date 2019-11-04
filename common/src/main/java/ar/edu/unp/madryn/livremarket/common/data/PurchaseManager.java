@@ -46,6 +46,9 @@ public class PurchaseManager {
     }
 
     public boolean storeProduct(Purchase purchase) {
+        if(!this.purchases.contains(purchase)){
+            this.purchases.add(purchase);
+        }
         return this.dataProvider.insertElement(purchase, Definitions.PURCHASES_COLLECTION_NAME);
     }
 }

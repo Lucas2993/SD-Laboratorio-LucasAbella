@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.purchases.utils.LocalDefinitions;
 import lombok.Setter;
 
 import java.util.HashMap;
@@ -44,6 +45,8 @@ public class RequestingInfractionsState extends State {
             System.err.println("Error: No se pudo enviar el mensaje al servidor de infracciones!");
             return false;
         }
+
+        data.put(LocalDefinitions.INFRACTIONS_REQUESTED_FIELD, String.valueOf(true));
 
         return true;
     }

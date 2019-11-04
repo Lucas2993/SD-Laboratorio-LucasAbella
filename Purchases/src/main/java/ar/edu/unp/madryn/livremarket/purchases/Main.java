@@ -13,6 +13,7 @@ import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.purchases.messages.GeneralRequest;
+import ar.edu.unp.madryn.livremarket.purchases.messages.ResultInformation;
 import ar.edu.unp.madryn.livremarket.purchases.sm.*;
 import ar.edu.unp.madryn.livremarket.purchases.utils.LocalDefinitions;
 import org.apache.commons.collections4.MapUtils;
@@ -40,7 +41,10 @@ public class Main {
         generalRequest.setCommunicationHandler(communicationHandler);
         generalRequest.setSimulationConfiguration(simulationConfiguration);
 
+        ResultInformation resultInformation = new ResultInformation();
+
         communicationHandler.registerHandler(MessageType.GENERAL, generalRequest);
+        communicationHandler.registerHandler(MessageType.RESULT, resultInformation);
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -70,41 +74,56 @@ public class Main {
         smTemplate.addState(finalState);
 
         SelectingProductState selectingProductState = new SelectingProductState();
+        smTemplate.addState(selectingProductState);
 
         RequestingProductReservationState requestingProductReservationState = new RequestingProductReservationState();
         requestingProductReservationState.setCommunicationHandler(communicationHandler);
+        smTemplate.addState(requestingProductReservationState);
 
         RequestingInfractionsState requestingInfractionsState = new RequestingInfractionsState();
         requestingInfractionsState.setCommunicationHandler(communicationHandler);
+        smTemplate.addState(requestingInfractionsState);
 
         SelectingDeliveryState selectingDeliveryState = new SelectingDeliveryState();
         selectingDeliveryState.setPurchaseManager(purchaseManager);
+        smTemplate.addState(selectingDeliveryState);
 
         RequestingDeliveryCostState requestingDeliveryCostState = new RequestingDeliveryCostState();
         requestingDeliveryCostState.setCommunicationHandler(communicationHandler);
+        smTemplate.addState(requestingDeliveryCostState);
 
         SelectingPaymentState selectingPaymentState = new SelectingPaymentState();
         selectingPaymentState.setPurchaseManager(purchaseManager);
+        smTemplate.addState(selectingPaymentState);
 
         PurchaseConfirmedState purchaseConfirmedState = new PurchaseConfirmedState();
+        smTemplate.addState(purchaseConfirmedState);
 
         ReportedInfractionsState reportedInfractionsState = new ReportedInfractionsState();
+        smTemplate.addState(reportedInfractionsState);
 
         ReportingInfractionsState reportingInfractionsState = new ReportingInfractionsState();
+        smTemplate.addState(reportingInfractionsState);
 
         RequestingPaymentAuthorizationState requestingPaymentAuthorizationState = new RequestingPaymentAuthorizationState();
         requestingPaymentAuthorizationState.setCommunicationHandler(communicationHandler);
+        smTemplate.addState(requestingPaymentAuthorizationState);
 
         ReportedPaymentAuthorizationState reportedPaymentAuthorizationState = new ReportedPaymentAuthorizationState();
+        smTemplate.addState(reportedPaymentAuthorizationState);
 
         ReportingRejectedPaymentState reportingRejectedPaymentState = new ReportingRejectedPaymentState();
+        smTemplate.addState(reportingRejectedPaymentState);
 
         AuthorizedPaymentState authorizedPaymentState = new AuthorizedPaymentState();
+        smTemplate.addState(authorizedPaymentState);
 
         RequestingShippingScheduleState requestingShippingScheduleState = new RequestingShippingScheduleState();
         requestingShippingScheduleState.setCommunicationHandler(communicationHandler);
+        smTemplate.addState(requestingShippingScheduleState);
 
         PurchaseCompletedState purchaseCompletedState = new PurchaseCompletedState();
+        smTemplate.addState(purchaseCompletedState);
 
 
         /* Transiciones */
@@ -133,6 +152,9 @@ public class Main {
         generalRequest.setSmTemplate(smTemplate);
         generalRequest.setStateDataProvider(purchasesDataProvider);
         generalRequest.setPurchaseManager(purchaseManager);
+
+        resultInformation.setSmTemplate(smTemplate);
+        resultInformation.setStateDataProvider(purchasesDataProvider);
 
         purchaseManager.setDataProvider(commonDataProvider);
 
