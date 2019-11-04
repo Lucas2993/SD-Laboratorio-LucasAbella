@@ -66,7 +66,7 @@ public class ResultInformation extends Information {
                 storedState.put(MessageCommonFields.AUTHORIZED_PAYMENT, paymentResult);
                 break;
             default:
-                // TODO Mensaje de error de ID desconocido de la informacion
+                System.err.println("Error: ID de informacion '" + id + "' no reconocido!");
                 return;
         }
 

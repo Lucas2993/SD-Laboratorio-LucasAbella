@@ -89,8 +89,7 @@ public class GeneralRequest extends Request {
 
                 break;
             default:
-                // TODO Error por tipo de mensaje no reconocido...
-                System.err.println("Error: Operacion no reconocida!");
+                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
                 return;
         }
 
