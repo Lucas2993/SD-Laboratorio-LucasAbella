@@ -65,7 +65,7 @@ public class GeneralRequest extends Request {
                 storedState.put(MessageCommonFields.BOOKED_SHIPPING, String.valueOf(true));
                 break;
             default:
-                // TODO Error de operacion no reconocida
+                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
                 return;
         }
 
