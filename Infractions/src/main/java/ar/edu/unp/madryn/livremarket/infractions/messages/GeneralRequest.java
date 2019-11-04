@@ -32,15 +32,22 @@ public class GeneralRequest extends Request {
 
                 String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
                 responseData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.INFRACTIONS_REFERENCE_ID);
-                responseData.put(MessageCommonFields.HAS_INFRACTIONS, Boolean.toString(this.hasInfraction()));
+                boolean hasInfraction = this.hasInfraction();
+                responseData.put(MessageCommonFields.HAS_INFRACTIONS, Boolean.toString(hasInfraction));
                 if (!StringUtils.isEmpty(purchaseID)) {
+                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
                 }
+
+                System.out.println("Resultado de infracciones: '" + hasInfraction + "' (ID =" + purchaseID + ")");
+                System.out.println("Informando infracciones (ID =" + purchaseID + ")");
 
                 communicationHandler.sendMessage(MessageType.RESULT, Definitions.PURCHASES_SERVER_NAME, responseData);
                 communicationHandler.sendMessage(MessageType.RESULT, Definitions.PRODUCTS_SERVER_NAME, responseData);
 
                 break;
+            default:
+                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
         }
     }
 
