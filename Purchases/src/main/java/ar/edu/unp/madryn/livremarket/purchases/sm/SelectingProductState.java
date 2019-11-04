@@ -20,6 +20,9 @@ public class SelectingProductState extends State {
         /*
         Obtener un producto aleatorio
          */
+
+        System.out.println("Seleccionando producto!");
+
         return true;
     }
 }

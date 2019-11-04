@@ -72,14 +72,19 @@ public class Main {
         SelectingProductState selectingProductState = new SelectingProductState();
 
         RequestingProductReservationState requestingProductReservationState = new RequestingProductReservationState();
+        requestingProductReservationState.setCommunicationHandler(communicationHandler);
 
         RequestingInfractionsState requestingInfractionsState = new RequestingInfractionsState();
+        requestingInfractionsState.setCommunicationHandler(communicationHandler);
 
         SelectingDeliveryState selectingDeliveryState = new SelectingDeliveryState();
+        selectingDeliveryState.setPurchaseManager(purchaseManager);
 
         RequestingDeliveryCostState requestingDeliveryCostState = new RequestingDeliveryCostState();
+        requestingDeliveryCostState.setCommunicationHandler(communicationHandler);
 
         SelectingPaymentState selectingPaymentState = new SelectingPaymentState();
+        selectingPaymentState.setPurchaseManager(purchaseManager);
 
         PurchaseConfirmedState purchaseConfirmedState = new PurchaseConfirmedState();
 
@@ -88,6 +93,7 @@ public class Main {
         ReportingInfractionsState reportingInfractionsState = new ReportingInfractionsState();
 
         RequestingPaymentAuthorizationState requestingPaymentAuthorizationState = new RequestingPaymentAuthorizationState();
+        requestingPaymentAuthorizationState.setCommunicationHandler(communicationHandler);
 
         ReportedPaymentAuthorizationState reportedPaymentAuthorizationState = new ReportedPaymentAuthorizationState();
 
@@ -96,6 +102,7 @@ public class Main {
         AuthorizedPaymentState authorizedPaymentState = new AuthorizedPaymentState();
 
         RequestingShippingScheduleState requestingShippingScheduleState = new RequestingShippingScheduleState();
+        requestingShippingScheduleState.setCommunicationHandler(communicationHandler);
 
         PurchaseCompletedState purchaseCompletedState = new PurchaseCompletedState();
 
