@@ -26,12 +26,21 @@ public class Product {
         this.id = this._id.toString();
     }
 
-    public Boolean subtractStock(){
-        if(this.stock == 0){
+    public Boolean subtractStock(int amount){
+        if(this.stock == 0 || this.stock < amount){
             return false;
         }
 
-        this.stock--;
+        this.stock -= amount;
+        return true;
+    }
+
+    public Boolean addStock(int amount){
+        if(this.stock < 0){
+            this.stock = 0;
+        }
+
+        this.stock += amount;
         return true;
     }
 }
