@@ -45,10 +45,15 @@ public class GeneralRequest extends Request {
                 Map<String, String> responseData = new HashMap<>();
 
                 responseData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.DELIVERY_COST_REFERENCE_ID);
-                responseData.put(MessageCommonFields.DELIVERY_COST, String.valueOf(this.calculateCost()));
+                double cost = this.calculateCost();
+                responseData.put(MessageCommonFields.DELIVERY_COST, String.valueOf(cost));
                 if (!StringUtils.isEmpty(purchaseID)) {
+                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                     responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
                 }
+
+                System.out.println("Costo calculado: '" + cost + "' (ID =" + purchaseID + ")");
+                System.out.println("Informando costo de envio (ID =" + purchaseID + ")");
 
                 communicationHandler.sendMessage(MessageType.RESULT, Definitions.PURCHASES_SERVER_NAME, responseData);
 
@@ -61,15 +66,22 @@ public class GeneralRequest extends Request {
                 resultData.put(Definitions.INFORMATION_REFERENCE_KEY, Results.BOOK_SHIPMENT_REFERENCE_ID);
                 if (!StringUtils.isEmpty(purchaseID)) {
                     resultData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+                    System.err.println("Error: No se pudo obtener el ID de la compra!");
                     deliveryDetail.setPurchaseID(purchaseID);
                 }
 
                 deliveryDetail.setDate(DateUtils.addDays(new Date(), 3));
 
+                System.out.println("Agendando envio (ID =" + purchaseID + ")");
+
                 this.dataProvider.insertElement(deliveryDetail, Definitions.BOOKED_DELIVERIES_COLLECTION_NAME);
+
+                System.out.println("Informando envio agendado (ID =" + purchaseID + ")");
 
                 communicationHandler.sendMessage(MessageType.RESULT, Definitions.PRODUCTS_SERVER_NAME, resultData);
                 break;
+            default:
+                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
         }
     }
 
