@@ -87,6 +87,20 @@ public class MongoProvider implements DataProvider {
     }
 
     @Override
+    public <T> T getFirstElementInCollection(String collectionName, Class<T> elementsType) {
+        MongoCollection<Document> databaseCollection = this.mongoDatabase.getCollection(collectionName);
+
+        FindIterable<Document> findIterable = databaseCollection.find();
+
+        Document document = findIterable.first();
+        if(document == null){
+            return null;
+        }
+
+        return gson.fromJson(document.toJson(), elementsType);
+    }
+
+    @Override
     public Map<String, String> getDataFromCollectionByField(String collectionName, String fieldName, String value) {
         MongoCollection<Document> collection = this.mongoDatabase.getCollection(collectionName);
 
@@ -108,5 +122,32 @@ public class MongoProvider implements DataProvider {
         }.getType();
 
         return gson.fromJson(found.toJson(), dataType);
+    }
+
+    @Override
+    public Map<String, String> getFirstDataInCollection(String collectionName) {
+        MongoCollection<Document> collection = this.mongoDatabase.getCollection(collectionName);
+
+        FindIterable<Document> findIterable = collection.find();
+
+        Document found = findIterable.first();
+
+        if(found == null){
+            return new HashMap<>();
+        }
+
+        found.remove(DataProvider.DEFAULT_ID_FIELD);
+
+        Type dataType = new TypeToken<Map<String, String>>() {
+        }.getType();
+
+        return gson.fromJson(found.toJson(), dataType);
+    }
+
+    @Override
+    public void clearCollectionContent(String collectionName) {
+        MongoCollection<Document> collection = this.mongoDatabase.getCollection(collectionName);
+
+        collection.drop();
     }
 }

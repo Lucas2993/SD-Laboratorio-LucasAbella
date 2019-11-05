@@ -12,6 +12,10 @@ public interface DataProvider {
     boolean updateElement(String searchField, String searchValue, Object elementToUpdate, String collectionName);
 
     <T> Collection<T> getCollection(String collectionName, Class<T> elementsType);
+    <T> T getFirstElementInCollection(String collectionName, Class<T> elementsType);
 
     Map<String,String> getDataFromCollectionByField(String collectionName, String fieldName, String value);
+    Map<String,String> getFirstDataInCollection(String collectionName);
+
+    void clearCollectionContent(String collectionName);
 }

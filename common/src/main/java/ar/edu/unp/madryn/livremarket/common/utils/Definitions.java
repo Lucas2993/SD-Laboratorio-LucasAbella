@@ -19,6 +19,9 @@ public class Definitions {
     public static final String PURCHASES_STATE_COLLECTION_NAME = "states";
     public static final String SM_CURRENT_STATE_REFERENCE = "current_state";
 
+    public static final String CURRENT_OPERATION_DOCUMENT_NAME = "current_operation";
+    public static final String PENDING_MESSAGES_COLLECTION_NAME = "pending_messages";
+
     public static final String COMMON_DATABASE_NAME = "common_data";
 
     public static final String CONNECTION_CONFIGURATION_FILE = "connection";
