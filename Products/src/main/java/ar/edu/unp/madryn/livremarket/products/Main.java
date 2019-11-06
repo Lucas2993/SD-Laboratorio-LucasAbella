@@ -7,11 +7,14 @@ import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
+import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.sm.*;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.products.messages.GeneralRequest;
 import ar.edu.unp.madryn.livremarket.products.messages.ResultInformation;
+import ar.edu.unp.madryn.livremarket.products.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.products.sm.*;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import org.apache.commons.collections4.MapUtils;
@@ -33,16 +36,9 @@ public class Main {
 
         CommunicationHandler communicationHandler = CommunicationHandler.getInstance();
 
-        ResultInformation resultInformation = new ResultInformation();
+        MessagePersistence messagePersistence = new MessagePersistence();
 
-        communicationHandler.registerHandler(MessageType.RESULT, resultInformation);
-
-        GeneralRequest generalRequest = new GeneralRequest();
-
-        generalRequest.setCommunicationHandler(communicationHandler);
-        generalRequest.setSimulationConfiguration(simulationConfiguration);
-
-        communicationHandler.registerHandler(MessageType.GENERAL, generalRequest);
+        communicationHandler.registerHandler(messagePersistence, MessageType.GENERAL, MessageType.RESULT);
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -58,6 +54,8 @@ public class Main {
             System.err.println("No se pudo establecer conexion con el servidor de base de datos!");
             return;
         }
+
+        OperationProcessor operationProcessor = new OperationProcessor();
 
         /* Maquina de estados */
         Template smTemplate = new Template();
@@ -110,11 +108,16 @@ public class Main {
         smTemplate.addTransition(sendingProductState, finalState, data -> data.containsKey(LocalDefinitions.PRODUCT_SENT_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
-        generalRequest.setSmTemplate(smTemplate);
-        generalRequest.setStateDataProvider(productsDataProvider);
+        messagePersistence.setDataProvider(productsDataProvider);
 
-        resultInformation.setSmTemplate(smTemplate);
-        resultInformation.setStateDataProvider(productsDataProvider);
+        operationProcessor.setStateDataProvider(productsDataProvider);
+
+        SimulationController simulationController = SimulationController.getInstance();
+
+        simulationController.setMessageProcessor(operationProcessor);
+        simulationController.setDataProvider(productsDataProvider);
+        simulationController.setSmTemplate(smTemplate);
+        simulationController.setStateCollectionName(Definitions.PRODUCTS_STATE_COLLECTION_NAME);
 
         productManager.setDataProvider(commonDataProvider);
 
