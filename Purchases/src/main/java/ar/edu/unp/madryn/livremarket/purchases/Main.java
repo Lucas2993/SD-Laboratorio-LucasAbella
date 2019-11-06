@@ -8,16 +8,16 @@ import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
+import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.purchases.messages.GeneralRequest;
-import ar.edu.unp.madryn.livremarket.purchases.messages.ResultInformation;
+import ar.edu.unp.madryn.livremarket.purchases.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.purchases.sm.*;
 import ar.edu.unp.madryn.livremarket.purchases.utils.LocalDefinitions;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.BooleanUtils;
 
 public class Main {
     public static void main(String [] args){
@@ -36,15 +36,11 @@ public class Main {
 
         CommunicationHandler communicationHandler = CommunicationHandler.getInstance();
 
-        GeneralRequest generalRequest = new GeneralRequest();
+        OperationProcessor operationProcessor = new OperationProcessor();
 
-        generalRequest.setCommunicationHandler(communicationHandler);
-        generalRequest.setSimulationConfiguration(simulationConfiguration);
+        MessagePersistence messagePersistence = new MessagePersistence();
 
-        ResultInformation resultInformation = new ResultInformation();
-
-        communicationHandler.registerHandler(MessageType.GENERAL, generalRequest);
-        communicationHandler.registerHandler(MessageType.RESULT, resultInformation);
+        communicationHandler.registerHandler(messagePersistence, MessageType.GENERAL, MessageType.RESULT);
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -148,13 +144,19 @@ public class Main {
         smTemplate.addTransition(authorizedPaymentState, purchaseCompletedState, data -> !MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
 
 
-        /* Datos faltante dentro del manejador de request generales */
-        generalRequest.setSmTemplate(smTemplate);
-        generalRequest.setStateDataProvider(purchasesDataProvider);
-        generalRequest.setPurchaseManager(purchaseManager);
 
-        resultInformation.setSmTemplate(smTemplate);
-        resultInformation.setStateDataProvider(purchasesDataProvider);
+        /* Datos faltante dentro del manejador de request generales */
+        operationProcessor.setPurchaseManager(purchaseManager);
+        operationProcessor.setStateDataProvider(purchasesDataProvider);
+
+        messagePersistence.setDataProvider(purchasesDataProvider);
+
+        SimulationController simulationController = SimulationController.getInstance();
+
+        simulationController.setMessageProcessor(operationProcessor);
+        simulationController.setDataProvider(purchasesDataProvider);
+        simulationController.setSmTemplate(smTemplate);
+        simulationController.setStateCollectionName(Definitions.PURCHASES_STATE_COLLECTION_NAME);
 
         purchaseManager.setDataProvider(commonDataProvider);
 
