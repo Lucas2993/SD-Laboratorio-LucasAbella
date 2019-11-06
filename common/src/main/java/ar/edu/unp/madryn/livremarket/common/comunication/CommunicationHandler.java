@@ -2,10 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.comunication;
 
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageHandler;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageServerFactory;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.*;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,12 +36,15 @@ public class CommunicationHandler {
 
     // Handlers
 
-    public boolean registerHandler(MessageType type, MessageHandler handler) {
-        if (this.handlers.containsKey(type)) {
-            return false;
+    public boolean registerHandler(MessageHandler handler, MessageType... types) {
+        for(MessageType type : types) {
+            if (this.handlers.containsKey(type)) {
+                continue;
+            }
+
+            this.handlers.put(type, handler);
         }
 
-        this.handlers.put(type, handler);
         return true;
     }
 
@@ -111,6 +111,8 @@ public class CommunicationHandler {
             Type dataType = new TypeToken<Map<String, String>>() {
             }.getType();
             Map<String, String> data = gson.fromJson(message, dataType);
+
+            data.put(MessageCommonFields.MESSAGE_TYPE_ID, type);
 
             MessageHandler handler = getHandlerForType(messageType);
             if (handler == null) {
