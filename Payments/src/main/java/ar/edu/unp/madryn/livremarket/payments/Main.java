@@ -14,8 +14,8 @@ import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.payments.simulation.OperationProcessor;
-import ar.edu.unp.madryn.livremarket.payments.sm.reportingPaymentState;
 import ar.edu.unp.madryn.livremarket.payments.sm.ResolvingPaymentState;
+import ar.edu.unp.madryn.livremarket.payments.sm.reportingPaymentState;
 import ar.edu.unp.madryn.livremarket.payments.utils.LocalDefinitions;
 import org.apache.commons.collections4.MapUtils;
 
