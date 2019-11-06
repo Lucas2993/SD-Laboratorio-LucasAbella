@@ -58,7 +58,7 @@ public class SimulationController {
         PendingOperation pendingOperation = this.dataProvider.getFirstElementInCollection(Definitions.CURRENT_OPERATION_DOCUMENT_NAME, PendingOperation.class);
         if(pendingOperation == null){
             /* Obtener mensajes sin procesar */
-            Map<String,String> pendingMessage = this.dataProvider.getFirstDataInCollection(Definitions.PENDING_MESSAGES_COLLECTION_NAME);
+            Map<String,String> pendingMessage = this.dataProvider.getFirstDataInCollection(Definitions.PENDING_MESSAGES_COLLECTION_NAME, true);
             if(!MapUtils.isEmpty(pendingMessage)){
                 /* Procesar mensaje */
                 pendingOperation = this.messageProcessor.processMessage(pendingMessage);
@@ -99,7 +99,7 @@ public class SimulationController {
 
         State currentState;
 
-        String currentStateName = pendingOperation.getCurrentState();
+        String currentStateName = storedState.get(MessageCommonFields.CURRENT_STATE);
 
         if(!StringUtils.isEmpty(currentStateName)){
             currentState = smTemplate.searchStateByIdentifier(currentStateName);
@@ -124,7 +124,6 @@ public class SimulationController {
 
         /* Actualizar la operacion pendiente */
         pendingOperation.addData(machineData);
-        pendingOperation.setCurrentState(machine.getCurrentState().getIdentifier());
 
         /* Persistencia del estado */
 
