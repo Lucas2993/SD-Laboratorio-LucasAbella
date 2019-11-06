@@ -134,7 +134,7 @@ public class SimulationController {
 
         /* Guardar estado */
         if(hasNoState) {
-            this.dataProvider.insertElement(storedState, Definitions.PURCHASES_STATE_COLLECTION_NAME);
+            this.dataProvider.insertElement(storedState, this.stateCollectionName);
         }
         else{
             this.dataProvider.updateElement(MessageCommonFields.PURCHASE_ID, purchaseID, storedState, this.stateCollectionName);
