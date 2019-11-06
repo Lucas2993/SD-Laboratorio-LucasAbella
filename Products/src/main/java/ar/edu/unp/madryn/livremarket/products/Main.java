@@ -3,17 +3,18 @@ package ar.edu.unp.madryn.livremarket.products;
 import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
+import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
-import ar.edu.unp.madryn.livremarket.common.sm.*;
+import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
+import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
+import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
-import ar.edu.unp.madryn.livremarket.products.messages.GeneralRequest;
-import ar.edu.unp.madryn.livremarket.products.messages.ResultInformation;
+import ar.edu.unp.madryn.livremarket.products.messages.ControlMessage;
 import ar.edu.unp.madryn.livremarket.products.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.products.sm.*;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
@@ -39,6 +40,11 @@ public class Main {
         MessagePersistence messagePersistence = new MessagePersistence();
 
         communicationHandler.registerHandler(messagePersistence, MessageType.GENERAL, MessageType.RESULT);
+
+        ControlMessage controlMessage = new ControlMessage();
+
+        communicationHandler.registerHandler(controlMessage, MessageType.CONTROL);
+
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -118,6 +124,8 @@ public class Main {
         simulationController.setDataProvider(productsDataProvider);
         simulationController.setSmTemplate(smTemplate);
         simulationController.setStateCollectionName(Definitions.PRODUCTS_STATE_COLLECTION_NAME);
+
+        controlMessage.setSimulationController(simulationController);
 
         productManager.setDataProvider(commonDataProvider);
 
