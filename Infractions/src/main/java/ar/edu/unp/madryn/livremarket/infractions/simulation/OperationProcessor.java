@@ -34,7 +34,7 @@ public class OperationProcessor extends MessageProcessor {
 
         switch (operation) {
             case Operations.GET_INFRACTIONS_OPERATION:
-                System.out.println("SOlicitud de infracciones recibida! (ID =" + purchaseID + ")");
+                System.out.println("Solicitud de infracciones recibida! (ID =" + purchaseID + ")");
 
                 if(data.containsKey(LocalDefinitions.REQUESTED_INFRACTIONS_FIELD)){
                     System.err.println("Error: Operacion duplicada! (ID =" + purchaseID + ")");
