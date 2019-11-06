@@ -15,6 +15,7 @@ public class Definitions {
     public static final String CLIENTS_COLLECTION_NAME = "clients_list";
     public static final String PURCHASES_COLLECTION_NAME = "purchases_list";
 
+    public static final String INFRACTIONS_STATE_COLLECTION_NAME = "states";
     public static final String PRODUCTS_STATE_COLLECTION_NAME = "states";
     public static final String PURCHASES_STATE_COLLECTION_NAME = "states";
     public static final String SM_CURRENT_STATE_REFERENCE = "current_state";
