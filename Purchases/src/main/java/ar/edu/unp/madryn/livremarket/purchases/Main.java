@@ -165,6 +165,8 @@ public class Main {
 
         simulationController.init();
 
+        messagePersistence.setSimulationController(simulationController);
+
         purchaseManager.setDataProvider(commonDataProvider);
 
         purchaseManager.load();

@@ -99,6 +99,8 @@ public class Main {
 
         simulationController.init();
 
+        messagePersistence.setSimulationController(simulationController);
+
         communicationHandler.registerReceiver(Definitions.INFRACTIONS_SERVER_NAME);
 
         System.out.println("Escuchando mensajes (Ctrl + C para cerrar)...");

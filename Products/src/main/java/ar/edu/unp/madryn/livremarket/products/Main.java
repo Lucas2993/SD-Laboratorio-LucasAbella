@@ -128,6 +128,8 @@ public class Main {
 
         simulationController.init();
 
+        messagePersistence.setSimulationController(simulationController);
+
         controlMessage.setSimulationController(simulationController);
 
         productManager.setDataProvider(commonDataProvider);
