@@ -49,6 +49,8 @@ public class SimulationController {
             this.automatic = (StringUtils.equals(Definitions.AUTO_SIMULATION_ID,mode));
         }
 
+        System.out.println("Simulador inicializado, la simulacion sera " + ((this.automatic) ? "automatica" : "manual") + "!");
+
         return true;
     }
 
