@@ -37,7 +37,7 @@ public class OperationProcessor extends MessageProcessor {
                     System.err.println("Error: Operacion duplicada! (ID =" + purchaseID + ")");
                 }
 
-                data.put(LocalDefinitions.REQUESTED_COST_FIELD, String.valueOf(true));
+                storedState.put(LocalDefinitions.REQUESTED_COST_FIELD, String.valueOf(true));
 
                 break;
             case Operations.BOOK_SHIPMENT_OPERATION:
@@ -47,7 +47,7 @@ public class OperationProcessor extends MessageProcessor {
                     System.err.println("Error: Operacion duplicada! (ID =" + purchaseID + ")");
                 }
 
-                data.put(LocalDefinitions.REQUESTED_DELIVERY_COST_FIELD, String.valueOf(true));
+                storedState.put(LocalDefinitions.REQUESTED_DELIVERY_COST_FIELD, String.valueOf(true));
 
                 break;
             default:

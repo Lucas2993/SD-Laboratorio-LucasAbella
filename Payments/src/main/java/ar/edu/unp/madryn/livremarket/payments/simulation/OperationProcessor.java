@@ -40,7 +40,7 @@ public class OperationProcessor extends MessageProcessor {
                     System.err.println("Error: Operacion duplicada! (ID =" + purchaseID + ")");
                 }
 
-                data.put(LocalDefinitions.REQUESTED_PAYMENT_FIELD, String.valueOf(true));
+                storedState.put(LocalDefinitions.REQUESTED_PAYMENT_FIELD, String.valueOf(true));
 
                 break;
             default:
