@@ -87,6 +87,7 @@ public class Main {
 
         SelectingDeliveryState selectingDeliveryState = new SelectingDeliveryState();
         selectingDeliveryState.setPurchaseManager(purchaseManager);
+        selectingDeliveryState.setSimulationConfiguration(simulationConfiguration);
         smTemplate.addState(selectingDeliveryState);
 
         RequestingDeliveryCostState requestingDeliveryCostState = new RequestingDeliveryCostState();

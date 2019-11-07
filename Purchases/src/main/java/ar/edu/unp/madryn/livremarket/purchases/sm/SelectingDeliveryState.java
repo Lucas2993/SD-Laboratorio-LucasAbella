@@ -64,7 +64,7 @@ public class SelectingDeliveryState extends State {
 
         data.put(MessageCommonFields.NEEDS_SHIPPING, String.valueOf(deliveryMethod.equals(DeliveryMethod.MAIL)));
 
-        System.out.println("Metodo de entrega seleccionado correctamente!");
+        System.out.println("Metodo de entrega seleccionado correctamente, es '" + deliveryMethod + "' (ID = " + purchaseID + ")");
 
         return true;
     }
