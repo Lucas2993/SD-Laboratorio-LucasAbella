@@ -43,4 +43,19 @@ public class ControlPanel {
     private JButton infractions_generate_event_button;
     private JButton infractions_restart_button;
     private JButton infractions_shutdown_button;
+    private JPanel control_gui;
+
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        JFrame frame = new JFrame("ControlPanel");
+        frame.setContentPane(new ControlPanel().control_gui);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 }
