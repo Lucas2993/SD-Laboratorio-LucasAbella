@@ -1,11 +1,13 @@
 package ar.edu.unp.madryn.livremarket.common.simulation;
 
+import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.sm.StateMachine;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +24,10 @@ public class SimulationController {
     private MessageProcessor messageProcessor;
     @Setter
     private String stateCollectionName;
+    @Getter
+    private boolean automatic;
+    @Setter
+    private ConfigurationSection simulationConfiguration;
 
     private static SimulationController instance;
 
@@ -34,11 +40,28 @@ public class SimulationController {
     }
 
     private SimulationController() {
-
+        this.automatic = (StringUtils.equals(Definitions.AUTO_SIMULATION_ID,Definitions.DEFAULT_SIMULATOR_MODE));
     }
 
     public boolean init(){
+        String mode = this.simulationConfiguration.getValue(Definitions.SIMULATION_MODE_CONFIG_ID);
+        if(!StringUtils.isEmpty(mode)){
+            this.automatic = (StringUtils.equals(Definitions.AUTO_SIMULATION_ID,mode));
+        }
+
+        System.out.println("Simulador inicializado, la simulacion sera " + ((this.automatic) ? "automatica" : "manual") + "!");
+
         return true;
+    }
+
+    public void execute(){
+        if(!this.automatic){
+            return;
+        }
+
+        while(this.step()) {
+            ;
+        }
     }
 
     public boolean step(){
@@ -58,7 +81,7 @@ public class SimulationController {
         PendingOperation pendingOperation = this.dataProvider.getFirstElementInCollection(Definitions.CURRENT_OPERATION_DOCUMENT_NAME, PendingOperation.class);
         if(pendingOperation == null){
             /* Obtener mensajes sin procesar */
-            Map<String,String> pendingMessage = this.dataProvider.getFirstDataInCollection(Definitions.PENDING_MESSAGES_COLLECTION_NAME);
+            Map<String,String> pendingMessage = this.dataProvider.getFirstDataInCollection(Definitions.PENDING_MESSAGES_COLLECTION_NAME, true);
             if(!MapUtils.isEmpty(pendingMessage)){
                 /* Procesar mensaje */
                 pendingOperation = this.messageProcessor.processMessage(pendingMessage);
@@ -99,7 +122,7 @@ public class SimulationController {
 
         State currentState;
 
-        String currentStateName = pendingOperation.getCurrentState();
+        String currentStateName = storedState.get(MessageCommonFields.CURRENT_STATE);
 
         if(!StringUtils.isEmpty(currentStateName)){
             currentState = smTemplate.searchStateByIdentifier(currentStateName);
@@ -124,7 +147,6 @@ public class SimulationController {
 
         /* Actualizar la operacion pendiente */
         pendingOperation.addData(machineData);
-        pendingOperation.setCurrentState(machine.getCurrentState().getIdentifier());
 
         /* Persistencia del estado */
 
@@ -134,7 +156,7 @@ public class SimulationController {
 
         /* Guardar estado */
         if(hasNoState) {
-            this.dataProvider.insertElement(storedState, Definitions.PURCHASES_STATE_COLLECTION_NAME);
+            this.dataProvider.insertElement(storedState, this.stateCollectionName);
         }
         else{
             this.dataProvider.updateElement(MessageCommonFields.PURCHASE_ID, purchaseID, storedState, this.stateCollectionName);

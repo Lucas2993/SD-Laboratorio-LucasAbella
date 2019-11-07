@@ -126,6 +126,11 @@ public class MongoProvider implements DataProvider {
 
     @Override
     public Map<String, String> getFirstDataInCollection(String collectionName) {
+        return getFirstDataInCollection(collectionName, false);
+    }
+
+    @Override
+    public Map<String, String> getFirstDataInCollection(String collectionName, boolean removing) {
         MongoCollection<Document> collection = this.mongoDatabase.getCollection(collectionName);
 
         FindIterable<Document> findIterable = collection.find();
@@ -134,6 +139,10 @@ public class MongoProvider implements DataProvider {
 
         if(found == null){
             return new HashMap<>();
+        }
+
+        if(removing) {
+            collection.findOneAndDelete(found);
         }
 
         found.remove(DataProvider.DEFAULT_ID_FIELD);

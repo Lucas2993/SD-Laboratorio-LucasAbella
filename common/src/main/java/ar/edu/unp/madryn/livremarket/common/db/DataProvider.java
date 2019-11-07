@@ -16,6 +16,7 @@ public interface DataProvider {
 
     Map<String,String> getDataFromCollectionByField(String collectionName, String fieldName, String value);
     Map<String,String> getFirstDataInCollection(String collectionName);
+    Map<String,String> getFirstDataInCollection(String collectionName, boolean removing);
 
     void clearCollectionContent(String collectionName);
 }

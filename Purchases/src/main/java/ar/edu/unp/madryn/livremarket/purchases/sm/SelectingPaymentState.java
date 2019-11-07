@@ -56,7 +56,7 @@ public class SelectingPaymentState extends State {
 
         data.put(MessageCommonFields.PAYMENT_METHOD, paymentMethod.toString());
 
-        System.out.println("Metodo de pago seleccionado correctamente!");
+        System.out.println("Metodo de pago seleccionado correctamente, es '" + paymentMethod + "' (ID = " + purchaseID + ")");
 
         return true;
     }

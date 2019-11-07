@@ -9,12 +9,16 @@ public class Definitions {
 
     public static final String REQUEST_OPERATION_KEY = "op";
     public static final String INFORMATION_REFERENCE_KEY = "id";
+    public static final String CONTROL_REFERENCE_KEY = "op";
 
     public static final String BOOKED_DELIVERIES_COLLECTION_NAME = "booked_deliveries";
     public static final String PRODUCTS_COLLECTION_NAME = "products_list";
     public static final String CLIENTS_COLLECTION_NAME = "clients_list";
     public static final String PURCHASES_COLLECTION_NAME = "purchases_list";
 
+    public static final String INFRACTIONS_STATE_COLLECTION_NAME = "states";
+    public static final String DELIVERIES_STATE_COLLECTION_NAME = "states";
+    public static final String PAYMENTS_STATE_COLLECTION_NAME = "states";
     public static final String PRODUCTS_STATE_COLLECTION_NAME = "states";
     public static final String PURCHASES_STATE_COLLECTION_NAME = "states";
     public static final String SM_CURRENT_STATE_REFERENCE = "current_state";
@@ -26,4 +30,9 @@ public class Definitions {
 
     public static final String CONNECTION_CONFIGURATION_FILE = "connection";
     public static final String SIMULATION_CONFIGURATION_FILE = "simulation";
+
+    public static final String AUTO_SIMULATION_ID = "auto";
+    public static final String STEP_SIMULATION_ID = "step";
+    public static final String DEFAULT_SIMULATOR_MODE = "auto";
+    public static final String SIMULATION_MODE_CONFIG_ID = "simulation_mode";
 }
