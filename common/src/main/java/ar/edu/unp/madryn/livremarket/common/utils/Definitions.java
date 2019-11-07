@@ -16,6 +16,7 @@ public class Definitions {
     public static final String PURCHASES_COLLECTION_NAME = "purchases_list";
 
     public static final String INFRACTIONS_STATE_COLLECTION_NAME = "states";
+    public static final String DELIVERIES_STATE_COLLECTION_NAME = "states";
     public static final String PAYMENTS_STATE_COLLECTION_NAME = "states";
     public static final String PRODUCTS_STATE_COLLECTION_NAME = "states";
     public static final String PURCHASES_STATE_COLLECTION_NAME = "states";
