@@ -7,6 +7,7 @@ import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.types.ControlMessage;
 import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
@@ -41,6 +42,10 @@ public class Main {
         MessagePersistence messagePersistence = new MessagePersistence();
 
         communicationHandler.registerHandler(messagePersistence, MessageType.GENERAL);
+
+        ControlMessage controlMessage = new ControlMessage();
+
+        communicationHandler.registerHandler(controlMessage, MessageType.CONTROL);
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -103,6 +108,9 @@ public class Main {
         simulationController.setDataProvider(deliveriesDataProvider);
         simulationController.setSmTemplate(smTemplate);
         simulationController.setStateCollectionName(Definitions.DELIVERIES_STATE_COLLECTION_NAME);
+        simulationController.setSimulationConfiguration(simulationConfiguration);
+
+        simulationController.init();
 
         communicationHandler.registerReceiver(Definitions.DELIVERIES_SERVER_NAME);
 

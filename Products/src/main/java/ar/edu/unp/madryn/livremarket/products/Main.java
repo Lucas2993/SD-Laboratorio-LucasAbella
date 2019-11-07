@@ -8,13 +8,13 @@ import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.types.ControlMessage;
 import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.products.messages.ControlMessage;
 import ar.edu.unp.madryn.livremarket.products.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.products.sm.*;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
@@ -124,6 +124,9 @@ public class Main {
         simulationController.setDataProvider(productsDataProvider);
         simulationController.setSmTemplate(smTemplate);
         simulationController.setStateCollectionName(Definitions.PRODUCTS_STATE_COLLECTION_NAME);
+        simulationController.setSimulationConfiguration(simulationConfiguration);
+
+        simulationController.init();
 
         controlMessage.setSimulationController(simulationController);
 

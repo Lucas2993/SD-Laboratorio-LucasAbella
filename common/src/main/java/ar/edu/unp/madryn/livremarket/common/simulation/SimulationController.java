@@ -1,11 +1,13 @@
 package ar.edu.unp.madryn.livremarket.common.simulation;
 
+import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.sm.StateMachine;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +24,10 @@ public class SimulationController {
     private MessageProcessor messageProcessor;
     @Setter
     private String stateCollectionName;
+    @Getter
+    private boolean automatic;
+    @Setter
+    private ConfigurationSection simulationConfiguration;
 
     private static SimulationController instance;
 
@@ -34,11 +40,26 @@ public class SimulationController {
     }
 
     private SimulationController() {
-
+        this.automatic = (StringUtils.equals(Definitions.AUTO_SIMULATION_ID,Definitions.DEFAULT_SIMULATOR_MODE));
     }
 
     public boolean init(){
+        String mode = this.simulationConfiguration.getValue(Definitions.SIMULATION_MODE_CONFIG_ID);
+        if(!StringUtils.isEmpty(mode)){
+            this.automatic = (StringUtils.equals(Definitions.AUTO_SIMULATION_ID,mode));
+        }
+
         return true;
+    }
+
+    public void execute(){
+        if(!this.automatic){
+            return;
+        }
+
+        while(this.step()) {
+            ;
+        }
     }
 
     public boolean step(){

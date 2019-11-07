@@ -8,6 +8,7 @@ import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.types.ControlMessage;
 import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
@@ -41,6 +42,10 @@ public class Main {
         MessagePersistence messagePersistence = new MessagePersistence();
 
         communicationHandler.registerHandler(messagePersistence, MessageType.GENERAL, MessageType.RESULT);
+
+        ControlMessage controlMessage = new ControlMessage();
+
+        communicationHandler.registerHandler(controlMessage, MessageType.CONTROL);
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -144,7 +149,6 @@ public class Main {
         smTemplate.addTransition(authorizedPaymentState, purchaseCompletedState, data -> !MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
 
 
-
         /* Datos faltante dentro del manejador de request generales */
         operationProcessor.setPurchaseManager(purchaseManager);
         operationProcessor.setStateDataProvider(purchasesDataProvider);
@@ -157,6 +161,9 @@ public class Main {
         simulationController.setDataProvider(purchasesDataProvider);
         simulationController.setSmTemplate(smTemplate);
         simulationController.setStateCollectionName(Definitions.PURCHASES_STATE_COLLECTION_NAME);
+        simulationController.setSimulationConfiguration(simulationConfiguration);
+
+        simulationController.init();
 
         purchaseManager.setDataProvider(commonDataProvider);
 

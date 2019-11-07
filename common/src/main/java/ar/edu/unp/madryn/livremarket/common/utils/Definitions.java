@@ -9,6 +9,7 @@ public class Definitions {
 
     public static final String REQUEST_OPERATION_KEY = "op";
     public static final String INFORMATION_REFERENCE_KEY = "id";
+    public static final String CONTROL_REFERENCE_KEY = "op";
 
     public static final String BOOKED_DELIVERIES_COLLECTION_NAME = "booked_deliveries";
     public static final String PRODUCTS_COLLECTION_NAME = "products_list";
@@ -29,4 +30,9 @@ public class Definitions {
 
     public static final String CONNECTION_CONFIGURATION_FILE = "connection";
     public static final String SIMULATION_CONFIGURATION_FILE = "simulation";
+
+    public static final String AUTO_SIMULATION_ID = "auto";
+    public static final String STEP_SIMULATION_ID = "step";
+    public static final String DEFAULT_SIMULATOR_MODE = "auto";
+    public static final String SIMULATION_MODE_CONFIG_ID = "simulation_mode";
 }
