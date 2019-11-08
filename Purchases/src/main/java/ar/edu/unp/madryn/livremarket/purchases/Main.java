@@ -94,6 +94,7 @@ public class Main {
 
         SelectingPaymentState selectingPaymentState = new SelectingPaymentState();
         selectingPaymentState.setPurchaseManager(purchaseManager);
+        selectingPaymentState.setSimulationConfiguration(simulationConfiguration);
         smTemplate.addState(selectingPaymentState);
 
         PurchaseConfirmedState purchaseConfirmedState = new PurchaseConfirmedState();
