@@ -55,6 +55,16 @@ public class ControlPanel {
     private JButton infractions_generate_event_button;
     private JButton infractions_restart_button;
     private JButton infractions_shutdown_button;
+    private JTable purchases_messages;
+    private JTable products_messages;
+    private JTable payments_messages;
+    private JTable deliveries_messages;
+    private JTable infractions_messages;
+    private JTable purchases_last_state;
+    private JTable products_last_state;
+    private JTable payments_last_state;
+    private JTable deliveries_last_state;
+    private JTable infractions_last_state;
 
     public static void main(String[] args) {
         try {
