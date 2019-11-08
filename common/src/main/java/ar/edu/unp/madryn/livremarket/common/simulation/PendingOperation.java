@@ -9,13 +9,9 @@ import java.util.Map;
 public class PendingOperation {
     @Getter
     @Setter
-    private String currentState;
-    @Getter
-    @Setter
     private Map<String,String> data;
 
     public PendingOperation() {
-        this.currentState = null;
         this.data = new HashMap<>();
     }
 

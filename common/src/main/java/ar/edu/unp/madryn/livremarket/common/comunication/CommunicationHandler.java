@@ -2,10 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.comunication;
 
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageHandler;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageServerFactory;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.*;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,12 +36,15 @@ public class CommunicationHandler {
 
     // Handlers
 
-    public boolean registerHandler(MessageType type, MessageHandler handler) {
-        if (this.handlers.containsKey(type)) {
-            return false;
+    public boolean registerHandler(MessageHandler handler, MessageType... types) {
+        for(MessageType type : types) {
+            if (this.handlers.containsKey(type)) {
+                continue;
+            }
+
+            this.handlers.put(type, handler);
         }
 
-        this.handlers.put(type, handler);
         return true;
     }
 
@@ -87,6 +87,8 @@ public class CommunicationHandler {
         Gson gson = new Gson();
         String message = gson.toJson(data);
 
+        System.out.println("Mensaje enviado! con el topico '" + routingKey + "' (Contenido = " + message + ")");
+
         // TODO Comprobar que el messageServer este creado...
         return this.messageServer.sendMessage(routingKey, message);
     }
@@ -96,14 +98,18 @@ public class CommunicationHandler {
         String bindingKey = ROUTING_KEY_ANY_WILDCARD + ROUTING_KEY_SEPARATOR + serverName;
 
         this.messageServer.registerProcessor(bindingKey, (consumerTag, message) -> {
+            System.out.println("Mensaje recibido! con el topico '" + consumerTag + "' (Contenido = " + message + ")");
+
             String[] tags = consumerTag.split(ROUTING_KEY_SEPARATOR_REGEX);
             if (ArrayUtils.isEmpty(tags)) {
+                System.err.println("Error: El mensaje no tiene topicos!");
                 return;
             }
 
             String type = tags[0];
             MessageType messageType = MessageType.fromTopic(type);
             if (messageType == null) {
+                System.err.println("Error: Tipo de mensaje no reconocido!");
                 return;
             }
 
@@ -112,9 +118,11 @@ public class CommunicationHandler {
             }.getType();
             Map<String, String> data = gson.fromJson(message, dataType);
 
+            data.put(MessageCommonFields.MESSAGE_TYPE_ID, type);
+
             MessageHandler handler = getHandlerForType(messageType);
             if (handler == null) {
-                // TODO Mensaje de error
+                System.err.println("Error: No existe un handler para el tipo de mensaje '" + messageType + "'!");
                 return;
             }
 

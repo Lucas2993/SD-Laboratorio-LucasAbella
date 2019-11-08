@@ -5,9 +5,22 @@ import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.messages.types.ControlMessage;
+import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
+import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
+import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
+import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
+import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.deliveries.messages.GeneralRequest;
+import ar.edu.unp.madryn.livremarket.deliveries.simulation.OperationProcessor;
+import ar.edu.unp.madryn.livremarket.deliveries.sm.BookingDeliveryState;
+import ar.edu.unp.madryn.livremarket.deliveries.sm.CalculatingCostState;
+import ar.edu.unp.madryn.livremarket.deliveries.sm.ReportingBookedDeliveryState;
+import ar.edu.unp.madryn.livremarket.deliveries.sm.ReportingCostState;
+import ar.edu.unp.madryn.livremarket.deliveries.utils.LocalDefinitions;
+import org.apache.commons.collections4.MapUtils;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,12 +39,13 @@ public class Main {
 
         CommunicationHandler communicationHandler = CommunicationHandler.getInstance();
 
-        GeneralRequest generalRequest = new GeneralRequest();
+        MessagePersistence messagePersistence = new MessagePersistence();
 
-        generalRequest.setCommunicationHandler(communicationHandler);
-        generalRequest.setSimulationConfiguration(simulationConfiguration);
+        communicationHandler.registerHandler(messagePersistence, MessageType.GENERAL);
 
-        communicationHandler.registerHandler(MessageType.GENERAL, generalRequest);
+        ControlMessage controlMessage = new ControlMessage();
+
+        communicationHandler.registerHandler(controlMessage, MessageType.CONTROL);
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -40,14 +54,65 @@ public class Main {
 
         DataProviderFactory dataProviderFactory = DataProviderFactory.getInstance();
 
-        DataProvider dataProvider = dataProviderFactory.getProviderInstance(connectionConfiguration, Definitions.DELIVERIES_SERVER_NAME);
+        DataProvider deliveriesDataProvider = dataProviderFactory.getProviderInstance(connectionConfiguration, Definitions.DELIVERIES_SERVER_NAME);
 
-        if (!dataProvider.connect()) {
+        if (!deliveriesDataProvider.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor de base de datos!");
             return;
         }
 
-        generalRequest.setDataProvider(dataProvider);
+        OperationProcessor operationProcessor = new OperationProcessor();
+
+        /* Maquina de estados */
+        Template smTemplate = new Template();
+
+        /* Estados */
+        InitialState initialState = new InitialState();
+        smTemplate.addState(initialState);
+
+        FinalState finalState = new FinalState();
+        smTemplate.addState(finalState);
+
+        CalculatingCostState calculatingCostState = new CalculatingCostState();
+        calculatingCostState.setSimulationConfiguration(simulationConfiguration);
+        smTemplate.addState(calculatingCostState);
+
+        ReportingCostState reportingCostState = new ReportingCostState();
+        reportingCostState.setCommunicationHandler(communicationHandler);
+        smTemplate.addState(reportingCostState);
+
+        BookingDeliveryState bookingDeliveryState = new BookingDeliveryState();
+        bookingDeliveryState.setDataProvider(deliveriesDataProvider);
+        smTemplate.addState(bookingDeliveryState);
+
+        ReportingBookedDeliveryState reportingBookedDeliveryState = new ReportingBookedDeliveryState();
+        reportingBookedDeliveryState.setCommunicationHandler(communicationHandler);
+        smTemplate.addState(reportingBookedDeliveryState);
+
+        /* Transiciones */
+        smTemplate.addTransition(initialState, calculatingCostState, data -> MapUtils.getBoolean(data, LocalDefinitions.REQUESTED_COST_FIELD));
+        smTemplate.addTransition(calculatingCostState, reportingCostState, data -> data.containsKey(MessageCommonFields.DELIVERY_COST));
+        smTemplate.addTransition(reportingCostState, bookingDeliveryState, data -> MapUtils.getBoolean(data, LocalDefinitions.REPORTED_BOOKED_DELIVERY_FIELD));
+        smTemplate.addTransition(bookingDeliveryState, reportingBookedDeliveryState, data -> MapUtils.getBoolean(data, LocalDefinitions.BOOKED_DELIVERY_FIELD));
+        smTemplate.addTransition(reportingBookedDeliveryState, finalState, data -> MapUtils.getBoolean(data, LocalDefinitions.REPORTED_BOOKED_DELIVERY_FIELD));
+
+
+        /* Datos faltante dentro del manejador de request generales */
+        messagePersistence.setDataProvider(deliveriesDataProvider);
+
+        operationProcessor.setStateDataProvider(deliveriesDataProvider);
+
+        SimulationController simulationController = SimulationController.getInstance();
+
+        simulationController.setMessageProcessor(operationProcessor);
+        simulationController.setDataProvider(deliveriesDataProvider);
+        simulationController.setSmTemplate(smTemplate);
+        simulationController.setStateCollectionName(Definitions.DELIVERIES_STATE_COLLECTION_NAME);
+        simulationController.setSimulationConfiguration(simulationConfiguration);
+
+        simulationController.init();
+
+        messagePersistence.setSimulationController(simulationController);
 
         communicationHandler.registerReceiver(Definitions.DELIVERIES_SERVER_NAME);
 
