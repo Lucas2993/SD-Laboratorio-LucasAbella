@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ar.edu.unp.madryn.livremarket.monitor.gui.ControlPanel">
-  <grid id="27dc6" binding="control_gui" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="control_gui" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="1070" height="500"/>
+      <xy x="20" y="20" width="1220" height="710"/>
     </constraints>
     <properties>
-      <maximumSize width="1070" height="500"/>
-      <minimumSize width="1070" height="500"/>
-      <preferredSize width="1070" height="500"/>
+      <maximumSize width="1220" height="710"/>
+      <minimumSize width="1220" height="710"/>
+      <preferredSize width="1220" height="710"/>
+      <requestFocusEnabled value="true"/>
     </properties>
     <border type="none"/>
     <children>
       <splitpane id="5ee60">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <minimum-size width="710" height="500"/>
-            <preferred-size width="710" height="500"/>
-            <maximum-size width="710" height="500"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="1220" height="710"/>
+            <preferred-size width="1220" height="710"/>
+            <maximum-size width="1220" height="710"/>
           </grid>
         </constraints>
         <properties>
+          <dividerLocation value="350"/>
           <orientation value="0"/>
         </properties>
         <border type="none"/>
@@ -31,281 +33,363 @@
             </constraints>
             <properties>
               <continuousLayout value="false"/>
-              <dividerLocation value="350"/>
-              <minimumSize width="710" height="245"/>
-              <preferredSize width="710" height="245"/>
+              <dividerLocation value="400"/>
+              <maximumSize width="810" height="350"/>
+              <minimumSize width="810" height="350"/>
+              <preferredSize width="810" height="350"/>
             </properties>
             <border type="none"/>
             <children>
-              <tabbedpane id="7f767" binding="purchases">
+              <grid id="ebcc9" binding="purchases_panel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <splitpane position="left"/>
                 </constraints>
                 <properties>
-                  <maximumSize width="350" height="245"/>
-                  <minimumSize width="350" height="245"/>
-                  <preferredSize width="350" height="245"/>
+                  <maximumSize width="-1" height="-1"/>
+                  <minimumSize width="-1" height="-1"/>
+                  <opaque value="true"/>
+                  <preferredSize width="-1" height="-1"/>
                 </properties>
-                <border type="none"/>
+                <border type="none" title="Compras"/>
                 <children>
-                  <grid id="833ed" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <tabbedpane id="306c0" binding="purchases">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <doubleBuffered value="false"/>
+                      <maximumSize width="350" height="245"/>
+                      <minimumSize width="350" height="245"/>
+                      <preferredSize width="350" height="245"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <grid id="61b1a" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <tabbedpane title="Estado Actual"/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="-1" height="-1"/>
+                          <minimumSize width="-1" height="-1"/>
+                          <preferredSize width="-1" height="-1"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <component id="d41bb" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="ID Compra"/>
+                            </properties>
+                          </component>
+                          <vspacer id="208b7">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                <minimum-size width="-1" height="10"/>
+                                <preferred-size width="-1" height="10"/>
+                                <maximum-size width="-1" height="10"/>
+                              </grid>
+                            </constraints>
+                          </vspacer>
+                          <component id="e341e" class="javax.swing.JTextField" binding="purchases_purchase_id">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="87a8c" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Estado"/>
+                            </properties>
+                          </component>
+                          <component id="4da20" class="javax.swing.JTextField" binding="purchases_state">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="bb9e8" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Fecha"/>
+                            </properties>
+                          </component>
+                          <component id="e74bf" class="javax.swing.JTextField" binding="purchases_date">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="fbdba" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Estado del Servidor"/>
+                            </properties>
+                          </component>
+                          <component id="c1086" class="javax.swing.JTextField" binding="purchases_server_state">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="c9c61" class="javax.swing.JSeparator">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="6766b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <tabbedpane title="Mensajes"/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="-1" height="-1"/>
+                          <minimumSize width="-1" height="-1"/>
+                          <preferredSize width="-1" height="-1"/>
+                          <requestFocusEnabled value="true"/>
+                        </properties>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                      <grid id="959a" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <tabbedpane title="Ultimo Estado"/>
+                        </constraints>
+                        <properties>
+                          <inheritsPopupMenu value="true"/>
+                          <maximumSize width="-1" height="-1"/>
+                          <minimumSize width="-1" height="-1"/>
+                          <preferredSize width="-1" height="-1"/>
+                        </properties>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                    </children>
+                  </tabbedpane>
+                  <grid id="b406" binding="purchases_actions" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <tabbedpane title="Estado Actual"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="c7f8d" class="javax.swing.JLabel">
+                      <component id="a281f" class="javax.swing.JButton" binding="purchases_generate_event_button">
                         <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="ID Compra"/>
+                          <text value="Generar Evento"/>
                         </properties>
                       </component>
-                      <vspacer id="25a2e">
+                      <component id="79027" class="javax.swing.JButton" binding="purchases_restart_button">
                         <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <minimum-size width="-1" height="10"/>
-                            <preferred-size width="-1" height="10"/>
-                            <maximum-size width="-1" height="10"/>
-                          </grid>
-                        </constraints>
-                      </vspacer>
-                      <component id="20547" class="javax.swing.JTextField" binding="purchases_purchase_id">
-                        <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="5c917" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Estado"/>
+                          <text value="Reiniciar"/>
                         </properties>
                       </component>
-                      <component id="492a8" class="javax.swing.JTextField" binding="purchases_state">
+                      <component id="ea0cf" class="javax.swing.JButton" binding="purchases_shutdown_button">
                         <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="ec4df" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Fecha"/>
+                          <text value="Apagar"/>
                         </properties>
                       </component>
-                      <component id="1fd9a" class="javax.swing.JTextField" binding="purchases_date">
-                        <constraints>
-                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="9a70c" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Estado del Servidor"/>
-                        </properties>
-                      </component>
-                      <component id="af97a" class="javax.swing.JTextField" binding="purchases_server_state">
-                        <constraints>
-                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="f8d2d" class="javax.swing.JSeparator">
-                        <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                            <minimum-size width="-1" height="10"/>
-                            <preferred-size width="-1" height="10"/>
-                            <maximum-size width="-1" height="10"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <grid id="cd75f" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                        <margin top="0" left="0" bottom="0" right="0"/>
-                        <constraints>
-                          <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties/>
-                        <border type="none"/>
-                        <children>
-                          <component id="fd6a1" class="javax.swing.JButton" binding="purchases_generate_event_button">
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="Generar Evento"/>
-                            </properties>
-                          </component>
-                          <component id="eb8f1" class="javax.swing.JButton" binding="purchases_restart_button">
-                            <constraints>
-                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="Reiniciar"/>
-                            </properties>
-                          </component>
-                          <component id="f1bd9" class="javax.swing.JButton" binding="purchases_shutdown_button">
-                            <constraints>
-                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="Apagar"/>
-                            </properties>
-                          </component>
-                        </children>
-                      </grid>
                     </children>
                   </grid>
-                  <grid id="12e14" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <tabbedpane title="Mensajes"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
-                  </grid>
-                  <grid id="d0521" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <tabbedpane title="Ultimo Estado"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
-                  </grid>
                 </children>
-              </tabbedpane>
-              <tabbedpane id="469ce" binding="payments">
+              </grid>
+              <splitpane id="85b2c">
                 <constraints>
                   <splitpane position="right"/>
                 </constraints>
                 <properties>
-                  <maximumSize width="350" height="245"/>
-                  <minimumSize width="350" height="245"/>
-                  <preferredSize width="350" height="245"/>
+                  <dividerLocation value="400"/>
                 </properties>
                 <border type="none"/>
                 <children>
-                  <grid id="a4702" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="e07bf" binding="payments_panel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <tabbedpane title="Estado Actual"/>
+                      <splitpane position="left"/>
                     </constraints>
-                    <properties/>
-                    <border type="none"/>
+                    <properties>
+                      <maximumSize width="-1" height="-1"/>
+                      <minimumSize width="-1" height="-1"/>
+                      <preferredSize width="-1" height="-1"/>
+                    </properties>
+                    <border type="none" title="Pagos"/>
                     <children>
-                      <component id="e9ca0" class="javax.swing.JLabel">
+                      <tabbedpane id="7f25c" binding="payments">
                         <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="ID Compra"/>
+                          <maximumSize width="350" height="245"/>
+                          <minimumSize width="350" height="245"/>
+                          <preferredSize width="350" height="245"/>
                         </properties>
-                      </component>
-                      <vspacer id="44dbc">
-                        <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <minimum-size width="-1" height="10"/>
-                            <preferred-size width="-1" height="10"/>
-                            <maximum-size width="-1" height="10"/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="57c2f" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Estado Actual"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children>
+                              <component id="a999e" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="ID Compra"/>
+                                </properties>
+                              </component>
+                              <vspacer id="156f1">
+                                <constraints>
+                                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                    <minimum-size width="-1" height="10"/>
+                                    <preferred-size width="-1" height="10"/>
+                                    <maximum-size width="-1" height="10"/>
+                                  </grid>
+                                </constraints>
+                              </vspacer>
+                              <component id="d56d3" class="javax.swing.JTextField" binding="payments_purchase_id">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="b9ef8" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Estado"/>
+                                </properties>
+                              </component>
+                              <component id="1fdea" class="javax.swing.JTextField" binding="payments_state">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="ad40" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Fecha"/>
+                                </properties>
+                              </component>
+                              <component id="3099e" class="javax.swing.JTextField" binding="payments_date">
+                                <constraints>
+                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="a4d" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Estado del Servidor"/>
+                                </properties>
+                              </component>
+                              <component id="3abcc" class="javax.swing.JTextField" binding="payments_server_state">
+                                <constraints>
+                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="b6802" class="javax.swing.JSeparator">
+                                <constraints>
+                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                    <minimum-size width="-1" height="10"/>
+                                    <preferred-size width="-1" height="10"/>
+                                    <maximum-size width="-1" height="10"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                            </children>
                           </grid>
-                        </constraints>
-                      </vspacer>
-                      <component id="fe021" class="javax.swing.JTextField" binding="payments_purchase_id">
-                        <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
+                          <grid id="3954" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Mensajes"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children/>
                           </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="ffe8e" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Estado"/>
-                        </properties>
-                      </component>
-                      <component id="3d87b" class="javax.swing.JTextField" binding="payments_state">
-                        <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
+                          <grid id="6357f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Ultimo Estado"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children/>
                           </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="34693" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Fecha"/>
-                        </properties>
-                      </component>
-                      <component id="fc1e" class="javax.swing.JTextField" binding="payments_date">
-                        <constraints>
-                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="1229e" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Estado del Servidor"/>
-                        </properties>
-                      </component>
-                      <component id="f6704" class="javax.swing.JTextField" binding="payments_server_state">
-                        <constraints>
-                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="ca712" class="javax.swing.JSeparator">
-                        <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                            <minimum-size width="-1" height="10"/>
-                            <preferred-size width="-1" height="10"/>
-                            <maximum-size width="-1" height="10"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <grid id="f4e8c" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        </children>
+                      </tabbedpane>
+                      <grid id="5d3d8" binding="payments_actions" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints>
-                          <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="33719" class="javax.swing.JButton" binding="payments_generate_event_button">
+                          <component id="7a341" class="javax.swing.JButton" binding="payments_generate_event_button">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -313,7 +397,7 @@
                               <text value="Generar Evento"/>
                             </properties>
                           </component>
-                          <component id="f7c06" class="javax.swing.JButton" binding="payments_restart_button">
+                          <component id="80338" class="javax.swing.JButton" binding="payments_restart_button">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -321,7 +405,7 @@
                               <text value="Reiniciar"/>
                             </properties>
                           </component>
-                          <component id="20e08" class="javax.swing.JButton" binding="payments_shutdown_button">
+                          <component id="8d960" class="javax.swing.JButton" binding="payments_shutdown_button">
                             <constraints>
                               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -333,26 +417,192 @@
                       </grid>
                     </children>
                   </grid>
-                  <grid id="a78f4" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="742c" binding="deliveries_panel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <tabbedpane title="Mensajes"/>
+                      <splitpane position="right"/>
                     </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
-                  </grid>
-                  <grid id="726d2" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <tabbedpane title="Ultimo Estado"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
+                    <properties>
+                      <maximumSize width="-1" height="-1"/>
+                      <minimumSize width="-1" height="-1"/>
+                      <opaque value="true"/>
+                      <preferredSize width="-1" height="-1"/>
+                    </properties>
+                    <border type="none" title="Envios"/>
+                    <children>
+                      <tabbedpane id="df8f8" binding="deliveries">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <doubleBuffered value="false"/>
+                          <maximumSize width="350" height="245"/>
+                          <minimumSize width="350" height="245"/>
+                          <preferredSize width="350" height="245"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <grid id="ea66c" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Estado Actual"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children>
+                              <component id="e242e" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="ID Compra"/>
+                                </properties>
+                              </component>
+                              <vspacer id="870f8">
+                                <constraints>
+                                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                    <minimum-size width="-1" height="10"/>
+                                    <preferred-size width="-1" height="10"/>
+                                    <maximum-size width="-1" height="10"/>
+                                  </grid>
+                                </constraints>
+                              </vspacer>
+                              <component id="d2996" class="javax.swing.JTextField" binding="deliveries_purchase_id">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="5a0e6" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Estado"/>
+                                </properties>
+                              </component>
+                              <component id="63d49" class="javax.swing.JTextField" binding="deliveries_state">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="67cc9" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Fecha"/>
+                                </properties>
+                              </component>
+                              <component id="9ad2d" class="javax.swing.JTextField" binding="deliveries_date">
+                                <constraints>
+                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="67c81" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Estado del Servidor"/>
+                                </properties>
+                              </component>
+                              <component id="4c8fc" class="javax.swing.JTextField" binding="deliveries_server_state">
+                                <constraints>
+                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="dcc5b" class="javax.swing.JSeparator">
+                                <constraints>
+                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                            </children>
+                          </grid>
+                          <grid id="77a5a" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Mensajes"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                              <requestFocusEnabled value="true"/>
+                            </properties>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                          <grid id="7f37e" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Ultimo Estado"/>
+                            </constraints>
+                            <properties>
+                              <inheritsPopupMenu value="true"/>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                        </children>
+                      </tabbedpane>
+                      <grid id="a1a12" binding="deliveries_actions" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="6a32b" class="javax.swing.JButton" binding="deliveries_generate_event_button">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Generar Evento"/>
+                            </properties>
+                          </component>
+                          <component id="3bc2c" class="javax.swing.JButton" binding="deliveries_restart_button">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Reiniciar"/>
+                            </properties>
+                          </component>
+                          <component id="1450a" class="javax.swing.JButton" binding="deliveries_shutdown_button">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Apagar"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
                   </grid>
                 </children>
-              </tabbedpane>
+              </splitpane>
             </children>
           </splitpane>
           <splitpane id="e9bb9">
@@ -360,123 +610,361 @@
               <splitpane position="right"/>
             </constraints>
             <properties>
-              <dividerLocation value="350"/>
-              <minimumSize width="710" height="245"/>
-              <preferredSize width="710" height="245"/>
+              <dividerLocation value="400"/>
+              <maximumSize width="810" height="350"/>
+              <minimumSize width="810" height="350"/>
+              <preferredSize width="810" height="350"/>
+              <requestFocusEnabled value="true"/>
             </properties>
             <border type="none"/>
             <children>
-              <tabbedpane id="4b9f4" binding="products">
+              <grid id="11dcf" binding="products_panel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <splitpane position="left"/>
                 </constraints>
                 <properties>
-                  <maximumSize width="350" height="245"/>
-                  <minimumSize width="350" height="245"/>
-                  <preferredSize width="350" height="245"/>
+                  <maximumSize width="-1" height="-1"/>
+                  <minimumSize width="-1" height="-1"/>
+                  <preferredSize width="-1" height="-1"/>
                 </properties>
-                <border type="none"/>
+                <border type="none" title="Productos"/>
                 <children>
-                  <grid id="e6c9" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <tabbedpane id="6123e" binding="products">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <maximumSize width="350" height="245"/>
+                      <minimumSize width="350" height="245"/>
+                      <preferredSize width="350" height="245"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <grid id="cbc9b" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <tabbedpane title="Estado Actual"/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="-1" height="-1"/>
+                          <minimumSize width="-1" height="-1"/>
+                          <preferredSize width="-1" height="-1"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <component id="762d7" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="ID Compra"/>
+                            </properties>
+                          </component>
+                          <vspacer id="1696a">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                          <component id="62fc" class="javax.swing.JTextField" binding="products_purchase_id">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="f4c99" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Estado"/>
+                            </properties>
+                          </component>
+                          <component id="d94f6" class="javax.swing.JTextField" binding="products_state">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="98d93" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Fecha"/>
+                            </properties>
+                          </component>
+                          <component id="6feba" class="javax.swing.JTextField" binding="products_date">
+                            <constraints>
+                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="6ec15" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Estado del Servidor"/>
+                            </properties>
+                          </component>
+                          <component id="bea54" class="javax.swing.JTextField" binding="products_server_state">
+                            <constraints>
+                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                <preferred-size width="150" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="4d9a3" class="javax.swing.JSeparator">
+                            <constraints>
+                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="2e87d" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <tabbedpane title="Mensajes"/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="-1" height="-1"/>
+                          <minimumSize width="-1" height="-1"/>
+                          <opaque value="true"/>
+                          <preferredSize width="-1" height="-1"/>
+                        </properties>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                      <grid id="d90b7" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <tabbedpane title="Ultimo Estado"/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="-1" height="-1"/>
+                          <minimumSize width="-1" height="-1"/>
+                          <preferredSize width="-1" height="-1"/>
+                        </properties>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                    </children>
+                  </tabbedpane>
+                  <grid id="e0e55" binding="products_actions" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <tabbedpane title="Estado Actual"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="fb771" class="javax.swing.JLabel">
+                      <component id="f5a25" class="javax.swing.JButton" binding="products_generate_event_button">
                         <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="ID Compra"/>
+                          <text value="Generar Evento"/>
                         </properties>
                       </component>
-                      <vspacer id="2496c">
+                      <component id="a1a67" class="javax.swing.JButton" binding="products_restart_button">
                         <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <minimum-size width="-1" height="10"/>
-                            <preferred-size width="-1" height="10"/>
-                            <maximum-size width="-1" height="10"/>
-                          </grid>
-                        </constraints>
-                      </vspacer>
-                      <component id="8301d" class="javax.swing.JTextField" binding="products_purchase_id">
-                        <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="f7ef6" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Estado"/>
+                          <text value="Reiniciar"/>
                         </properties>
                       </component>
-                      <component id="1cf42" class="javax.swing.JTextField" binding="products_state">
+                      <component id="c46f3" class="javax.swing.JButton" binding="products_shutdown_button">
                         <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="cb5a9" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Fecha"/>
+                          <text value="Apagar"/>
                         </properties>
                       </component>
-                      <component id="3d44c" class="javax.swing.JTextField" binding="products_date">
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <splitpane id="f27a3">
+                <constraints>
+                  <splitpane position="right"/>
+                </constraints>
+                <properties>
+                  <dividerLocation value="400"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="61b9d" binding="common_panel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <splitpane position="left"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <hspacer id="5d441">
                         <constraints>
-                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
-                        <properties/>
-                      </component>
-                      <component id="fd24e" class="javax.swing.JLabel">
+                      </hspacer>
+                    </children>
+                  </grid>
+                  <grid id="75b9d" binding="infractions_panel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <splitpane position="right"/>
+                    </constraints>
+                    <properties>
+                      <maximumSize width="-1" height="-1"/>
+                      <minimumSize width="-1" height="-1"/>
+                      <preferredSize width="-1" height="-1"/>
+                    </properties>
+                    <border type="none" title="Infracciones"/>
+                    <children>
+                      <tabbedpane id="7ed72" binding="infractions">
                         <constraints>
-                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Estado del Servidor"/>
+                          <maximumSize width="350" height="245"/>
+                          <minimumSize width="350" height="245"/>
+                          <preferredSize width="350" height="245"/>
                         </properties>
-                      </component>
-                      <component id="1e141" class="javax.swing.JTextField" binding="products_server_state">
-                        <constraints>
-                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="b8d23" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Estado Actual"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children>
+                              <component id="73a43" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="ID Compra"/>
+                                </properties>
+                              </component>
+                              <vspacer id="3b18f">
+                                <constraints>
+                                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="602fc" class="javax.swing.JTextField" binding="infractions_purchase_id">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="54687" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Estado"/>
+                                </properties>
+                              </component>
+                              <component id="89493" class="javax.swing.JTextField" binding="infractions_state">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="82fe6" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Fecha"/>
+                                </properties>
+                              </component>
+                              <component id="e9347" class="javax.swing.JTextField" binding="infractions_date">
+                                <constraints>
+                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="f2877" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Estado del Servidor"/>
+                                </properties>
+                              </component>
+                              <component id="9957c" class="javax.swing.JTextField" binding="infractions_server_state">
+                                <constraints>
+                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="16628" class="javax.swing.JSeparator">
+                                <constraints>
+                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                            </children>
                           </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="767fa" class="javax.swing.JSeparator">
-                        <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                            <minimum-size width="-1" height="10"/>
-                            <preferred-size width="-1" height="10"/>
-                            <maximum-size width="-1" height="10"/>
+                          <grid id="5853" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Mensajes"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <opaque value="true"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children/>
                           </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <grid id="efa16" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                          <grid id="8e5c4" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="Ultimo Estado"/>
+                            </constraints>
+                            <properties>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <preferredSize width="-1" height="-1"/>
+                            </properties>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                        </children>
+                      </tabbedpane>
+                      <grid id="943f0" binding="infractions_actions" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints>
-                          <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="c0ecd" class="javax.swing.JButton" binding="products_generate_event_button">
+                          <component id="c4728" class="javax.swing.JButton" binding="infractions_generate_event_button">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -484,7 +972,7 @@
                               <text value="Generar Evento"/>
                             </properties>
                           </component>
-                          <component id="ff4d6" class="javax.swing.JButton" binding="products_restart_button">
+                          <component id="3754b" class="javax.swing.JButton" binding="infractions_restart_button">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -492,7 +980,7 @@
                               <text value="Reiniciar"/>
                             </properties>
                           </component>
-                          <component id="e39d0" class="javax.swing.JButton" binding="products_shutdown_button">
+                          <component id="c7318" class="javax.swing.JButton" binding="infractions_shutdown_button">
                             <constraints>
                               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -504,365 +992,10 @@
                       </grid>
                     </children>
                   </grid>
-                  <grid id="2558e" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <tabbedpane title="Mensajes"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
-                  </grid>
-                  <grid id="f9906" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <tabbedpane title="Ultimo Estado"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
-                  </grid>
                 </children>
-              </tabbedpane>
-              <hspacer id="96e70">
-                <constraints>
-                  <splitpane position="right"/>
-                </constraints>
-              </hspacer>
+              </splitpane>
             </children>
           </splitpane>
-        </children>
-      </splitpane>
-      <splitpane id="199cf">
-        <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <minimum-size width="350" height="500"/>
-            <preferred-size width="350" height="500"/>
-            <maximum-size width="350" height="500"/>
-          </grid>
-        </constraints>
-        <properties>
-          <orientation value="0"/>
-        </properties>
-        <border type="none"/>
-        <children>
-          <tabbedpane id="59111" binding="deliveries">
-            <constraints>
-              <splitpane position="left"/>
-            </constraints>
-            <properties>
-              <maximumSize width="350" height="245"/>
-              <minimumSize width="350" height="245"/>
-              <opaque value="false"/>
-              <preferredSize width="350" height="245"/>
-            </properties>
-            <border type="none"/>
-            <children>
-              <grid id="ecc61" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
-                <constraints>
-                  <tabbedpane title="Estado Actual"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="5b2db" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="ID Compra"/>
-                    </properties>
-                  </component>
-                  <vspacer id="686c4">
-                    <constraints>
-                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                        <minimum-size width="-1" height="10"/>
-                        <preferred-size width="-1" height="10"/>
-                        <maximum-size width="-1" height="10"/>
-                      </grid>
-                    </constraints>
-                  </vspacer>
-                  <component id="7e3fd" class="javax.swing.JTextField" binding="deliveries_purchase_id">
-                    <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="4bd9c" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="Estado"/>
-                    </properties>
-                  </component>
-                  <component id="9ef20" class="javax.swing.JTextField" binding="deliveries_state">
-                    <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="5c493" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="Fecha"/>
-                    </properties>
-                  </component>
-                  <component id="6611" class="javax.swing.JTextField" binding="deliveries_date">
-                    <constraints>
-                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="10702" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="Estado del Servidor"/>
-                    </properties>
-                  </component>
-                  <component id="806de" class="javax.swing.JTextField" binding="deliveries_server_state">
-                    <constraints>
-                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="ac706" class="javax.swing.JSeparator">
-                    <constraints>
-                      <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                        <minimum-size width="-1" height="10"/>
-                        <preferred-size width="-1" height="10"/>
-                        <maximum-size width="-1" height="10"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <grid id="f112a" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children>
-                      <component id="cffb3" class="javax.swing.JButton" binding="deliveries_generate_event_button">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Generar Evento"/>
-                        </properties>
-                      </component>
-                      <component id="8bb1d" class="javax.swing.JButton" binding="deliveries_restart_button">
-                        <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Reiniciar"/>
-                        </properties>
-                      </component>
-                      <component id="97224" class="javax.swing.JButton" binding="deliveries_shutdown_button">
-                        <constraints>
-                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Apagar"/>
-                        </properties>
-                      </component>
-                    </children>
-                  </grid>
-                </children>
-              </grid>
-              <grid id="4c15c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
-                <constraints>
-                  <tabbedpane title="Mensajes"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children/>
-              </grid>
-              <grid id="1d75f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
-                <constraints>
-                  <tabbedpane title="Ultimo Estado"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children/>
-              </grid>
-            </children>
-          </tabbedpane>
-          <tabbedpane id="eab2d" binding="infractions">
-            <constraints>
-              <splitpane position="right"/>
-            </constraints>
-            <properties>
-              <maximumSize width="350" height="245"/>
-              <minimumSize width="350" height="245"/>
-              <preferredSize width="350" height="245"/>
-            </properties>
-            <border type="none"/>
-            <children>
-              <grid id="27bc" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
-                <constraints>
-                  <tabbedpane title="Estado Actual"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="5337c" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="ID Compra"/>
-                    </properties>
-                  </component>
-                  <vspacer id="36a1a">
-                    <constraints>
-                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                        <minimum-size width="-1" height="10"/>
-                        <preferred-size width="-1" height="10"/>
-                        <maximum-size width="-1" height="10"/>
-                      </grid>
-                    </constraints>
-                  </vspacer>
-                  <component id="e1f36" class="javax.swing.JTextField" binding="infractions_purchase_id">
-                    <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="45640" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="Estado"/>
-                    </properties>
-                  </component>
-                  <component id="c6bfd" class="javax.swing.JTextField" binding="infractions_state">
-                    <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="63be7" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="Fecha"/>
-                    </properties>
-                  </component>
-                  <component id="63d8f" class="javax.swing.JTextField" binding="infractions_date">
-                    <constraints>
-                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="e4efb" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="Estado del Servidor"/>
-                    </properties>
-                  </component>
-                  <component id="d260c" class="javax.swing.JTextField" binding="infractions_server_state">
-                    <constraints>
-                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <component id="141e2" class="javax.swing.JSeparator">
-                    <constraints>
-                      <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                        <minimum-size width="-1" height="10"/>
-                        <preferred-size width="-1" height="10"/>
-                        <maximum-size width="-1" height="10"/>
-                      </grid>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <grid id="923d8" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children>
-                      <component id="64945" class="javax.swing.JButton" binding="infractions_generate_event_button">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Generar Evento"/>
-                        </properties>
-                      </component>
-                      <component id="95d0a" class="javax.swing.JButton" binding="infractions_restart_button">
-                        <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Reiniciar"/>
-                        </properties>
-                      </component>
-                      <component id="e46d1" class="javax.swing.JButton" binding="infractions_shutdown_button">
-                        <constraints>
-                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Apagar"/>
-                        </properties>
-                      </component>
-                    </children>
-                  </grid>
-                </children>
-              </grid>
-              <grid id="31830" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
-                <constraints>
-                  <tabbedpane title="Mensajes"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children/>
-              </grid>
-              <grid id="4e37a" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
-                <constraints>
-                  <tabbedpane title="Ultimo Estado"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children/>
-              </grid>
-            </children>
-          </tabbedpane>
         </children>
       </splitpane>
     </children>
