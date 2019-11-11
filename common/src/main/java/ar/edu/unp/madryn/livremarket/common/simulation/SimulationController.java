@@ -8,6 +8,7 @@ import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.sm.StateMachine;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
+import ar.edu.unp.madryn.livremarket.common.threads.StatePersistenceWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +16,13 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SimulationController {
+    private static final long DEFAULT_STATE_PERSISTENCE_TASK_INTERVAL_MINUTES = 1;
+
     @Setter
     private Template smTemplate;
     @Setter
@@ -51,6 +57,14 @@ public class SimulationController {
         }
 
         System.out.println("Simulador inicializado, la simulacion sera " + ((this.automatic) ? "automatica" : "manual") + "!");
+
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+        StatePersistenceWorker persistenceWorker = new StatePersistenceWorker();
+        persistenceWorker.setServerStateManager(this.serverStateManager);
+
+        // TODO Hacer que el intervalo de persistencia sea configurable
+        executorService.schedule(persistenceWorker, DEFAULT_STATE_PERSISTENCE_TASK_INTERVAL_MINUTES, TimeUnit.MINUTES);
 
         return true;
     }
