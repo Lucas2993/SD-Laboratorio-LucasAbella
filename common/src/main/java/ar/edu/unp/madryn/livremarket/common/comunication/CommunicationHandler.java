@@ -3,13 +3,13 @@ package ar.edu.unp.madryn.livremarket.common.comunication;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.messages.*;
+import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CommunicationHandler {
@@ -18,8 +18,6 @@ public class CommunicationHandler {
     private static final String ROUTING_KEY_ANY_WILDCARD = "*";
 
     private MessageServer messageServer;
-
-    private Map<MessageType, MessageHandler> handlers;
 
     private static CommunicationHandler instance;
 
@@ -31,25 +29,6 @@ public class CommunicationHandler {
     }
 
     private CommunicationHandler() {
-        this.handlers = new HashMap<>();
-    }
-
-    // Handlers
-
-    public boolean registerHandler(MessageHandler handler, MessageType... types) {
-        for(MessageType type : types) {
-            if (this.handlers.containsKey(type)) {
-                continue;
-            }
-
-            this.handlers.put(type, handler);
-        }
-
-        return true;
-    }
-
-    private MessageHandler getHandlerForType(MessageType type) {
-        return this.handlers.get(type);
     }
 
     // Mensajes
@@ -98,35 +77,9 @@ public class CommunicationHandler {
         String bindingKey = ROUTING_KEY_ANY_WILDCARD + ROUTING_KEY_SEPARATOR + serverName;
 
         this.messageServer.registerProcessor(bindingKey, (consumerTag, message) -> {
-            System.out.println("Mensaje recibido! con el topico '" + consumerTag + "' (Contenido = " + message + ")");
+            MessageWorker messageWorker = new MessageWorker(consumerTag, message);
 
-            String[] tags = consumerTag.split(ROUTING_KEY_SEPARATOR_REGEX);
-            if (ArrayUtils.isEmpty(tags)) {
-                System.err.println("Error: El mensaje no tiene topicos!");
-                return;
-            }
-
-            String type = tags[0];
-            MessageType messageType = MessageType.fromTopic(type);
-            if (messageType == null) {
-                System.err.println("Error: Tipo de mensaje no reconocido!");
-                return;
-            }
-
-            Gson gson = new Gson();
-            Type dataType = new TypeToken<Map<String, String>>() {
-            }.getType();
-            Map<String, String> data = gson.fromJson(message, dataType);
-
-            data.put(MessageCommonFields.MESSAGE_TYPE_ID, type);
-
-            MessageHandler handler = getHandlerForType(messageType);
-            if (handler == null) {
-                System.err.println("Error: No existe un handler para el tipo de mensaje '" + messageType + "'!");
-                return;
-            }
-
-            handler.handle(data);
+            messageWorker.start();
         });
     }
 }
