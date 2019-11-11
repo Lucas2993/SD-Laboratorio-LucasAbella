@@ -1,11 +1,12 @@
 package ar.edu.unp.madryn.livremarket.common.seeds;
 
+import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.MongoConnection;
 import ar.edu.unp.madryn.livremarket.common.db.MongoProvider;
 import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
-import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 public class FillProductsDB {
     public static void main(String [] args){
@@ -66,7 +67,7 @@ public class FillProductsDB {
         DataProvider dataProvider = new MongoProvider(mongoConnection, Definitions.COMMON_DATABASE_NAME);
 
         if(!dataProvider.connect()){
-            System.err.println("No se pudo establecer conexion con el servidor de base de datos!");
+            Logging.error("No se pudo establecer conexion con el servidor de base de datos!");
             return;
         }
 
@@ -86,12 +87,12 @@ public class FillProductsDB {
         productManager.load();
 
         for(Product product8 : productManager.getProducts()){
-            System.out.println("Dato 1: " + product8.getId());
-            System.out.println("Dato 2: " + product8.getName());
-            System.out.println("Dato 3: " + product8.getDescription());
-            System.out.println("Dato 4: " + product8.getStock());
+            Logging.info("Dato 1: " + product8.getId());
+            Logging.info("Dato 2: " + product8.getName());
+            Logging.info("Dato 3: " + product8.getDescription());
+            Logging.info("Dato 4: " + product8.getStock());
         }
 
-        System.out.println("Fin");
+        Logging.info("Fin");
     }
 }

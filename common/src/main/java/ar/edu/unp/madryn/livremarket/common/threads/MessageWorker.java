@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageHandler;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageHandlerManager;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.Setter;
@@ -32,18 +33,18 @@ public class MessageWorker extends Thread {
 
     @Override
     public void run() {
-        System.out.println(this.workerID + " Mensaje recibido! con el topico '" + consumerTag + "' (Contenido = " + message + ")");
+        Logging.info(this.workerID + " Mensaje recibido! con el topico '" + consumerTag + "' (Contenido = " + message + ")");
 
         String[] tags = this.consumerTag.split(ROUTING_KEY_SEPARATOR_REGEX);
         if (ArrayUtils.isEmpty(tags)) {
-            System.err.println(this.workerID + " Error: El mensaje no tiene topicos!");
+            Logging.error(this.workerID + " Error: El mensaje no tiene topicos!");
             return;
         }
 
         String type = tags[0];
         MessageType messageType = MessageType.fromTopic(type);
         if (messageType == null) {
-            System.err.println(this.workerID + " Error: Tipo de mensaje no reconocido!");
+            Logging.error(this.workerID + " Error: Tipo de mensaje no reconocido!");
             return;
         }
 
@@ -56,11 +57,11 @@ public class MessageWorker extends Thread {
 
         MessageHandler handler = messageHandlerManager.getHandlerForType(messageType);
         if (handler == null) {
-            System.err.println(this.workerID + " Error: No existe un handler para el tipo de mensaje '" + messageType + "'!");
+            Logging.error(this.workerID + " Error: No existe un handler para el tipo de mensaje '" + messageType + "'!");
             return;
         }
 
         handler.handle(data);
-        System.out.println(this.workerID + " Procesamiento finalizado!");
+        Logging.info(this.workerID + " Procesamiento finalizado!");
     }
 }

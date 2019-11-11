@@ -1,24 +1,17 @@
 package ar.edu.unp.madryn.livremarket.common.seeds;
 
 import ar.edu.unp.madryn.livremarket.common.data.ClientManager;
-import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.MongoConnection;
 import ar.edu.unp.madryn.livremarket.common.db.MongoProvider;
 import ar.edu.unp.madryn.livremarket.common.models.Client;
-import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 public class FillClientsDB {
     public static void main(String [] args){
 
         /*
-
-
-
-
-
-
 
          */
 
@@ -58,7 +51,7 @@ public class FillClientsDB {
         DataProvider dataProvider = new MongoProvider(mongoConnection, Definitions.COMMON_DATABASE_NAME);
 
         if(!dataProvider.connect()){
-            System.err.println("No se pudo establecer conexion con el servidor de base de datos!");
+            Logging.error("No se pudo establecer conexion con el servidor de base de datos!");
             return;
         }
 
@@ -79,6 +72,6 @@ public class FillClientsDB {
 
         //clientManager.load();
 
-        System.out.println("Fin");
+        Logging.info("Fin");
     }
 }

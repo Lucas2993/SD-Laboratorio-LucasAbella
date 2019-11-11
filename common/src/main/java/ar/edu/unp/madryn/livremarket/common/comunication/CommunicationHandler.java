@@ -2,19 +2,18 @@ package ar.edu.unp.madryn.livremarket.common.comunication;
 
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
-import ar.edu.unp.madryn.livremarket.common.messages.*;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageServerFactory;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.lang.reflect.Type;
 import java.util.Map;
 
 public class CommunicationHandler {
     private static final String ROUTING_KEY_SEPARATOR = ".";
-    private static final String ROUTING_KEY_SEPARATOR_REGEX = "\\.";
     private static final String ROUTING_KEY_ANY_WILDCARD = "*";
 
     private MessageServer messageServer;
@@ -53,7 +52,7 @@ public class CommunicationHandler {
         // Establecer la conexion al servidor.
         if (!messageServer.connect()) {
             this.messageServer = null;
-            System.err.println("No se pudo establecer conexion con el servidor AMQP!");
+            Logging.error("No se pudo establecer conexion con el servidor AMQP!");
             return false;
         }
         return true;
@@ -66,7 +65,7 @@ public class CommunicationHandler {
         Gson gson = new Gson();
         String message = gson.toJson(data);
 
-        System.out.println("Mensaje enviado! con el topico '" + routingKey + "' (Contenido = " + message + ")");
+        Logging.info("Mensaje enviado! con el topico '" + routingKey + "' (Contenido = " + message + ")");
 
         // TODO Comprobar que el messageServer este creado...
         return this.messageServer.sendMessage(routingKey, message);

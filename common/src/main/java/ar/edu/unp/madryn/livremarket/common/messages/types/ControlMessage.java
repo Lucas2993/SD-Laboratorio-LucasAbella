@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.Controls;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageHandler;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +19,7 @@ public class ControlMessage implements MessageHandler {
 
     @Override
     public void handle(Map<String, String> data) {
-        System.out.println("Mensaje de control recibido!");
+        Logging.info("Mensaje de control recibido!");
 
         String operation = data.get(Definitions.CONTROL_REFERENCE_KEY);
 
@@ -30,15 +31,15 @@ public class ControlMessage implements MessageHandler {
             case Controls.MAKE_STEP:
                 if(!simulationController.isAutomatic()){
                     if(this.simulationController.step()){
-                        System.out.println("Paso realizado con exito!");
+                        Logging.info("Paso realizado con exito!");
                     }
                     else {
-                        System.err.println("No hay pasos para realizar!");
+                        Logging.error("No hay pasos para realizar!");
                     }
                 }
                 break;
             default:
-                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
+                Logging.error("Error: Operacion '" + operation + "' no reconocida!");
         }
     }
 }

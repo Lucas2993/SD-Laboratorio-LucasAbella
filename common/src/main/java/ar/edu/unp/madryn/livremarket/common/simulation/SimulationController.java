@@ -10,6 +10,7 @@ import ar.edu.unp.madryn.livremarket.common.sm.StateMachine;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.threads.StatePersistenceWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -56,7 +57,7 @@ public class SimulationController {
             this.automatic = (StringUtils.equals(Definitions.AUTO_SIMULATION_ID,mode));
         }
 
-        System.out.println("Simulador inicializado, la simulacion sera " + ((this.automatic) ? "automatica" : "manual") + "!");
+        Logging.info("Simulador inicializado, la simulacion sera " + ((this.automatic) ? "automatica" : "manual") + "!");
 
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 

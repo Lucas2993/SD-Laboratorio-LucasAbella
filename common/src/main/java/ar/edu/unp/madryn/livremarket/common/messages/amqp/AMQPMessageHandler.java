@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.messages.amqp;
 
 import ar.edu.unp.madryn.livremarket.common.messages.MessageDelivery;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -39,7 +40,7 @@ public class AMQPMessageHandler implements MessageServer {
         try {
             this.connection = factory.newConnection();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logging.info(e.getMessage());
             return false;
         }
 
@@ -48,7 +49,7 @@ public class AMQPMessageHandler implements MessageServer {
 
             channel.exchangeDeclare(this.exchangeName, EXCHANGE_TYPE);
         } catch (Exception e) {
-            System.out.println("Informacion: La exchange ya existe!");
+            Logging.info("Informacion: La exchange ya existe!");
         }
 
         return true;
@@ -63,7 +64,7 @@ public class AMQPMessageHandler implements MessageServer {
         try {
             this.connection.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logging.info(e.getMessage());
             return false;
         }
 
@@ -94,7 +95,7 @@ public class AMQPMessageHandler implements MessageServer {
             }, consumerTag -> {
             });
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logging.info(e.getMessage());
             return false;
         }
 
@@ -116,7 +117,7 @@ public class AMQPMessageHandler implements MessageServer {
 
             channel.basicPublish(this.exchangeName, routingKey, null, message.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logging.info(e.getMessage());
             return false;
         }
 

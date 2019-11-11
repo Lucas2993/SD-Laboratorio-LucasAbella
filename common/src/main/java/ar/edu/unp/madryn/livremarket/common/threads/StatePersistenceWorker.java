@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.common.threads;
 
 import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Setter;
 
 public class StatePersistenceWorker extends Thread {
@@ -9,12 +10,12 @@ public class StatePersistenceWorker extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Guardando los estados!");
+        Logging.info("Guardando los estados!");
         if(this.serverStateManager.storeStates()){
-            System.out.println("Estados guardados correctamente!");
+            Logging.info("Estados guardados correctamente!");
             return;
         }
 
-        System.err.println("Error: Los estados no han podido guardarse!");
+        Logging.error("Error: Los estados no han podido guardarse!");
     }
 }
