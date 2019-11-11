@@ -3,6 +3,8 @@ package ar.edu.unp.madryn.livremarket.common.simulation;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
+import ar.edu.unp.madryn.livremarket.common.server.ServerState;
+import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.sm.StateMachine;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
@@ -12,7 +14,6 @@ import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SimulationController {
@@ -22,12 +23,12 @@ public class SimulationController {
     private DataProvider dataProvider;
     @Setter
     private MessageProcessor messageProcessor;
-    @Setter
-    private String stateCollectionName;
     @Getter
     private boolean automatic;
     @Setter
     private ConfigurationSection simulationConfiguration;
+    @Setter
+    private ServerStateManager serverStateManager;
 
     private static SimulationController instance;
 
@@ -111,18 +112,16 @@ public class SimulationController {
 
         String purchaseID = pendingOperationData.get(MessageCommonFields.PURCHASE_ID);
 
-        Map<String,String> storedState = new HashMap<>();
+        ServerState serverState = this.serverStateManager.getServerStateByID(purchaseID);
 
-        if(!StringUtils.isEmpty(purchaseID)){
-            /* Recuperar registro de la base de datos. */
-            storedState = this.dataProvider.getDataFromCollectionByField(this.stateCollectionName, MessageCommonFields.PURCHASE_ID, purchaseID);
+        if(serverState == null){
+            serverState = new ServerState(purchaseID);
+            this.serverStateManager.addServerState(serverState);
         }
-
-        boolean hasNoState = MapUtils.isEmpty(storedState);
 
         State currentState;
 
-        String currentStateName = storedState.get(MessageCommonFields.CURRENT_STATE);
+        String currentStateName = serverState.getSingleData(MessageCommonFields.CURRENT_STATE);
 
         if(!StringUtils.isEmpty(currentStateName)){
             currentState = smTemplate.searchStateByIdentifier(currentStateName);
@@ -151,16 +150,8 @@ public class SimulationController {
         /* Persistencia del estado */
 
         /* Actualizar estado con lo modificado por la maquina de estados */
-        storedState.putAll(machine.getData());
-        storedState.put(MessageCommonFields.CURRENT_STATE, machine.getCurrentState().getIdentifier());
-
-        /* Guardar estado */
-        if(hasNoState) {
-            this.dataProvider.insertElement(storedState, this.stateCollectionName);
-        }
-        else{
-            this.dataProvider.updateElement(MessageCommonFields.PURCHASE_ID, purchaseID, storedState, this.stateCollectionName);
-        }
+        serverState.saveData(machine.getData());
+        serverState.saveData(MessageCommonFields.CURRENT_STATE, machine.getCurrentState().getIdentifier());
 
         return result;
     }
