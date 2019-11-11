@@ -7,6 +7,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.Results;
 import ar.edu.unp.madryn.livremarket.common.simulation.MessageProcessor;
 import ar.edu.unp.madryn.livremarket.common.simulation.PendingOperation;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 
@@ -40,6 +41,7 @@ public class OperationProcessor extends MessageProcessor {
 
                 String productID = data.get(MessageCommonFields.PRODUCT_ID);
                 storedState.put(MessageCommonFields.PRODUCT_ID, productID);
+                storedState.put(LocalDefinitions.PRODUCT_RESERVATION_REQUESTED_FIELD, String.valueOf(true));
                 break;
             case Operations.BOOK_SHIPMENT_OPERATION:
                 if(storedState.containsKey(MessageCommonFields.BOOKED_SHIPPING)) {

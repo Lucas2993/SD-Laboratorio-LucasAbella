@@ -100,7 +100,7 @@ public class Main {
         smTemplate.addState(sendingProductState);
 
         /* Transiciones */
-        smTemplate.addTransition(initialState, reservedProductState, data -> data.containsKey(MessageCommonFields.PURCHASE_ID) && data.containsKey(MessageCommonFields.PRODUCT_ID));
+        smTemplate.addTransition(initialState, reservedProductState, data -> MapUtils.getBoolean(data, LocalDefinitions.PRODUCT_RESERVATION_REQUESTED_FIELD));
         smTemplate.addTransition(reservedProductState, reportedInfractionsState, data -> data.containsKey(MessageCommonFields.HAS_INFRACTIONS));
         smTemplate.addTransition(reportedInfractionsState, reportedPaymentState, data -> data.containsKey(MessageCommonFields.AUTHORIZED_PAYMENT));
         smTemplate.addTransition(reportedPaymentState, releasingProductState, data -> MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS));
