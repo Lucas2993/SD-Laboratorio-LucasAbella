@@ -6,13 +6,16 @@ import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageHandlerManager;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.types.ControlMessage;
 import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
+import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
+import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.deliveries.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.deliveries.sm.BookingDeliveryState;
@@ -37,15 +40,19 @@ public class Main {
             return;
         }
 
+        MessageHandlerManager messageHandlerManager = MessageHandlerManager.getInstance();
+
         CommunicationHandler communicationHandler = CommunicationHandler.getInstance();
+
+        MessageWorker.setMessageHandlerManager(messageHandlerManager);
 
         MessagePersistence messagePersistence = new MessagePersistence();
 
-        communicationHandler.registerHandler(messagePersistence, MessageType.GENERAL);
+        messageHandlerManager.registerHandler(messagePersistence, MessageType.GENERAL);
 
         ControlMessage controlMessage = new ControlMessage();
 
-        communicationHandler.registerHandler(controlMessage, MessageType.CONTROL);
+        messageHandlerManager.registerHandler(controlMessage, MessageType.CONTROL);
 
         if (!communicationHandler.connect()) {
             System.err.println("No se pudo establecer conexion con el servidor AMQP!");
@@ -100,6 +107,11 @@ public class Main {
         /* Datos faltante dentro del manejador de request generales */
         messagePersistence.setDataProvider(deliveriesDataProvider);
 
+        ServerStateManager serverStateManager = ServerStateManager.getInstance();
+        serverStateManager.setDataProvider(deliveriesDataProvider);
+        serverStateManager.setStateCollectionName(Definitions.DELIVERIES_STATE_COLLECTION_NAME);
+        serverStateManager.setIdField(MessageCommonFields.PURCHASE_ID);
+
         operationProcessor.setStateDataProvider(deliveriesDataProvider);
 
         SimulationController simulationController = SimulationController.getInstance();
@@ -107,7 +119,7 @@ public class Main {
         simulationController.setMessageProcessor(operationProcessor);
         simulationController.setDataProvider(deliveriesDataProvider);
         simulationController.setSmTemplate(smTemplate);
-        simulationController.setStateCollectionName(Definitions.DELIVERIES_STATE_COLLECTION_NAME);
+        simulationController.setServerStateManager(serverStateManager);
         simulationController.setSimulationConfiguration(simulationConfiguration);
 
         simulationController.init();
