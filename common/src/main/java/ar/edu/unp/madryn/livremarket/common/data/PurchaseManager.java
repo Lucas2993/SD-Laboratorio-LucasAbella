@@ -33,19 +33,19 @@ public class PurchaseManager {
         this.purchases = this.dataProvider.getCollection(Definitions.PURCHASES_COLLECTION_NAME, Purchase.class);
     }
 
-    public Purchase findProductByID(String id) {
+    public Purchase findPurchaseByID(String id) {
         return this.purchases.stream()
                 .filter(purchase -> purchase.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
 
-    public boolean updateProduct(Purchase purchase) {
+    public boolean updatePurchase(Purchase purchase) {
         // TODO No dejar este texto re duro...
         return this.dataProvider.updateElement("id", purchase.getId(), purchase, Definitions.PURCHASES_COLLECTION_NAME);
     }
 
-    public boolean storeProduct(Purchase purchase) {
+    public boolean storePurchase(Purchase purchase) {
         if(!this.purchases.contains(purchase)){
             this.purchases.add(purchase);
         }

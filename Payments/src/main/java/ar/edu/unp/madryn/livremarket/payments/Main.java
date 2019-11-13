@@ -16,10 +16,11 @@ import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
+import ar.edu.unp.madryn.livremarket.common.utils.Conditions;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.payments.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.payments.sm.ResolvingPaymentState;
-import ar.edu.unp.madryn.livremarket.payments.sm.reportingPaymentState;
+import ar.edu.unp.madryn.livremarket.payments.sm.ReportingPaymentState;
 import ar.edu.unp.madryn.livremarket.payments.utils.LocalDefinitions;
 import org.apache.commons.collections4.MapUtils;
 
@@ -82,14 +83,14 @@ public class Main {
         resolvingPaymentState.setSimulationConfiguration(simulationConfiguration);
         smTemplate.addState(resolvingPaymentState);
 
-        reportingPaymentState reportingPaymentState = new reportingPaymentState();
+        ReportingPaymentState reportingPaymentState = new ReportingPaymentState();
         reportingPaymentState.setCommunicationHandler(communicationHandler);
         smTemplate.addState(reportingPaymentState);
 
         /* Transiciones */
-        smTemplate.addTransition(initialState, resolvingPaymentState, data -> MapUtils.getBoolean(data, LocalDefinitions.REQUESTED_PAYMENT_FIELD));
-        smTemplate.addTransition(resolvingPaymentState, reportingPaymentState, data -> data.containsKey(MessageCommonFields.AUTHORIZED_PAYMENT));
-        smTemplate.addTransition(reportingPaymentState, finalState, data -> MapUtils.getBoolean(data, LocalDefinitions.REPORTED_PAYMENT_FIELD));
+        smTemplate.addTransition(initialState, resolvingPaymentState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REQUESTED_PAYMENT_FIELD));
+        smTemplate.addTransition(resolvingPaymentState, reportingPaymentState, data -> Conditions.mapContainsKey(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(reportingPaymentState, finalState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REPORTED_PAYMENT_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
         messagePersistence.setDataProvider(paymentsDataProvider);
@@ -99,7 +100,7 @@ public class Main {
         serverStateManager.setStateCollectionName(Definitions.PAYMENTS_STATE_COLLECTION_NAME);
         serverStateManager.setIdField(MessageCommonFields.PURCHASE_ID);
 
-        operationProcessor.setStateDataProvider(paymentsDataProvider);
+        operationProcessor.setServerStateManager(serverStateManager);
 
         SimulationController simulationController = SimulationController.getInstance();
 

@@ -16,12 +16,12 @@ import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
+import ar.edu.unp.madryn.livremarket.common.utils.Conditions;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.infractions.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.infractions.sm.ReportingInfractionsState;
 import ar.edu.unp.madryn.livremarket.infractions.sm.ResolvingInfractionsState;
 import ar.edu.unp.madryn.livremarket.infractions.utils.LocalDefinitions;
-import org.apache.commons.collections4.MapUtils;
 
 public class Main {
     public static void main(String[] args) {
@@ -87,9 +87,9 @@ public class Main {
         smTemplate.addState(reportingInfractionsState);
 
         /* Transiciones */
-        smTemplate.addTransition(initialState, resolvingInfractionsState, data -> MapUtils.getBoolean(data, LocalDefinitions.REQUESTED_INFRACTIONS_FIELD));
-        smTemplate.addTransition(resolvingInfractionsState, reportingInfractionsState, data -> data.containsKey(MessageCommonFields.HAS_INFRACTIONS));
-        smTemplate.addTransition(reportingInfractionsState, finalState, data -> MapUtils.getBoolean(data, LocalDefinitions.REPORTED_INFRACTIONS_FIELD));
+        smTemplate.addTransition(initialState, resolvingInfractionsState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REQUESTED_INFRACTIONS_FIELD));
+        smTemplate.addTransition(resolvingInfractionsState, reportingInfractionsState, data -> Conditions.mapContainsKey(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(reportingInfractionsState, finalState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REPORTED_INFRACTIONS_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
         messagePersistence.setDataProvider(infractionsDataProvider);
@@ -99,7 +99,7 @@ public class Main {
         serverStateManager.setStateCollectionName(Definitions.INFRACTIONS_STATE_COLLECTION_NAME);
         serverStateManager.setIdField(MessageCommonFields.PURCHASE_ID);
 
-        operationProcessor.setStateDataProvider(infractionsDataProvider);
+        operationProcessor.setServerStateManager(serverStateManager);
 
         SimulationController simulationController = SimulationController.getInstance();
 

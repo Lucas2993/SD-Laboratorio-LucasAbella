@@ -17,11 +17,11 @@ import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
+import ar.edu.unp.madryn.livremarket.common.utils.Conditions;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.products.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.products.sm.*;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
-import org.apache.commons.collections4.MapUtils;
 
 public class Main {
     public static void main(String[] args) {
@@ -106,18 +106,18 @@ public class Main {
         smTemplate.addState(sendingProductState);
 
         /* Transiciones */
-        smTemplate.addTransition(initialState, reservedProductState, data -> MapUtils.getBoolean(data, LocalDefinitions.PRODUCT_RESERVATION_REQUESTED_FIELD));
-        smTemplate.addTransition(reservedProductState, reportedInfractionsState, data -> data.containsKey(MessageCommonFields.HAS_INFRACTIONS));
-        smTemplate.addTransition(reportedInfractionsState, reportedPaymentState, data -> data.containsKey(MessageCommonFields.AUTHORIZED_PAYMENT));
-        smTemplate.addTransition(reportedPaymentState, releasingProductState, data -> MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS));
-        smTemplate.addTransition(reportedPaymentState, noInfractionsState, data -> !MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS));
-        smTemplate.addTransition(noInfractionsState, releasingProductState, data -> !MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
-        smTemplate.addTransition(noInfractionsState, authorizedPaymentState, data -> MapUtils.getBoolean(data, MessageCommonFields.AUTHORIZED_PAYMENT));
-        smTemplate.addTransition(releasingProductState, finalState, data -> !MapUtils.getBoolean(data, LocalDefinitions.RESERVED_PRODUCT_FIELD));
-        smTemplate.addTransition(authorizedPaymentState, waitingBookedShipmentState, data -> MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
-        smTemplate.addTransition(waitingBookedShipmentState, sendingProductState, data -> MapUtils.getBoolean(data, MessageCommonFields.BOOKED_SHIPPING));
-        smTemplate.addTransition(authorizedPaymentState, finalState, data -> !MapUtils.getBoolean(data, MessageCommonFields.NEEDS_SHIPPING));
-        smTemplate.addTransition(sendingProductState, finalState, data -> data.containsKey(LocalDefinitions.PRODUCT_SENT_FIELD));
+        smTemplate.addTransition(initialState, reservedProductState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.PRODUCT_RESERVATION_REQUESTED_FIELD));
+        smTemplate.addTransition(reservedProductState, reportedInfractionsState, data -> Conditions.mapContainsKey(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(reportedInfractionsState, reportedPaymentState, data -> Conditions.mapContainsKey(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(reportedPaymentState, releasingProductState, data -> Conditions.isMapBooleanTrue(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(reportedPaymentState, noInfractionsState, data -> Conditions.isMapBooleanFalse(data, MessageCommonFields.HAS_INFRACTIONS));
+        smTemplate.addTransition(noInfractionsState, releasingProductState, data -> Conditions.isMapBooleanFalse(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(noInfractionsState, authorizedPaymentState, data -> Conditions.isMapBooleanTrue(data, MessageCommonFields.AUTHORIZED_PAYMENT));
+        smTemplate.addTransition(releasingProductState, finalState, data -> Conditions.isMapBooleanFalse(data, LocalDefinitions.RESERVED_PRODUCT_FIELD));
+        smTemplate.addTransition(authorizedPaymentState, waitingBookedShipmentState, data -> Conditions.isMapBooleanTrue(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(waitingBookedShipmentState, sendingProductState, data -> Conditions.isMapBooleanTrue(data, MessageCommonFields.BOOKED_SHIPPING));
+        smTemplate.addTransition(authorizedPaymentState, finalState, data -> Conditions.isMapBooleanFalse(data, MessageCommonFields.NEEDS_SHIPPING));
+        smTemplate.addTransition(sendingProductState, finalState, data -> Conditions.mapContainsKey(data, LocalDefinitions.PRODUCT_SENT_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
         messagePersistence.setDataProvider(productsDataProvider);
@@ -127,8 +127,7 @@ public class Main {
         serverStateManager.setStateCollectionName(Definitions.PRODUCTS_STATE_COLLECTION_NAME);
         serverStateManager.setIdField(MessageCommonFields.PURCHASE_ID);
 
-
-        operationProcessor.setStateDataProvider(productsDataProvider);
+        operationProcessor.setServerStateManager(serverStateManager);
 
         SimulationController simulationController = SimulationController.getInstance();
 

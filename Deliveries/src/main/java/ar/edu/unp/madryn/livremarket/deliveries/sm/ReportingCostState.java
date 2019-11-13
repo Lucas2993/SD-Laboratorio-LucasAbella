@@ -8,6 +8,7 @@ import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.deliveries.utils.LocalDefinitions;
 import lombok.Setter;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,8 @@ public class ReportingCostState extends State {
         responseData.put(MessageCommonFields.PURCHASE_ID, purchaseID);
 
         communicationHandler.sendMessage(MessageType.RESULT, Definitions.PURCHASES_SERVER_NAME, responseData);
+
+        data.put(LocalDefinitions.REPORTED_COST_FIELD, String.valueOf(true));
 
         return true;
     }

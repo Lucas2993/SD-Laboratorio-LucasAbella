@@ -33,8 +33,6 @@ public class BookingDeliveryState extends State {
 
         System.out.println("Agendando envio! (ID = " + purchaseID + ")");
 
-        Map<String, String> resultData = new HashMap<>();
-
         DeliveryDetail deliveryDetail = new DeliveryDetail();
 
         deliveryDetail.setPurchaseID(purchaseID);

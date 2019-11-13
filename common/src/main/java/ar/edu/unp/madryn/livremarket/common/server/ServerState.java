@@ -8,9 +8,9 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerState {
-    @Getter
+    @Getter@Setter
     private String id;
-    @Getter
+    @Getter@Setter
     private Map<String,String> data;
     @Getter@Setter
     private boolean modified;
@@ -49,11 +49,11 @@ public class ServerState {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServerState that = (ServerState) o;
-        return getId().equals(that.getId());
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(id);
     }
 }

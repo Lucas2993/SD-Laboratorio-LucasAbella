@@ -1,21 +1,20 @@
 package ar.edu.unp.madryn.livremarket.infractions.simulation;
 
-import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
+import ar.edu.unp.madryn.livremarket.common.server.ServerState;
+import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.MessageProcessor;
 import ar.edu.unp.madryn.livremarket.common.simulation.PendingOperation;
-import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.infractions.utils.LocalDefinitions;
 import lombok.Setter;
-import org.apache.commons.collections4.MapUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class OperationProcessor extends MessageProcessor {
     @Setter
-    private DataProvider stateDataProvider;
+    private ServerStateManager serverStateManager;
 
     public OperationProcessor() {
     }
@@ -25,11 +24,11 @@ public class OperationProcessor extends MessageProcessor {
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
         /* Recuperar registro de la base de datos. */
-        Map<String,String> storedState = this.stateDataProvider.getDataFromCollectionByField(Definitions.INFRACTIONS_STATE_COLLECTION_NAME, MessageCommonFields.PURCHASE_ID, purchaseID);
+        ServerState serverState = this.serverStateManager.getServerStateByID(purchaseID);
 
-        if(MapUtils.isEmpty(storedState)){
-            storedState = new HashMap<>();
-            storedState.put(MessageCommonFields.PURCHASE_ID, purchaseID);
+        if(serverState == null){
+            serverState = new ServerState(purchaseID);
+            serverState.saveData(MessageCommonFields.PURCHASE_ID, purchaseID);
         }
 
         switch (operation) {
@@ -40,7 +39,7 @@ public class OperationProcessor extends MessageProcessor {
                     System.err.println("Error: Operacion duplicada! (ID =" + purchaseID + ")");
                 }
 
-                storedState.put(LocalDefinitions.REQUESTED_INFRACTIONS_FIELD, String.valueOf(true));
+                serverState.saveData(LocalDefinitions.REQUESTED_INFRACTIONS_FIELD, String.valueOf(true));
 
                 break;
             default:
@@ -49,7 +48,7 @@ public class OperationProcessor extends MessageProcessor {
 
         PendingOperation pendingOperation = new PendingOperation();
 
-        pendingOperation.setData(storedState);
+        pendingOperation.setData(serverState.getData());
 
         return pendingOperation;
     }

@@ -39,7 +39,7 @@ public class SelectingDeliveryState extends State {
 
         System.out.println("Seleccionando metodo de entrega! (ID = " + purchaseID + ")");
 
-        Purchase purchase = this.purchaseManager.findProductByID(purchaseID);
+        Purchase purchase = this.purchaseManager.findPurchaseByID(purchaseID);
 
         if(purchase == null){
             System.err.println("Error: La compra no pudo ser recuperada de la base de datos!");
@@ -57,7 +57,7 @@ public class SelectingDeliveryState extends State {
 
         purchase.setDeliveryDetail(deliveryDetail);
 
-        if(!this.purchaseManager.updateProduct(purchase)){
+        if(!this.purchaseManager.updatePurchase(purchase)){
             System.err.println("Error: La compra no pudo ser actualizada en la base de datos!");
             return false;
         }

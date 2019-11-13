@@ -13,11 +13,11 @@ import org.apache.commons.collections4.MapUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class reportingPaymentState extends State {
+public class ReportingPaymentState extends State {
     @Setter
     private CommunicationHandler communicationHandler;
 
-    public reportingPaymentState() {
+    public ReportingPaymentState() {
         super("reporting_payment");
     }
 

@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.common.server;
 
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ServerStateManager {
     /* Manejo local de estados */
 
     public boolean addServerState(ServerState serverState){
+        Logging.info("Se pretende agregar un estado con el id: " + serverState.getId());
         if(this.serverStates.contains(serverState)){
             return false;
         }
@@ -56,14 +58,17 @@ public class ServerStateManager {
         this.serverStates.stream()
                 .filter(ServerState::isModified)
                 .forEach(serverState -> {
+                    Logging.info("Estados registrados: " + serverStates.size());
                     serverState.setModified(false);
                     if(!serverState.isPersisted()){
                         serverState.setPersisted(true);
                         dataProvider.insertElement(serverState, stateCollectionName);
+                        Logging.info("Estado nuevo insertado!");
                         return;
                     }
 
                     dataProvider.updateElement(idField, serverState.getId(), serverState, stateCollectionName);
+                    Logging.info("Estado actualizado!");
                 });
 
         return true;

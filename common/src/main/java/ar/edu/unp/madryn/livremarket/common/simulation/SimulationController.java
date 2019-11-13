@@ -65,7 +65,7 @@ public class SimulationController {
         persistenceWorker.setServerStateManager(this.serverStateManager);
 
         // TODO Hacer que el intervalo de persistencia sea configurable
-        executorService.schedule(persistenceWorker, DEFAULT_STATE_PERSISTENCE_TASK_INTERVAL_MINUTES, TimeUnit.MINUTES);
+        executorService.scheduleWithFixedDelay(persistenceWorker, 0, DEFAULT_STATE_PERSISTENCE_TASK_INTERVAL_MINUTES, TimeUnit.MINUTES);
 
         return true;
     }
@@ -124,6 +124,8 @@ public class SimulationController {
 
     private boolean makeStep(PendingOperation pendingOperation){
         Map<String,String> pendingOperationData = pendingOperation.getData();
+
+        Logging.info("Informacion de la operacion pendiente: " + pendingOperationData);
 
         String purchaseID = pendingOperationData.get(MessageCommonFields.PURCHASE_ID);
 

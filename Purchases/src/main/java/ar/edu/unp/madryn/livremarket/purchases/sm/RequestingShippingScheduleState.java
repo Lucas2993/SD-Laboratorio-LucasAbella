@@ -39,7 +39,7 @@ public class RequestingShippingScheduleState extends State {
 
         if(!this.communicationHandler.sendMessage(MessageType.GENERAL, Definitions.DELIVERIES_SERVER_NAME, messageData)){
             // TODO Error de mensaje que no se pudo enviar
-            System.err.println("Error: No se pudo enviar el mensaje al servidor de infracciones!");
+            System.err.println("Error: No se pudo enviar el mensaje al servidor de envios!");
             return false;
         }
 

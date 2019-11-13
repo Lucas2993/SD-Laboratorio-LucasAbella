@@ -1,6 +1,9 @@
 package ar.edu.unp.madryn.livremarket.common.sm;
 
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Getter;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +108,7 @@ public class Template {
      */
     Boolean hasTransition(State from, Map<String, String> data) {
         return this.transitions.stream()
-                .anyMatch(transition -> transition.getFrom().equals(from) && transition.condition(data));
+                .anyMatch(transition -> transition.getFrom().equals(from) && BooleanUtils.isTrue(transition.condition(data)));
     }
 
     /**

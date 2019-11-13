@@ -1,27 +1,25 @@
 package ar.edu.unp.madryn.livremarket.purchases.simulation;
 
 import ar.edu.unp.madryn.livremarket.common.data.PurchaseManager;
-import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
 import ar.edu.unp.madryn.livremarket.common.messages.Results;
 import ar.edu.unp.madryn.livremarket.common.models.Purchase;
+import ar.edu.unp.madryn.livremarket.common.server.ServerState;
+import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.MessageProcessor;
 import ar.edu.unp.madryn.livremarket.common.simulation.PendingOperation;
-import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import lombok.Setter;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class OperationProcessor extends MessageProcessor {
     @Setter
     private PurchaseManager purchaseManager;
     @Setter
-    private DataProvider stateDataProvider;
+    private ServerStateManager serverStateManager;
 
     public OperationProcessor() {
     }
@@ -30,20 +28,20 @@ public class OperationProcessor extends MessageProcessor {
     public PendingOperation processGeneralMessage(String operation, Map<String, String> data) {
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        Map<String,String> storedState = new HashMap<>();
+        ServerState serverState = new ServerState(purchaseID);
 
         Purchase purchase = null;
 
         if(!StringUtils.isEmpty(purchaseID)){
             /* Recuperar compra de la base de datos */
-            purchase = this.purchaseManager.findProductByID(purchaseID);
+            purchase = this.purchaseManager.findPurchaseByID(purchaseID);
             if(purchase == null){
                 System.err.println("Error: El ID de la compra es invalido!");
                 return null;
             }
 
-            /* Recuperar registro de la base de datos. */
-            storedState = this.stateDataProvider.getDataFromCollectionByField(Definitions.PURCHASES_STATE_COLLECTION_NAME, MessageCommonFields.PURCHASE_ID, purchaseID);
+            /* Recuperar registro. */
+            serverState = this.serverStateManager.getServerStateByID(purchaseID);
         }
 
         /* Actualizar estado interno. */
@@ -68,13 +66,13 @@ public class OperationProcessor extends MessageProcessor {
 
                 purchase.setProductID(productID);
 
-                this.purchaseManager.storeProduct(purchase);
+                this.purchaseManager.storePurchase(purchase);
 
                 /* Actualizacion del estado */
-                storedState.put(MessageCommonFields.PURCHASE_ID, purchase.getId());
-                storedState.put(MessageCommonFields.CLIENT_ID, clientID);
-                storedState.put(MessageCommonFields.PRODUCT_ID, productID);
-                storedState.put(MessageCommonFields.PRODUCT_AMOUNT, String.valueOf(amount));
+                serverState.saveData(MessageCommonFields.PURCHASE_ID, purchase.getId());
+                serverState.saveData(MessageCommonFields.CLIENT_ID, clientID);
+                serverState.saveData(MessageCommonFields.PRODUCT_ID, productID);
+                serverState.saveData(MessageCommonFields.PRODUCT_AMOUNT, String.valueOf(amount));
 
                 break;
             default:
@@ -84,7 +82,7 @@ public class OperationProcessor extends MessageProcessor {
 
         PendingOperation pendingOperation = new PendingOperation();
 
-        pendingOperation.setData(storedState);
+        pendingOperation.setData(serverState.getData());
 
         return pendingOperation;
     }
@@ -94,40 +92,40 @@ public class OperationProcessor extends MessageProcessor {
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
         /* Recuperar registro de la base de datos. */
-        Map<String, String> storedState = this.stateDataProvider.getDataFromCollectionByField(Definitions.PRODUCTS_STATE_COLLECTION_NAME, MessageCommonFields.PURCHASE_ID, purchaseID);
+        ServerState serverState = this.serverStateManager.getServerStateByID(purchaseID);
 
-        if (MapUtils.isEmpty(storedState)) {
-            storedState = new HashMap<>();
+        if (serverState == null) {
+            serverState = new ServerState(purchaseID);
         }
 
         /* Actualizar estado interno. */
         switch (id) {
             case Results.DELIVERY_COST_REFERENCE_ID:
-                if(storedState.containsKey(MessageCommonFields.DELIVERY_COST)) {
+                if(serverState.containsData(MessageCommonFields.DELIVERY_COST)) {
                     // TODO Error de informacion duplicada
                     return null;
                 }
                 String deliveryCost = data.get(MessageCommonFields.DELIVERY_COST);
 
-                storedState.put(MessageCommonFields.DELIVERY_COST, deliveryCost);
+                serverState.saveData(MessageCommonFields.DELIVERY_COST, deliveryCost);
                 break;
             case Results.INFRACTIONS_REFERENCE_ID:
-                if(storedState.containsKey(MessageCommonFields.HAS_INFRACTIONS)) {
+                if(serverState.containsData(MessageCommonFields.HAS_INFRACTIONS)) {
                     // TODO Error de informacion duplicada
                     return null;
                 }
                 String infractionsResult = data.get(MessageCommonFields.HAS_INFRACTIONS);
 
-                storedState.put(MessageCommonFields.HAS_INFRACTIONS, infractionsResult);
+                serverState.saveData(MessageCommonFields.HAS_INFRACTIONS, infractionsResult);
                 break;
             case Results.PAYMENT_AUTHORIZATION_REFERENCE_ID:
-                if(storedState.containsKey(MessageCommonFields.AUTHORIZED_PAYMENT)) {
+                if(serverState.containsData(MessageCommonFields.AUTHORIZED_PAYMENT)) {
                     // TODO Error de informacion duplicada
                     return null;
                 }
                 String paymentResult = data.get(MessageCommonFields.AUTHORIZED_PAYMENT);
 
-                storedState.put(MessageCommonFields.AUTHORIZED_PAYMENT, paymentResult);
+                serverState.saveData(MessageCommonFields.AUTHORIZED_PAYMENT, paymentResult);
                 break;
             default:
                 System.err.println("Error: ID de informacion '" + id + "' no reconocido!");
@@ -136,7 +134,7 @@ public class OperationProcessor extends MessageProcessor {
 
         PendingOperation pendingOperation = new PendingOperation();
 
-        pendingOperation.setData(storedState);
+        pendingOperation.setData(serverState.getData());
 
         return pendingOperation;
     }

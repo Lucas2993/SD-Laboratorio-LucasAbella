@@ -1,8 +1,6 @@
 package ar.edu.unp.madryn.livremarket.deliveries.sm;
 
-import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
-import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import lombok.Setter;

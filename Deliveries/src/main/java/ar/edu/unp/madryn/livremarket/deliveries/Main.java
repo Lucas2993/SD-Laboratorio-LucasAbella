@@ -16,14 +16,11 @@ import ar.edu.unp.madryn.livremarket.common.sm.FinalState;
 import ar.edu.unp.madryn.livremarket.common.sm.InitialState;
 import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
+import ar.edu.unp.madryn.livremarket.common.utils.Conditions;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.deliveries.simulation.OperationProcessor;
-import ar.edu.unp.madryn.livremarket.deliveries.sm.BookingDeliveryState;
-import ar.edu.unp.madryn.livremarket.deliveries.sm.CalculatingCostState;
-import ar.edu.unp.madryn.livremarket.deliveries.sm.ReportingBookedDeliveryState;
-import ar.edu.unp.madryn.livremarket.deliveries.sm.ReportingCostState;
+import ar.edu.unp.madryn.livremarket.deliveries.sm.*;
 import ar.edu.unp.madryn.livremarket.deliveries.utils.LocalDefinitions;
-import org.apache.commons.collections4.MapUtils;
 
 public class Main {
     public static void main(String[] args) {
@@ -88,6 +85,9 @@ public class Main {
         reportingCostState.setCommunicationHandler(communicationHandler);
         smTemplate.addState(reportingCostState);
 
+        ReportedCostState reportedCostState = new ReportedCostState();
+        smTemplate.addState(reportedCostState);
+
         BookingDeliveryState bookingDeliveryState = new BookingDeliveryState();
         bookingDeliveryState.setDataProvider(deliveriesDataProvider);
         smTemplate.addState(bookingDeliveryState);
@@ -97,11 +97,12 @@ public class Main {
         smTemplate.addState(reportingBookedDeliveryState);
 
         /* Transiciones */
-        smTemplate.addTransition(initialState, calculatingCostState, data -> MapUtils.getBoolean(data, LocalDefinitions.REQUESTED_COST_FIELD));
-        smTemplate.addTransition(calculatingCostState, reportingCostState, data -> data.containsKey(MessageCommonFields.DELIVERY_COST));
-        smTemplate.addTransition(reportingCostState, bookingDeliveryState, data -> MapUtils.getBoolean(data, LocalDefinitions.REPORTED_BOOKED_DELIVERY_FIELD));
-        smTemplate.addTransition(bookingDeliveryState, reportingBookedDeliveryState, data -> MapUtils.getBoolean(data, LocalDefinitions.BOOKED_DELIVERY_FIELD));
-        smTemplate.addTransition(reportingBookedDeliveryState, finalState, data -> MapUtils.getBoolean(data, LocalDefinitions.REPORTED_BOOKED_DELIVERY_FIELD));
+        smTemplate.addTransition(initialState, calculatingCostState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REQUESTED_COST_FIELD));
+        smTemplate.addTransition(calculatingCostState, reportingCostState, data -> Conditions.mapContainsKey(data, MessageCommonFields.DELIVERY_COST));
+        smTemplate.addTransition(reportingCostState, reportedCostState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REPORTED_COST_FIELD));
+        smTemplate.addTransition(reportedCostState, bookingDeliveryState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REQUESTED_DELIVERY_BOOK_FIELD));
+        smTemplate.addTransition(bookingDeliveryState, reportingBookedDeliveryState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.BOOKED_DELIVERY_FIELD));
+        smTemplate.addTransition(reportingBookedDeliveryState, finalState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REPORTED_BOOKED_DELIVERY_FIELD));
 
 
         /* Datos faltante dentro del manejador de request generales */
@@ -112,7 +113,7 @@ public class Main {
         serverStateManager.setStateCollectionName(Definitions.DELIVERIES_STATE_COLLECTION_NAME);
         serverStateManager.setIdField(MessageCommonFields.PURCHASE_ID);
 
-        operationProcessor.setStateDataProvider(deliveriesDataProvider);
+        operationProcessor.setServerStateManager(serverStateManager);
 
         SimulationController simulationController = SimulationController.getInstance();
 
