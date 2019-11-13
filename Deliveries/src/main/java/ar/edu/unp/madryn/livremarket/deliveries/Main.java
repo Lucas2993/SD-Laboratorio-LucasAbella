@@ -128,6 +128,9 @@ public class Main {
 
         messagePersistence.setSimulationController(simulationController);
 
+        controlMessage.setServerStateManager(serverStateManager);
+        controlMessage.setSimulationController(simulationController);
+
         communicationHandler.registerReceiver(Definitions.DELIVERIES_SERVER_NAME);
 
         Logging.info("Escuchando mensajes (Ctrl + C para cerrar)...");

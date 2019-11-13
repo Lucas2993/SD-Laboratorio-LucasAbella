@@ -142,6 +142,7 @@ public class Main {
 
         messagePersistence.setSimulationController(simulationController);
 
+        controlMessage.setServerStateManager(serverStateManager);
         controlMessage.setSimulationController(simulationController);
 
         productManager.setDataProvider(commonDataProvider);

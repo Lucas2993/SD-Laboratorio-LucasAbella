@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.messages.types;
 
 import ar.edu.unp.madryn.livremarket.common.messages.Controls;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageHandler;
+import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.common.utils.Logging;
@@ -13,6 +14,8 @@ import java.util.Map;
 public class ControlMessage implements MessageHandler {
     @Setter
     private SimulationController simulationController;
+    @Setter
+    private ServerStateManager serverStateManager;
 
     public ControlMessage() {
     }
@@ -36,6 +39,14 @@ public class ControlMessage implements MessageHandler {
                     else {
                         Logging.error("No hay pasos para realizar!");
                     }
+                }
+                break;
+            case Controls.DO_PERSIST:
+                if(this.serverStateManager.storeStates()){
+                    Logging.info("Estado guardado exitosamente!");
+                }
+                else {
+                    Logging.error("Error: El estado no pudo ser guardado!");
                 }
                 break;
             default:

@@ -182,6 +182,9 @@ public class Main {
 
         messagePersistence.setSimulationController(simulationController);
 
+        controlMessage.setServerStateManager(serverStateManager);
+        controlMessage.setSimulationController(simulationController);
+
         purchaseManager.setDataProvider(commonDataProvider);
 
         purchaseManager.load();
