@@ -20,31 +20,28 @@ public class MessageWorker extends Thread {
 
     private String message;
 
-    private String workerID;
-
     @Setter
     private static MessageHandlerManager messageHandlerManager;
 
     public MessageWorker(String consumerTag, String message) {
         this.consumerTag = consumerTag;
         this.message = message;
-        this.workerID = "[Worker: " + this.getId() + "]";
     }
 
     @Override
     public void run() {
-        Logging.info(this.workerID + " Mensaje recibido! con el topico '" + consumerTag + "' (Contenido = " + message + ")");
+        Logging.info("Mensaje recibido! con el topico '" + consumerTag + "' (Contenido = " + message + ")");
 
         String[] tags = this.consumerTag.split(ROUTING_KEY_SEPARATOR_REGEX);
         if (ArrayUtils.isEmpty(tags)) {
-            Logging.error(this.workerID + " Error: El mensaje no tiene topicos!");
+            Logging.error("Error: El mensaje no tiene topicos!");
             return;
         }
 
         String type = tags[0];
         MessageType messageType = MessageType.fromTopic(type);
         if (messageType == null) {
-            Logging.error(this.workerID + " Error: Tipo de mensaje no reconocido!");
+            Logging.error("Error: Tipo de mensaje no reconocido!");
             return;
         }
 
@@ -57,11 +54,11 @@ public class MessageWorker extends Thread {
 
         MessageHandler handler = messageHandlerManager.getHandlerForType(messageType);
         if (handler == null) {
-            Logging.error(this.workerID + " Error: No existe un handler para el tipo de mensaje '" + messageType + "'!");
+            Logging.error("Error: No existe un handler para el tipo de mensaje '" + messageType + "'!");
             return;
         }
 
         handler.handle(data);
-        Logging.info(this.workerID + " Procesamiento finalizado!");
+        Logging.info("Procesamiento finalizado!");
     }
 }
