@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Results;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.deliveries.utils.LocalDefinitions;
 import lombok.Setter;
 
@@ -29,7 +30,7 @@ public class ReportingBookedDeliveryState extends State {
     public Boolean process(Map<String, String> data) {
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Informando envio agendado! (ID = " + purchaseID + ")");
+        Logging.info("Informando envio agendado! (ID = " + purchaseID + ")");
 
         Map<String, String> resultData = new HashMap<>();
 
@@ -38,7 +39,7 @@ public class ReportingBookedDeliveryState extends State {
 
         communicationHandler.sendMessage(MessageType.RESULT, Definitions.PRODUCTS_SERVER_NAME, resultData);
 
-        System.out.println("Envio agendado informado! (ID = " + purchaseID + ")");
+        Logging.info("Envio agendado informado! (ID = " + purchaseID + ")");
 
         data.put(LocalDefinitions.REPORTED_BOOKED_DELIVERY_FIELD, String.valueOf(true));
 

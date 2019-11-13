@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.purchases.sm;
 
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class SelectingProductState extends State {
         Obtener un producto aleatorio
          */
 
-        System.out.println("Seleccionando producto!");
+        Logging.info("Seleccionando producto!");
 
         return true;
     }

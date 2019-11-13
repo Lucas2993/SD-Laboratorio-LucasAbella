@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.deliveries.models.DeliveryDetail;
 import ar.edu.unp.madryn.livremarket.deliveries.utils.LocalDefinitions;
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class BookingDeliveryState extends State {
     public Boolean process(Map<String, String> data) {
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Agendando envio! (ID = " + purchaseID + ")");
+        Logging.info("Agendando envio! (ID = " + purchaseID + ")");
 
         DeliveryDetail deliveryDetail = new DeliveryDetail();
 
@@ -41,7 +42,7 @@ public class BookingDeliveryState extends State {
 
         this.dataProvider.insertElement(deliveryDetail, Definitions.BOOKED_DELIVERIES_COLLECTION_NAME);
 
-        System.out.println("Envio agendado! (ID =" + purchaseID + ")");
+        Logging.info("Envio agendado! (ID =" + purchaseID + ")");
 
         data.put(LocalDefinitions.BOOKED_DELIVERY_FIELD, String.valueOf(true));
 

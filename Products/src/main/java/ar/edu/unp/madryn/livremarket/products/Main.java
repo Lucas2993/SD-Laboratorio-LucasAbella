@@ -19,6 +19,7 @@ import ar.edu.unp.madryn.livremarket.common.sm.Template;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Conditions;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.products.simulation.OperationProcessor;
 import ar.edu.unp.madryn.livremarket.products.sm.*;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
@@ -28,13 +29,13 @@ public class Main {
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
         ConfigurationSection connectionConfiguration = configurationManager.loadConfiguration(Definitions.CONNECTION_CONFIGURATION_FILE, ConfigurationSection.CONFIGURATION_FOLDER);
         if (connectionConfiguration == null) {
-            System.err.println("Error: La configuracion de la conexion a la base de datos no existe!");
+            Logging.error("Error: La configuracion de la conexion a la base de datos no existe!");
             return;
         }
 
         ConfigurationSection simulationConfiguration = configurationManager.loadConfiguration(Definitions.SIMULATION_CONFIGURATION_FILE, ConfigurationSection.CONFIGURATION_FOLDER);
         if (simulationConfiguration == null) {
-            System.err.println("Error: La configuracion de la simulacion no existe!");
+            Logging.error("Error: La configuracion de la simulacion no existe!");
             return;
         }
 
@@ -53,7 +54,7 @@ public class Main {
         messageHandlerManager.registerHandler(controlMessage, MessageType.CONTROL);
 
         if (!communicationHandler.connect()) {
-            System.err.println("No se pudo establecer conexion con el servidor AMQP!");
+            Logging.error("No se pudo establecer conexion con el servidor AMQP!");
             return;
         }
 
@@ -63,7 +64,7 @@ public class Main {
         DataProvider productsDataProvider = dataProviderFactory.getProviderInstance(connectionConfiguration, Definitions.PRODUCTS_SERVER_NAME);
 
         if(!commonDataProvider.connect() || !productsDataProvider.connect()){
-            System.err.println("No se pudo establecer conexion con el servidor de base de datos!");
+            Logging.error("No se pudo establecer conexion con el servidor de base de datos!");
             return;
         }
 
@@ -149,6 +150,6 @@ public class Main {
 
         communicationHandler.registerReceiver(Definitions.PRODUCTS_SERVER_NAME);
 
-        System.out.println("Escuchando mensajes (Ctrl + C para cerrar)...");
+        Logging.info("Escuchando mensajes (Ctrl + C para cerrar)...");
     }
 }

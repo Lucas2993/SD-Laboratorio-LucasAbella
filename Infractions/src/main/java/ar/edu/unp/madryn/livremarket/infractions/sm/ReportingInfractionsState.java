@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Results;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.infractions.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -33,7 +34,7 @@ public class ReportingInfractionsState extends State {
 
         boolean hasInfraction = MapUtils.getBoolean(data, MessageCommonFields.HAS_INFRACTIONS, false);
 
-        System.out.println("Informando infracciones (ID =" + purchaseID + ")");
+        Logging.info("Informando infracciones (ID =" + purchaseID + ")");
 
         Map<String, String> responseData = new HashMap<>();
 

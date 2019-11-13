@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Results;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.deliveries.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.lang3.BooleanUtils;
@@ -33,7 +34,7 @@ public class ReportingCostState extends State {
 
         String costString = data.get(MessageCommonFields.DELIVERY_COST);
 
-        System.out.println("Informando costo de envio (ID =" + purchaseID + ")");
+        Logging.info("Informando costo de envio (ID =" + purchaseID + ")");
 
         Map<String, String> responseData = new HashMap<>();
 

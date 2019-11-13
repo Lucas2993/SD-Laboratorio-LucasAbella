@@ -7,6 +7,7 @@ import ar.edu.unp.madryn.livremarket.common.models.DeliveryDetail;
 import ar.edu.unp.madryn.livremarket.common.models.DeliveryMethod;
 import ar.edu.unp.madryn.livremarket.common.models.Purchase;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Setter;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -37,12 +38,12 @@ public class SelectingDeliveryState extends State {
 
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Seleccionando metodo de entrega! (ID = " + purchaseID + ")");
+        Logging.info("Seleccionando metodo de entrega! (ID = " + purchaseID + ")");
 
         Purchase purchase = this.purchaseManager.findPurchaseByID(purchaseID);
 
         if(purchase == null){
-            System.err.println("Error: La compra no pudo ser recuperada de la base de datos!");
+            Logging.error("Error: La compra no pudo ser recuperada de la base de datos!");
             return false;
         }
 
@@ -58,13 +59,13 @@ public class SelectingDeliveryState extends State {
         purchase.setDeliveryDetail(deliveryDetail);
 
         if(!this.purchaseManager.updatePurchase(purchase)){
-            System.err.println("Error: La compra no pudo ser actualizada en la base de datos!");
+            Logging.error("Error: La compra no pudo ser actualizada en la base de datos!");
             return false;
         }
 
         data.put(MessageCommonFields.NEEDS_SHIPPING, String.valueOf(deliveryMethod.equals(DeliveryMethod.MAIL)));
 
-        System.out.println("Metodo de entrega seleccionado correctamente, es '" + deliveryMethod + "' (ID = " + purchaseID + ")");
+        Logging.info("Metodo de entrega seleccionado correctamente, es '" + deliveryMethod + "' (ID = " + purchaseID + ")");
 
         return true;
     }

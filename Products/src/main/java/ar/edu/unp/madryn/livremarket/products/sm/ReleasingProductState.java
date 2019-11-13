@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -37,16 +38,16 @@ public class ReleasingProductState extends State {
         int amount = MapUtils.getIntValue(data, MessageCommonFields.PRODUCT_AMOUNT, 1);
 
         if (StringUtils.isEmpty(productID)) {
-            System.err.println("Error: No existe un ID de producto a liberar!");
+            Logging.error("Error: No existe un ID de producto a liberar!");
             return false;
         }
 
-        System.out.println("Liberando producto! (ID = " + purchaseID + ")");
+        Logging.info("Liberando producto! (ID = " + purchaseID + ")");
 
         Product product = productManager.findProductByID(productID);
 
         if(product == null){
-            System.err.println("Error: El producto a liberar con ID " + productID + " no se encuentra registrado!");
+            Logging.error("Error: El producto a liberar con ID " + productID + " no se encuentra registrado!");
             return false;
         }
 
@@ -55,7 +56,7 @@ public class ReleasingProductState extends State {
 
         this.productManager.updateProduct(product);
 
-        System.out.println("Producto liberado correctamente! (ID = " + purchaseID + ")");
+        Logging.info("Producto liberado correctamente! (ID = " + purchaseID + ")");
 
         data.put(LocalDefinitions.RESERVED_PRODUCT_FIELD, String.valueOf(false));
 

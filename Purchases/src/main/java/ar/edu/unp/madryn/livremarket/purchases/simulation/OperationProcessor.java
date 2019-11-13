@@ -9,6 +9,7 @@ import ar.edu.unp.madryn.livremarket.common.server.ServerState;
 import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.MessageProcessor;
 import ar.edu.unp.madryn.livremarket.common.simulation.PendingOperation;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -36,7 +37,7 @@ public class OperationProcessor extends MessageProcessor {
             /* Recuperar compra de la base de datos */
             purchase = this.purchaseManager.findPurchaseByID(purchaseID);
             if(purchase == null){
-                System.err.println("Error: El ID de la compra es invalido!");
+                Logging.error("Error: El ID de la compra es invalido!");
                 return null;
             }
 
@@ -48,7 +49,7 @@ public class OperationProcessor extends MessageProcessor {
         switch (operation) {
             case Operations.INIT_PURCHASE:
                 if(purchase != null){
-                    System.err.println("Error: La compra ya existe!");
+                    Logging.error("Error: La compra ya existe!");
                     return null;
                 }
                 String clientID = data.get(MessageCommonFields.CLIENT_ID);
@@ -76,7 +77,7 @@ public class OperationProcessor extends MessageProcessor {
 
                 break;
             default:
-                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
+                Logging.error("Error: Operacion '" + operation + "' no reconocida!");
                 return null;
         }
 
@@ -128,7 +129,7 @@ public class OperationProcessor extends MessageProcessor {
                 serverState.saveData(MessageCommonFields.AUTHORIZED_PAYMENT, paymentResult);
                 break;
             default:
-                System.err.println("Error: ID de informacion '" + id + "' no reconocido!");
+                Logging.error("Error: ID de informacion '" + id + "' no reconocido!");
                 return null;
         }
 

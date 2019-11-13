@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.products.sm;
 
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class NoInfractionsState extends State {
 
     @Override
     public Boolean process(Map<String, String> data) {
-        System.out.println("La compra no tiene infracciones!");
+        Logging.info("La compra no tiene infracciones!");
 
         return true;
     }

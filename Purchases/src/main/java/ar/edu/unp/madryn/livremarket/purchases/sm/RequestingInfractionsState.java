@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.purchases.utils.LocalDefinitions;
 import lombok.Setter;
 
@@ -33,7 +34,7 @@ public class RequestingInfractionsState extends State {
          */
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Solicitando infracciones! (ID = " + purchaseID + ")");
+        Logging.info("Solicitando infracciones! (ID = " + purchaseID + ")");
 
         Map<String,String> messageData = new HashMap<>();
 
@@ -42,7 +43,7 @@ public class RequestingInfractionsState extends State {
 
         if(!this.communicationHandler.sendMessage(MessageType.GENERAL, Definitions.INFRACTIONS_SERVER_NAME, messageData)){
             // TODO Error de mensaje que no se pudo enviar
-            System.err.println("Error: No se pudo enviar el mensaje al servidor de infracciones!");
+            Logging.error("Error: No se pudo enviar el mensaje al servidor de infracciones!");
             return false;
         }
 

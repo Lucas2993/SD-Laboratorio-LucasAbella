@@ -33,17 +33,17 @@ public class OperationProcessor extends MessageProcessor {
 
         switch (operation) {
             case Operations.GET_INFRACTIONS_OPERATION:
-                System.out.println("Solicitud de infracciones recibida! (ID =" + purchaseID + ")");
+                Logging.info("Solicitud de infracciones recibida! (ID =" + purchaseID + ")");
 
                 if(data.containsKey(LocalDefinitions.REQUESTED_INFRACTIONS_FIELD)){
-                    System.err.println("Error: Operacion duplicada! (ID =" + purchaseID + ")");
+                    Logging.error("Error: Operacion duplicada! (ID =" + purchaseID + ")");
                 }
 
                 serverState.saveData(LocalDefinitions.REQUESTED_INFRACTIONS_FIELD, String.valueOf(true));
 
                 break;
             default:
-                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
+                Logging.error("Error: Operacion '" + operation + "' no reconocida!");
         }
 
         PendingOperation pendingOperation = new PendingOperation();

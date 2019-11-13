@@ -5,6 +5,7 @@ import ar.edu.unp.madryn.livremarket.common.data.PurchaseManager;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.models.*;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Setter;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -35,12 +36,12 @@ public class SelectingPaymentState extends State {
 
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Seleccionando metodo de pago! (ID = " + purchaseID + ")");
+        Logging.info("Seleccionando metodo de pago! (ID = " + purchaseID + ")");
 
         Purchase purchase = this.purchaseManager.findPurchaseByID(purchaseID);
 
         if(purchase == null){
-            System.err.println("Error: La compra no pudo ser recuperada de la base de datos!");
+            Logging.error("Error: La compra no pudo ser recuperada de la base de datos!");
             return false;
         }
 
@@ -56,13 +57,13 @@ public class SelectingPaymentState extends State {
         purchase.setPaymentDetail(paymentDetail);
 
         if(!this.purchaseManager.updatePurchase(purchase)){
-            System.err.println("Error: La compra no pudo ser actualizada en la base de datos!");
+            Logging.error("Error: La compra no pudo ser actualizada en la base de datos!");
             return false;
         }
 
         data.put(MessageCommonFields.PAYMENT_METHOD, paymentMethod.toString());
 
-        System.out.println("Metodo de pago seleccionado correctamente, es '" + paymentMethod + "' (ID = " + purchaseID + ")");
+        Logging.info("Metodo de pago seleccionado correctamente, es '" + paymentMethod + "' (ID = " + purchaseID + ")");
 
         return true;
     }

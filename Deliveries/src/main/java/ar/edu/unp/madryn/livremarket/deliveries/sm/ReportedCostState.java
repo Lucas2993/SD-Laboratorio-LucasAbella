@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.deliveries.sm;
 
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class ReportedCostState extends State {
 
     @Override
     public Boolean process(Map<String, String> data) {
-        System.out.println("Costo de envio informado!");
+        Logging.info("Costo de envio informado!");
         return true;
     }
 }

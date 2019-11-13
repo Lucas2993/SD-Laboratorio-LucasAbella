@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.purchases.sm;
 
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class PurchaseCompletedState extends State {
     public Boolean process(Map<String, String> data) {
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Compra finalizada exitosamente! (ID = " + purchaseID + ")");
+        Logging.info("Compra finalizada exitosamente! (ID = " + purchaseID + ")");
 
         return true;
     }

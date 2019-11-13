@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.models.Product;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -37,28 +38,28 @@ public class ReservedProductState extends State {
         int amount = MapUtils.getIntValue(data, MessageCommonFields.PRODUCT_AMOUNT, 1);
 
         if (StringUtils.isEmpty(productID)) {
-            System.err.println("Error: No existe un ID de producto a reservar!");
+            Logging.error("Error: No existe un ID de producto a reservar!");
             return false;
         }
 
-        System.out.println("Reservando producto! (ID = " + purchaseID + ")");
+        Logging.info("Reservando producto! (ID = " + purchaseID + ")");
 
         Product product = productManager.findProductByID(productID);
 
         if(product == null){
-            System.err.println("Error: El producto a reservar con ID " + productID + " no se encuentra registrado!");
+            Logging.error("Error: El producto a reservar con ID " + productID + " no se encuentra registrado!");
             return false;
         }
 
         // Descontar Stock.
         if(!product.subtractStock(amount)){
-            System.err.println("Error: El producto a reservar con ID " + productID + " no tiene suficiente stock!");
+            Logging.error("Error: El producto a reservar con ID " + productID + " no tiene suficiente stock!");
             return false;
         }
 
         this.productManager.updateProduct(product);
 
-        System.out.println("Producto reservado correctamente! (ID = " + purchaseID + ")");
+        Logging.info("Producto reservado correctamente! (ID = " + purchaseID + ")");
 
         data.put(LocalDefinitions.RESERVED_PRODUCT_FIELD, String.valueOf(true));
 

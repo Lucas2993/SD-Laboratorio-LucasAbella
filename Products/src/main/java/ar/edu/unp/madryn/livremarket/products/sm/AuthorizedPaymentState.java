@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.products.sm;
 
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class AuthorizedPaymentState extends State {
 
     @Override
     public Boolean process(Map<String, String> data) {
-        System.out.println("La compra tiene el pago autorizado!");
+        Logging.info("La compra tiene el pago autorizado!");
 
         return true;
     }

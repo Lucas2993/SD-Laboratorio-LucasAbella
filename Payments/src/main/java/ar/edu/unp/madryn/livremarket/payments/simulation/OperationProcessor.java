@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.server.ServerState;
 import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.MessageProcessor;
 import ar.edu.unp.madryn.livremarket.common.simulation.PendingOperation;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.payments.utils.LocalDefinitions;
 import lombok.Setter;
 
@@ -32,17 +33,17 @@ public class OperationProcessor extends MessageProcessor {
 
         switch (operation) {
             case Operations.AUTHORIZE_PAYMENT_OPERATION:
-                System.out.println("Solicitud de autorizacion de pago recibida! (ID =" + purchaseID + ")");
+                Logging.info("Solicitud de autorizacion de pago recibida! (ID =" + purchaseID + ")");
 
                 if(data.containsKey(LocalDefinitions.REQUESTED_PAYMENT_FIELD)){
-                    System.err.println("Error: Operacion duplicada! (ID =" + purchaseID + ")");
+                    Logging.error("Error: Operacion duplicada! (ID =" + purchaseID + ")");
                 }
 
                 serverState.saveData(LocalDefinitions.REQUESTED_PAYMENT_FIELD, String.valueOf(true));
 
                 break;
             default:
-                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
+                Logging.error("Error: Operacion '" + operation + "' no reconocida!");
         }
 
         PendingOperation pendingOperation = new PendingOperation();

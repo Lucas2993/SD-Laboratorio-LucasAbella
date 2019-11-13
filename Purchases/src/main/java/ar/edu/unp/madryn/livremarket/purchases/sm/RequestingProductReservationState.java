@@ -6,6 +6,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.Operations;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.purchases.utils.LocalDefinitions;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -34,7 +35,7 @@ public class RequestingProductReservationState extends State {
          */
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Solicitando la reserva del producto! (ID = " + purchaseID + ")");
+        Logging.info("Solicitando la reserva del producto! (ID = " + purchaseID + ")");
 
         String productID = data.get(MessageCommonFields.PRODUCT_ID);
         int amount = MapUtils.getIntValue(data, MessageCommonFields.PRODUCT_AMOUNT, 1);
@@ -48,7 +49,7 @@ public class RequestingProductReservationState extends State {
 
         if(!this.communicationHandler.sendMessage(MessageType.GENERAL, Definitions.PRODUCTS_SERVER_NAME, messageData)){
             // TODO Error de mensaje que no se pudo enviar
-            System.err.println("Error: No se pudo enviar el mensaje al servidor de productos!");
+            Logging.error("Error: No se pudo enviar el mensaje al servidor de productos!");
             return false;
         }
 

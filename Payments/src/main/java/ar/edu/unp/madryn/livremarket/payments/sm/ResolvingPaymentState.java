@@ -4,6 +4,7 @@ import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import lombok.Setter;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -28,13 +29,13 @@ public class ResolvingPaymentState extends State {
     public Boolean process(Map<String, String> data) {
         String purchaseID = data.get(MessageCommonFields.PURCHASE_ID);
 
-        System.out.println("Resolviendo pago! (ID = " + purchaseID + ")");
+        Logging.info("Resolviendo pago! (ID = " + purchaseID + ")");
 
         boolean isAuthorized = this.isAuthorized();
 
         data.put(MessageCommonFields.AUTHORIZED_PAYMENT, Boolean.toString(isAuthorized));
 
-        System.out.println("Resultado de autorizacion de pago: '" + isAuthorized + "' (ID =" + purchaseID + ")");
+        Logging.info("Resultado de autorizacion de pago: '" + isAuthorized + "' (ID =" + purchaseID + ")");
 
         return true;
     }

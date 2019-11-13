@@ -1,6 +1,7 @@
 package ar.edu.unp.madryn.livremarket.products.sm;
 
 import ar.edu.unp.madryn.livremarket.common.sm.State;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class ReportedInfractionsState extends State {
 
     @Override
     public Boolean process(Map<String, String> data) {
-        System.out.println("Informacion de infraciones obtenida!");
+        Logging.info("Informacion de infraciones obtenida!");
 
         return true;
     }

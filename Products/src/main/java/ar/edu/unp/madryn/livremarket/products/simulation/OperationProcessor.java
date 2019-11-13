@@ -7,6 +7,7 @@ import ar.edu.unp.madryn.livremarket.common.server.ServerState;
 import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.MessageProcessor;
 import ar.edu.unp.madryn.livremarket.common.simulation.PendingOperation;
+import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.products.utils.LocalDefinitions;
 import lombok.Setter;
 
@@ -33,7 +34,7 @@ public class OperationProcessor extends MessageProcessor {
         switch (operation) {
             case Operations.PRODUCT_RESERVATION_OPERATION:
                 if(serverState.containsData(MessageCommonFields.PRODUCT_ID)) {
-                    System.err.println("Error: Operacion duplicada!");
+                    Logging.error("Error: Operacion duplicada!");
                     return null;
                 }
 
@@ -43,7 +44,7 @@ public class OperationProcessor extends MessageProcessor {
                 break;
             case Operations.BOOK_SHIPMENT_OPERATION:
                 if(serverState.containsData(MessageCommonFields.BOOKED_SHIPPING)) {
-                    System.err.println("Error: Operacion duplicada!");
+                    Logging.error("Error: Operacion duplicada!");
                     return null;
                 }
 
@@ -51,7 +52,7 @@ public class OperationProcessor extends MessageProcessor {
                 serverState.saveData(MessageCommonFields.BOOKED_SHIPPING, String.valueOf(true));
                 break;
             default:
-                System.err.println("Error: Operacion '" + operation + "' no reconocida!");
+                Logging.error("Error: Operacion '" + operation + "' no reconocida!");
                 return null;
         }
 
@@ -77,7 +78,7 @@ public class OperationProcessor extends MessageProcessor {
         switch (id) {
             case Results.INFRACTIONS_REFERENCE_ID:
                 if(serverState.containsData(MessageCommonFields.HAS_INFRACTIONS)) {
-                    System.err.println("Error: Informacion duplicada!");
+                    Logging.error("Error: Informacion duplicada!");
                     return null;
                 }
                 String infractionsResult = data.get(MessageCommonFields.HAS_INFRACTIONS);
@@ -86,7 +87,7 @@ public class OperationProcessor extends MessageProcessor {
                 break;
             case Results.PAYMENT_AUTHORIZATION_REFERENCE_ID:
                 if(serverState.containsData(MessageCommonFields.AUTHORIZED_PAYMENT)) {
-                    System.err.println("Error: Informacion duplicada!");
+                    Logging.error("Error: Informacion duplicada!");
                     return null;
                 }
                 String paymentResult = data.get(MessageCommonFields.AUTHORIZED_PAYMENT);
@@ -94,7 +95,7 @@ public class OperationProcessor extends MessageProcessor {
                 serverState.saveData(MessageCommonFields.AUTHORIZED_PAYMENT, paymentResult);
                 break;
             default:
-                System.err.println("Error: ID de informacion '" + id + "' no reconocido!");
+                Logging.error("Error: ID de informacion '" + id + "' no reconocido!");
                 return null;
         }
 
