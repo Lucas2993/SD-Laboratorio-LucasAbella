@@ -24,6 +24,13 @@
         <shade.version>3.2.1</shade.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- RabbitMQ -->
         <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
@@ -79,6 +86,12 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.11.0</version>
+        </dependency>
+        <!-- Vector Clocks (javacreed) -->
+        <dependency>
+            <groupId>com.github.javacreed</groupId>
+            <artifactId>vector-clock</artifactId>
+            <version>cbe2d02</version>
         </dependency>
     </dependencies>
 

@@ -6,9 +6,10 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageServerFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
+import ar.edu.unp.madryn.livremarket.common.threads.ReceiverWorker;
+import ar.edu.unp.madryn.livremarket.common.threads.SenderWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.common.utils.Logging;
-import com.google.gson.Gson;
 
 import java.util.Map;
 
@@ -62,13 +63,11 @@ public class CommunicationHandler {
         // TODO Comprobar no haber recibido parametros invalidos...
         String routingKey = type.topic() + ROUTING_KEY_SEPARATOR + serverName;
 
-        Gson gson = new Gson();
-        String message = gson.toJson(data);
+        MessageWorker messageWorker = new SenderWorker(routingKey, data, this.messageServer);
 
-        Logging.info("Mensaje enviado! con el topico '" + routingKey + "' (Contenido = " + message + ")");
+        messageWorker.start();
 
-        // TODO Comprobar que el messageServer este creado...
-        return this.messageServer.sendMessage(routingKey, message);
+        return true;
     }
 
     public void registerReceiver(String serverName) {
@@ -76,7 +75,7 @@ public class CommunicationHandler {
         String bindingKey = ROUTING_KEY_ANY_WILDCARD + ROUTING_KEY_SEPARATOR + serverName;
 
         this.messageServer.registerProcessor(bindingKey, (consumerTag, message) -> {
-            MessageWorker messageWorker = new MessageWorker(consumerTag, message);
+            MessageWorker messageWorker = new ReceiverWorker(consumerTag, message);
 
             messageWorker.start();
         });

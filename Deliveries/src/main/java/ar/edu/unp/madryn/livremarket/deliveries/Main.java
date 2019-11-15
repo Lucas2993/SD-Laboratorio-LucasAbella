@@ -1,5 +1,6 @@
 package ar.edu.unp.madryn.livremarket.deliveries;
 
+import ar.edu.unp.madryn.livremarket.common.clocks.VectorClockController;
 import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
@@ -43,6 +44,9 @@ public class Main {
         CommunicationHandler communicationHandler = CommunicationHandler.getInstance();
 
         MessageWorker.setMessageHandlerManager(messageHandlerManager);
+
+        VectorClockController vectorClockController = new VectorClockController(Definitions.DELIVERIES_SERVER_NAME);
+        MessageWorker.setVectorClockController(vectorClockController);
 
         MessagePersistence messagePersistence = new MessagePersistence();
 
