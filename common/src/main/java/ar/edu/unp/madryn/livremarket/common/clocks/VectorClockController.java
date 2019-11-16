@@ -3,6 +3,7 @@ package ar.edu.unp.madryn.livremarket.common.clocks;
 import com.javacreed.api.veclock.LongVersion;
 import com.javacreed.api.veclock.StringNode;
 import com.javacreed.api.veclock.VectorClock;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -22,13 +23,33 @@ public class VectorClockController {
     }
 
     public synchronized boolean updateClocks(Map<String,Long> clocksData){
-        VectorClock receivedClock =  VectorClock.of(StringNode.of(this.serverID), this.clock.version());
+        VectorClock receivedClock = null;
+
+        Long currentClock = clocksData.remove(this.serverID);
+
+        if(MapUtils.isEmpty(clocksData)){
+            return false;
+        }
+
         for(String id : clocksData.keySet()){
             Long version = clocksData.get(id);
+            if(receivedClock == null){
+                receivedClock = VectorClock.of(StringNode.of(id), LongVersion.of(version));
+                continue;
+            }
             receivedClock = receivedClock.add(StringNode.of(id), LongVersion.of(version));
         }
 
+        if(receivedClock == null) {
+            return false;
+        }
+
+        if(currentClock != null) {
+            receivedClock = receivedClock.add(StringNode.of(this.serverID), LongVersion.of(currentClock));
+        }
+
         this.clock = this.clock.add(receivedClock);
+
         return true;
     }
 
@@ -36,8 +57,8 @@ public class VectorClockController {
         Map<String,Long> result = new HashMap<>();
         String info = this.clock.toString();
 
-        info = info.replace("[", " ");
-        info = info.replace("]", " ");
+        info = info.replace("[", "");
+        info = info.replace("]", "");
 
         if(StringUtils.isEmpty(info)){
             return null;
