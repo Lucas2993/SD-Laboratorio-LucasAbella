@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.comunication;
 
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageServerFactory;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
@@ -10,6 +11,7 @@ import ar.edu.unp.madryn.livremarket.common.threads.ReceiverWorker;
 import ar.edu.unp.madryn.livremarket.common.threads.SenderWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.common.utils.Logging;
+import lombok.Setter;
 
 import java.util.Map;
 
@@ -17,6 +19,8 @@ public class CommunicationHandler {
     private static final String ROUTING_KEY_SEPARATOR = ".";
     private static final String ROUTING_KEY_ANY_WILDCARD = "*";
 
+    @Setter
+    private String serverID;
     private MessageServer messageServer;
 
     private static CommunicationHandler instance;
@@ -62,6 +66,9 @@ public class CommunicationHandler {
     public boolean sendMessage(MessageType type, String serverName, Map<String, String> data) {
         // TODO Comprobar no haber recibido parametros invalidos...
         String routingKey = type.topic() + ROUTING_KEY_SEPARATOR + serverName;
+
+        /* Agregado de servidor de origen */
+        data.put(MessageCommonFields.SOURCE_SERVER, this.serverID);
 
         MessageWorker messageWorker = new SenderWorker(routingKey, data, this.messageServer);
 

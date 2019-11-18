@@ -1,11 +1,13 @@
 package ar.edu.unp.madryn.livremarket.common.consistency;
 
 import ar.edu.unp.madryn.livremarket.common.utils.Logging;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SnapshotController {
     @Getter
@@ -18,11 +20,13 @@ public class SnapshotController {
     private MarkManager markManager;
     @Setter
     private ServerSnapshotManager serverSnapshotManager;
+    private Gson gson;
 
     public SnapshotController(String serverID) {
         this.serverID = serverID;
         this.otherServers = new ArrayList<>();
         this.takingSnapshot = false;
+        this.gson = new Gson();
     }
 
     public void init(String... skippedMarks){
@@ -46,6 +50,12 @@ public class SnapshotController {
 
         /* Quitar marca a esperar del servidor que inicio el proceso en enviando una marca al propio */
         this.markManager.registerMark(skippedMarks);
+    }
+
+    public void handleMessage(String serverFromID, Map<String,String> messageData){
+        String message = this.gson.toJson(messageData);
+
+        this.handleMessage(serverFromID, message);
     }
 
     public void handleMessage(String serverFromID, String message){

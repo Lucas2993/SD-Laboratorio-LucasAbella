@@ -2,6 +2,7 @@ package ar.edu.unp.madryn.livremarket.common.messages;
 
 public class MessageCommonFields {
     public static final String MESSAGE_TYPE_ID = "_type_";
+    public static final String SOURCE_SERVER = "_source_";
 
     public static final String PURCHASE_ID = "purchase_id";
     public static final String PRODUCT_ID = "product_id";
@@ -16,5 +17,4 @@ public class MessageCommonFields {
 
     public static final String CLIENT_ID = "client_name";
     public static final String PRODUCT_AMOUNT = "amount";
-
 }
