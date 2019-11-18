@@ -16,7 +16,7 @@ public class SnapshotController {
     private List<String> otherServers;
     @Getter
     private boolean takingSnapshot;
-    @Setter
+
     private MarkManager markManager;
     @Setter
     private ServerSnapshotManager serverSnapshotManager;

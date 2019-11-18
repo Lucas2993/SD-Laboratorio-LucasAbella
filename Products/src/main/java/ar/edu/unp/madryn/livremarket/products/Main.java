@@ -4,6 +4,9 @@ import ar.edu.unp.madryn.livremarket.common.clocks.VectorClockController;
 import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
+import ar.edu.unp.madryn.livremarket.common.consistency.MarkManager;
+import ar.edu.unp.madryn.livremarket.common.consistency.ServerSnapshotManager;
+import ar.edu.unp.madryn.livremarket.common.consistency.SnapshotController;
 import ar.edu.unp.madryn.livremarket.common.data.ProductManager;
 import ar.edu.unp.madryn.livremarket.common.db.DataProvider;
 import ar.edu.unp.madryn.livremarket.common.db.DataProviderFactory;
@@ -11,6 +14,7 @@ import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageHandlerManager;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.messages.types.ControlMessage;
+import ar.edu.unp.madryn.livremarket.common.messages.types.MarkMessage;
 import ar.edu.unp.madryn.livremarket.common.messages.types.MessagePersistence;
 import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
 import ar.edu.unp.madryn.livremarket.common.simulation.SimulationController;
@@ -56,6 +60,10 @@ public class Main {
         ControlMessage controlMessage = new ControlMessage();
 
         messageHandlerManager.registerHandler(controlMessage, MessageType.CONTROL);
+
+        MarkMessage markMessage = new MarkMessage();
+
+        messageHandlerManager.registerHandler(markMessage, MessageType.MARK);
 
         if (!communicationHandler.connect()) {
             Logging.error("No se pudo establecer conexion con el servidor AMQP!");
@@ -154,6 +162,24 @@ public class Main {
         productManager.load();
 
         communicationHandler.registerReceiver(Definitions.PRODUCTS_SERVER_NAME);
+
+        /* Corte consistente */
+        ServerSnapshotManager serverSnapshotManager = new ServerSnapshotManager();
+        ServerSnapshotManager.setDataProvider(productsDataProvider);
+        serverSnapshotManager.setServerStateManager(serverStateManager);
+
+        SnapshotController snapshotController = new SnapshotController(Definitions.PRODUCTS_SERVER_NAME);
+        snapshotController.addOtherServer(Definitions.DELIVERIES_SERVER_NAME);
+        snapshotController.addOtherServer(Definitions.INFRACTIONS_SERVER_NAME);
+        snapshotController.addOtherServer(Definitions.PAYMENTS_SERVER_NAME);
+        snapshotController.addOtherServer(Definitions.PURCHASES_SERVER_NAME);
+        snapshotController.setServerSnapshotManager(serverSnapshotManager);
+
+        MarkManager.setCommunicationHandler(communicationHandler);
+
+        controlMessage.setSnapshotController(snapshotController);
+        messagePersistence.setSnapshotController(snapshotController);
+        markMessage.setSnapshotController(snapshotController);
 
         Logging.info("Escuchando mensajes (Ctrl + C para cerrar)...");
     }
