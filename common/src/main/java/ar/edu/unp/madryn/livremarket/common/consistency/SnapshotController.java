@@ -33,6 +33,9 @@ public class SnapshotController {
         /* Iniciar el proceso guardando el estado y enviando la marca a los demas servidores */
         this.takingSnapshot = true;
 
+        /* Reiniciar el administrador de marcas */
+        this.markManager = new MarkManager(this.otherServers);
+
         Logging.info("Snapshot: Proceso iniciado!");
 
         /* Inicializar el administrador del snapshot y hacer que guarde los datos pendientes actuales */
@@ -40,9 +43,6 @@ public class SnapshotController {
         if(this.serverSnapshotManager.storeDataToSnapshot()){
             Logging.info("Snapshot: Estado actual guardado!");
         }
-
-        /* Reiniciar el administrador de marcas */
-        this.markManager = new MarkManager(this.otherServers);
 
         if(this.markManager.sendMarksToServers()){
             Logging.info("Snapshot: Las marcas fueron enviadas a los demas servidores!");

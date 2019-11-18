@@ -49,6 +49,7 @@ public class Main {
         CommunicationHandler communicationHandler = CommunicationHandler.getInstance();
 
         MessageWorker.setMessageHandlerManager(messageHandlerManager);
+        MessageWorker.setServerID(Definitions.INFRACTIONS_SERVER_NAME);
 
         VectorClockController vectorClockController = new VectorClockController(Definitions.INFRACTIONS_SERVER_NAME);
         MessageWorker.setVectorClockController(vectorClockController);

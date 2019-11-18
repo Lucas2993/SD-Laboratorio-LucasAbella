@@ -14,10 +14,6 @@ public class MarkMessage implements MessageHandler {
 
     @Override
     public void handle(Map<String, String> data) {
-        if(!this.snapshotController.isTakingSnapshot()){
-            return;
-        }
-
         String serverID = data.get(MessageCommonFields.SOURCE_SERVER);
         if(!StringUtils.isEmpty(serverID)) {
             this.snapshotController.handleMark(serverID);

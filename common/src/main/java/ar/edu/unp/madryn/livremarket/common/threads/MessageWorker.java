@@ -14,6 +14,8 @@ public abstract class MessageWorker extends Thread {
     Gson gson;
 
     @Setter
+    static String serverID;
+    @Setter
     static MessageHandlerManager messageHandlerManager;
     @Setter
     static VectorClockController vectorClockController;

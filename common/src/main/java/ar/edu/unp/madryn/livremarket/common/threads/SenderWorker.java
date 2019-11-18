@@ -1,5 +1,6 @@
 package ar.edu.unp.madryn.livremarket.common.threads;
 
+import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageServer;
 import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 
@@ -24,6 +25,9 @@ public class SenderWorker extends MessageWorker {
             Logging.info("Reloj propio actualizado!");
         }
 
+        /* Agregado de servidor de origen */
+        data.put(MessageCommonFields.SOURCE_SERVER, serverID);
+        /* Agregado de reloj */
         data.put(CLOCK_FIELD, this.gson.toJson(vectorClockController.getClocks()));
 
         String message = this.gson.toJson(data);
