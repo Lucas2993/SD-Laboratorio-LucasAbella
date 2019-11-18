@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class ServerStateManager {
 
@@ -49,6 +50,12 @@ public class ServerStateManager {
                 .filter(serverState -> serverState.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Collection<ServerState> getServerStatesNotPersisted(){
+        return this.serverStates.stream()
+                .filter(serverState -> !serverState.isModified() || !serverState.isPersisted())
+                .collect(Collectors.toList());
     }
 
     /* Persistencia */

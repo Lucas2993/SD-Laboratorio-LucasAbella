@@ -25,6 +25,7 @@ public class Definitions {
 
     public static final String CURRENT_OPERATION_DOCUMENT_NAME = "current_operation";
     public static final String PENDING_MESSAGES_COLLECTION_NAME = "pending_messages";
+    public static final String SNAPSHOTS_COLLECTION_NAME = "snapshots";
 
     public static final String COMMON_DATABASE_NAME = "common_data";
 

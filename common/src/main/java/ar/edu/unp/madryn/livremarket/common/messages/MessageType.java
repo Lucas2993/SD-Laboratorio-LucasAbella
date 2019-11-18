@@ -5,7 +5,8 @@ public enum MessageType {
     RESULT("result"),
     GENERAL("general"),
     CONTROL("control"),
-    MONITOR("monitor");
+    MONITOR("monitor"),
+    MARK("mark");
 
     private String topic;
 
