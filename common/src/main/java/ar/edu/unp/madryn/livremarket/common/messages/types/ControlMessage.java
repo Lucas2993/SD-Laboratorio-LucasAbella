@@ -1,5 +1,6 @@
 package ar.edu.unp.madryn.livremarket.common.messages.types;
 
+import ar.edu.unp.madryn.livremarket.common.consistency.SnapshotController;
 import ar.edu.unp.madryn.livremarket.common.messages.Controls;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageHandler;
 import ar.edu.unp.madryn.livremarket.common.server.ServerStateManager;
@@ -16,6 +17,8 @@ public class ControlMessage implements MessageHandler {
     private SimulationController simulationController;
     @Setter
     private ServerStateManager serverStateManager;
+    @Setter
+    private SnapshotController snapshotController;
 
     public ControlMessage() {
     }
@@ -48,6 +51,9 @@ public class ControlMessage implements MessageHandler {
                 else {
                     Logging.error("Error: El estado no pudo ser guardado!");
                 }
+                break;
+            case Controls.BEGIN_SNAPSHOT:
+                this.snapshotController.init();
                 break;
             default:
                 Logging.error("Error: Operacion '" + operation + "' no reconocida!");
