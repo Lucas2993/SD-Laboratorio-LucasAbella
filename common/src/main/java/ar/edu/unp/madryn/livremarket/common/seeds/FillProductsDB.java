@@ -75,23 +75,23 @@ public class FillProductsDB {
 
         productManager.setDataProvider(dataProvider);
 
-//        productManager.storeProduct(product);
-//        productManager.storeProduct(product1);
-//        productManager.storeProduct(product2);
-//        productManager.storeProduct(product3);
-//        productManager.storeProduct(product4);
-//        productManager.storeProduct(product5);
-//        productManager.storeProduct(product6);
-//        productManager.storeProduct(product7);
+        productManager.storeProduct(product);
+        productManager.storeProduct(product1);
+        productManager.storeProduct(product2);
+        productManager.storeProduct(product3);
+        productManager.storeProduct(product4);
+        productManager.storeProduct(product5);
+        productManager.storeProduct(product6);
+        productManager.storeProduct(product7);
 
-        productManager.load();
-
-        for(Product product8 : productManager.getProducts()){
-            Logging.info("Dato 1: " + product8.getId());
-            Logging.info("Dato 2: " + product8.getName());
-            Logging.info("Dato 3: " + product8.getDescription());
-            Logging.info("Dato 4: " + product8.getStock());
-        }
+//        productManager.load();
+//
+//        for(Product product8 : productManager.getProducts()){
+//            Logging.info("Dato 1: " + product8.getId());
+//            Logging.info("Dato 2: " + product8.getName());
+//            Logging.info("Dato 3: " + product8.getDescription());
+//            Logging.info("Dato 4: " + product8.getStock());
+//        }
 
         Logging.info("Fin");
     }
