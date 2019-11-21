@@ -125,8 +125,6 @@ public class SimulationController {
     private boolean makeStep(PendingOperation pendingOperation){
         Map<String,String> pendingOperationData = pendingOperation.getData();
 
-        Logging.info("Informacion de la operacion pendiente: " + pendingOperationData);
-
         String purchaseID = pendingOperationData.get(MessageCommonFields.PURCHASE_ID);
 
         ServerState serverState = this.serverStateManager.getServerStateByID(purchaseID);
