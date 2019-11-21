@@ -105,6 +105,7 @@ public class Main {
         smTemplate.addState(reportedPaymentState);
 
         ReleasingProductState releasingProductState = new ReleasingProductState();
+        releasingProductState.setProductManager(productManager);
         smTemplate.addState(releasingProductState);
 
         NoInfractionsState noInfractionsState = new NoInfractionsState();
