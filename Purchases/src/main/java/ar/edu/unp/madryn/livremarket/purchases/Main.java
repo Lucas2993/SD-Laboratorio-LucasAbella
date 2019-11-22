@@ -173,6 +173,8 @@ public class Main {
 
 
         /* Datos faltante dentro del manejador de request generales */
+        controlMessage.setCommunicationHandler(communicationHandler);
+
         ServerStateManager serverStateManager = ServerStateManager.getInstance();
         serverStateManager.setDataProvider(purchasesDataProvider);
         serverStateManager.setStateCollectionName(Definitions.PURCHASES_STATE_COLLECTION_NAME);

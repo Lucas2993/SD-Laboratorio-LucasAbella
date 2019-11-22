@@ -135,6 +135,8 @@ public class Main {
         smTemplate.addTransition(sendingProductState, finalState, data -> Conditions.mapContainsKey(data, LocalDefinitions.PRODUCT_SENT_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
+        controlMessage.setCommunicationHandler(communicationHandler);
+
         messagePersistence.setDataProvider(productsDataProvider);
 
         ServerStateManager serverStateManager = ServerStateManager.getInstance();

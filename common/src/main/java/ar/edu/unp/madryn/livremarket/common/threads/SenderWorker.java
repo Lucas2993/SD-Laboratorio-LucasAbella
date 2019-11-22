@@ -20,15 +20,18 @@ public class SenderWorker extends MessageWorker {
 
     @Override
     public void run() {
-        /* Actualizar el reloj propio */
-        if(vectorClockController.updateClock()){
-            Logging.info("Reloj propio actualizado!");
+        if(vectorClockController != null) {
+            /* Actualizar el reloj propio */
+            if (vectorClockController.updateClock()) {
+                Logging.info("Reloj propio actualizado!");
+            }
+
+            /* Agregado de reloj */
+            data.put(CLOCK_FIELD, this.gson.toJson(vectorClockController.getClocks()));
         }
 
         /* Agregado de servidor de origen */
         data.put(MessageCommonFields.SOURCE_SERVER, serverID);
-        /* Agregado de reloj */
-        data.put(CLOCK_FIELD, this.gson.toJson(vectorClockController.getClocks()));
 
         String message = this.gson.toJson(data);
 

@@ -106,6 +106,8 @@ public class Main {
         smTemplate.addTransition(reportingPaymentState, finalState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REPORTED_PAYMENT_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
+        controlMessage.setCommunicationHandler(communicationHandler);
+
         messagePersistence.setDataProvider(paymentsDataProvider);
 
         ServerStateManager serverStateManager = ServerStateManager.getInstance();

@@ -106,6 +106,8 @@ public class Main {
         smTemplate.addTransition(reportingInfractionsState, finalState, data -> Conditions.isMapBooleanTrue(data, LocalDefinitions.REPORTED_INFRACTIONS_FIELD));
 
         /* Datos faltante dentro del manejador de request generales */
+        controlMessage.setCommunicationHandler(communicationHandler);
+
         messagePersistence.setDataProvider(infractionsDataProvider);
 
         ServerStateManager serverStateManager = ServerStateManager.getInstance();

@@ -50,20 +50,23 @@ public class ReceiverWorker extends MessageWorker {
             return;
         }
 
-        /* Actualizar el reloj propio */
-        if(vectorClockController.updateClock()){
-            Logging.info("Reloj propio actualizado!");
-        }
+        /* Si se utilizan relojes vectoriales */
+        if(vectorClockController != null) {
+            /* Actualizar el reloj propio */
+            if (vectorClockController.updateClock()) {
+                Logging.info("Reloj propio actualizado!");
+            }
 
-        /* Actualizar relojes */
-        String clockJson = data.remove(CLOCK_FIELD);
-        if(!StringUtils.isEmpty(clockJson)){
-            Type clocksDataType = new TypeToken<Map<String, Long>>() {
-            }.getType();
-            Map<String,Long> clocksData = this.gson.fromJson(clockJson, clocksDataType);
-            if(!MapUtils.isEmpty(clocksData)){
-                vectorClockController.updateClocks(clocksData);
-                Logging.info("Relojes actualizados!");
+            /* Actualizar relojes */
+            String clockJson = data.remove(CLOCK_FIELD);
+            if (!StringUtils.isEmpty(clockJson)) {
+                Type clocksDataType = new TypeToken<Map<String, Long>>() {
+                }.getType();
+                Map<String, Long> clocksData = this.gson.fromJson(clockJson, clocksDataType);
+                if (!MapUtils.isEmpty(clocksData)) {
+                    vectorClockController.updateClocks(clocksData);
+                    Logging.info("Relojes actualizados!");
+                }
             }
         }
 

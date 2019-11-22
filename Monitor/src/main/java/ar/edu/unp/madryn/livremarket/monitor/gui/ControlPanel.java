@@ -1,9 +1,16 @@
 package ar.edu.unp.madryn.livremarket.monitor.gui;
 
+import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
+import ar.edu.unp.madryn.livremarket.common.messages.Controls;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageHandlerManager;
+import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
+import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
 import ar.edu.unp.madryn.livremarket.common.utils.Definitions;
 import ar.edu.unp.madryn.livremarket.common.utils.Logging;
+import ar.edu.unp.madryn.livremarket.monitor.messages.ResultMessageHandler;
 import ar.edu.unp.madryn.livremarket.monitor.process.ProcessManager;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -16,9 +23,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ControlPanel {
+    private static CommunicationHandler communicationHandler;
+
     private JPanel control_gui;
     private JTabbedPane purchases;
     private JTextField purchases_purchase_id;
@@ -116,6 +127,12 @@ public class ControlPanel {
                 showLogs(Definitions.DELIVERIES_SERVER_NAME);
             }
         });
+        deliveries_step_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                requestStep(Definitions.DELIVERIES_SERVER_NAME);
+            }
+        });
 
         infractions_start_button.addActionListener(new ActionListener() {
             @Override
@@ -133,6 +150,12 @@ public class ControlPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showLogs(Definitions.INFRACTIONS_SERVER_NAME);
+            }
+        });
+        infractions_step_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                requestStep(Definitions.INFRACTIONS_SERVER_NAME);
             }
         });
 
@@ -154,6 +177,12 @@ public class ControlPanel {
                 showLogs(Definitions.PAYMENTS_SERVER_NAME);
             }
         });
+        payments_step_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                requestStep(Definitions.PAYMENTS_SERVER_NAME);
+            }
+        });
 
         products_start_button.addActionListener(new ActionListener() {
             @Override
@@ -171,6 +200,12 @@ public class ControlPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showLogs(Definitions.PRODUCTS_SERVER_NAME);
+            }
+        });
+        products_step_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                requestStep(Definitions.PRODUCTS_SERVER_NAME);
             }
         });
 
@@ -192,6 +227,12 @@ public class ControlPanel {
                 showLogs(Definitions.PURCHASES_SERVER_NAME);
             }
         });
+        purchases_step_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                requestStep(Definitions.PURCHASES_SERVER_NAME);
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -201,6 +242,30 @@ public class ControlPanel {
             Logging.error("Error: La configuracion de los servidores no existe!");
             return;
         }
+
+        ConfigurationSection connectionConfiguration = configurationManager.loadConfiguration(Definitions.CONNECTION_CONFIGURATION_FILE, ConfigurationSection.CONFIGURATION_FOLDER);
+        if (connectionConfiguration == null) {
+            Logging.error("Error: La configuracion de la conexion a la base de datos no existe!");
+            return;
+        }
+
+        MessageHandlerManager messageHandlerManager = MessageHandlerManager.getInstance();
+
+        communicationHandler = CommunicationHandler.getInstance();
+
+        MessageWorker.setMessageHandlerManager(messageHandlerManager);
+        MessageWorker.setServerID(Definitions.MONITOR_SERVER_NAME);
+
+        ResultMessageHandler resultMessageHandler = new ResultMessageHandler();
+
+        messageHandlerManager.registerHandler(resultMessageHandler, MessageType.RESULT);
+
+        if (!communicationHandler.connect()) {
+            Logging.error("No se pudo establecer conexion con el servidor AMQP!");
+            return;
+        }
+
+        communicationHandler.registerReceiver(Definitions.MONITOR_SERVER_NAME);
 
         ProcessManager processManager = ProcessManager.getInstance();
 
@@ -219,6 +284,14 @@ public class ControlPanel {
         frame.setVisible(true);
     }
 
+    private static void requestStep(String serverID) {
+        Map<String,String> data = new HashMap<>();
+        data.put(Definitions.CONTROL_REFERENCE_KEY, Controls.MAKE_STEP);
+
+        if(!communicationHandler.sendMessage(MessageType.CONTROL, serverID,data)){
+            JOptionPane.showMessageDialog(null, "Error: No se pudo enviar el mensaje!");
+        }
+    }
     private static void initServer(String serverID) {
         ProcessManager processManager = ProcessManager.getInstance();
 

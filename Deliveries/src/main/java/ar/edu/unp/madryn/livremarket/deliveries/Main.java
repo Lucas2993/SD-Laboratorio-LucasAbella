@@ -120,6 +120,8 @@ public class Main {
 
 
         /* Datos faltante dentro del manejador de request generales */
+        controlMessage.setCommunicationHandler(communicationHandler);
+
         messagePersistence.setDataProvider(deliveriesDataProvider);
 
         ServerStateManager serverStateManager = ServerStateManager.getInstance();

@@ -17,4 +17,6 @@ public class MessageCommonFields {
 
     public static final String CLIENT_ID = "client_name";
     public static final String PRODUCT_AMOUNT = "amount";
+
+    public static final String RESULT_MESSAGE = "result_message";
 }
