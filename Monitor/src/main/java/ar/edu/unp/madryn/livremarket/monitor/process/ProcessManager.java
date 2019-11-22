@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProcessManager {
-    private Map<String, Process> processes;
+    private Map<String, ProcessData> processes;
 
     @Setter
     private ConfigurationSection configuration;
@@ -64,7 +64,7 @@ public class ProcessManager {
         try {
             Process process = processBuilder.start();
 
-            this.processes.put(serverID, process);
+            this.processes.put(serverID, new ProcessData(process));
             return true;
         }
         catch (IOException e){
@@ -77,7 +77,9 @@ public class ProcessManager {
             return false;
         }
 
-        Process process = this.processes.remove(serverID);
+        ProcessData processData = this.processes.remove(serverID);
+
+        Process process = processData.getProcess();
 
         process.destroy();
         return true;
@@ -88,18 +90,21 @@ public class ProcessManager {
             return false;
         }
 
-        Process process = this.processes.get(serverID);
+        ProcessData processData = this.processes.get(serverID);
+
+        Process process = processData.getProcess();
 
         return process.isAlive();
     }
 
     public List<String> getLogs(String serverID){
-        List<String> result = new ArrayList<>();
         if(!this.processes.containsKey(serverID)){
-            return result;
+            return new ArrayList<>();
         }
 
-        Process process = this.processes.get(serverID);
+        ProcessData processData = this.processes.get(serverID);
+
+        Process process = processData.getProcess();
 
         try {
             InputStream inputStream = process.getInputStream();
@@ -112,7 +117,7 @@ public class ProcessManager {
             while(bufferedReader.ready()){
                 inputChar = (char)bufferedReader.read();
                 if(CharUtils.isAsciiControl(inputChar)){
-                    result.add(line);
+                    processData.addLog(line);
                     line = "";
                     continue;
                 }
@@ -124,6 +129,6 @@ public class ProcessManager {
             Logging.error("No se pudo leer la entrada del proceso! (Servidor = " + serverID + ")");
         }
 
-        return result;
+        return processData.getLogs();
     }
 }

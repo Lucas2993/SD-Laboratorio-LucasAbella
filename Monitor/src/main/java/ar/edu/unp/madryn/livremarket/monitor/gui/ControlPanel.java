@@ -112,13 +112,21 @@ public class ControlPanel {
         deliveries_start_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                initServer(Definitions.DELIVERIES_SERVER_NAME);
+                if (initServer(Definitions.DELIVERIES_SERVER_NAME)) {
+                    deliveries_server_state.setText("Encendido");
+                    deliveries_start_button.setEnabled(false);
+                    deliveries_shutdown_button.setEnabled(true);
+                }
             }
         });
         deliveries_shutdown_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                killServer(Definitions.DELIVERIES_SERVER_NAME);
+                if (killServer(Definitions.DELIVERIES_SERVER_NAME)) {
+                    deliveries_server_state.setText("Apagado");
+                    deliveries_shutdown_button.setEnabled(false);
+                    deliveries_start_button.setEnabled(true);
+                }
             }
         });
         deliveries_view_logs_button.addActionListener(new ActionListener() {
@@ -137,13 +145,21 @@ public class ControlPanel {
         infractions_start_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                initServer(Definitions.INFRACTIONS_SERVER_NAME);
+                if (initServer(Definitions.INFRACTIONS_SERVER_NAME)) {
+                    infractions_server_state.setText("Encendido");
+                    infractions_start_button.setEnabled(false);
+                    infractions_shutdown_button.setEnabled(true);
+                }
             }
         });
         infractions_shutdown_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                killServer(Definitions.INFRACTIONS_SERVER_NAME);
+                if (killServer(Definitions.INFRACTIONS_SERVER_NAME)) {
+                    infractions_server_state.setText("Apagado");
+                    infractions_shutdown_button.setEnabled(false);
+                    infractions_start_button.setEnabled(true);
+                }
             }
         });
         infractions_view_logs_button.addActionListener(new ActionListener() {
@@ -162,13 +178,21 @@ public class ControlPanel {
         payments_start_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                initServer(Definitions.PAYMENTS_SERVER_NAME);
+                if (initServer(Definitions.PAYMENTS_SERVER_NAME)) {
+                    payments_server_state.setText("Encendido");
+                    payments_start_button.setEnabled(false);
+                    payments_shutdown_button.setEnabled(true);
+                }
             }
         });
         payments_shutdown_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                killServer(Definitions.PAYMENTS_SERVER_NAME);
+                if (killServer(Definitions.PAYMENTS_SERVER_NAME)) {
+                    payments_server_state.setText("Apagado");
+                    payments_shutdown_button.setEnabled(false);
+                    payments_start_button.setEnabled(true);
+                }
             }
         });
         payments_view_logs_button.addActionListener(new ActionListener() {
@@ -187,13 +211,21 @@ public class ControlPanel {
         products_start_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                initServer(Definitions.PRODUCTS_SERVER_NAME);
+                if (initServer(Definitions.PRODUCTS_SERVER_NAME)) {
+                    products_server_state.setText("Encendido");
+                    products_start_button.setEnabled(false);
+                    products_shutdown_button.setEnabled(true);
+                }
             }
         });
         products_shutdown_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                killServer(Definitions.PRODUCTS_SERVER_NAME);
+                if (killServer(Definitions.PRODUCTS_SERVER_NAME)) {
+                    products_server_state.setText("Apagado");
+                    products_shutdown_button.setEnabled(false);
+                    products_start_button.setEnabled(true);
+                }
             }
         });
         products_view_logs_button.addActionListener(new ActionListener() {
@@ -212,13 +244,21 @@ public class ControlPanel {
         purchases_start_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                initServer(Definitions.PURCHASES_SERVER_NAME);
+                if (initServer(Definitions.PURCHASES_SERVER_NAME)) {
+                    purchases_server_state.setText("Encendido");
+                    purchases_start_button.setEnabled(false);
+                    purchases_shutdown_button.setEnabled(true);
+                }
             }
         });
         purchases_shutdown_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                killServer(Definitions.PURCHASES_SERVER_NAME);
+                if (killServer(Definitions.PURCHASES_SERVER_NAME)) {
+                    purchases_server_state.setText("Apagado");
+                    purchases_shutdown_button.setEnabled(false);
+                    purchases_start_button.setEnabled(true);
+                }
             }
         });
         purchases_view_logs_button.addActionListener(new ActionListener() {
@@ -285,31 +325,46 @@ public class ControlPanel {
     }
 
     private static void requestStep(String serverID) {
-        Map<String,String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put(Definitions.CONTROL_REFERENCE_KEY, Controls.MAKE_STEP);
 
-        if(!communicationHandler.sendMessage(MessageType.CONTROL, serverID,data)){
+        if (!communicationHandler.sendMessage(MessageType.CONTROL, serverID, data)) {
             JOptionPane.showMessageDialog(null, "Error: No se pudo enviar el mensaje!");
         }
     }
-    private static void initServer(String serverID) {
+
+    private static boolean initServer(String serverID) {
         ProcessManager processManager = ProcessManager.getInstance();
 
-        if (processManager.initServer(serverID)) {
-            JOptionPane.showMessageDialog(null, "Servidor iniciado con exito!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Error: El servidor no pudo ser iniciado!");
+        if (processManager.isRunning(serverID)) {
+            JOptionPane.showMessageDialog(null, "El servidor ya se encuentra encendido!");
+            return false;
         }
+
+        if (!processManager.initServer(serverID)) {
+            JOptionPane.showMessageDialog(null, "Error: El servidor no pudo ser iniciado!");
+            return false;
+        }
+
+        JOptionPane.showMessageDialog(null, "Servidor iniciado con exito!");
+        return true;
     }
 
-    private static void killServer(String serverID) {
+    private static boolean killServer(String serverID) {
         ProcessManager processManager = ProcessManager.getInstance();
 
-        if (processManager.killServer(serverID)) {
-            JOptionPane.showMessageDialog(null, "Servidor apagado con exito!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Error: El servidor no pudo ser apagado!");
+        if (!processManager.isRunning(serverID)) {
+            JOptionPane.showMessageDialog(null, "El servidor ya se encuentra apagado!");
+            return false;
         }
+
+        if (!processManager.killServer(serverID)) {
+            JOptionPane.showMessageDialog(null, "Error: El servidor no pudo ser apagado!");
+            return false;
+        }
+
+        JOptionPane.showMessageDialog(null, "Servidor apagado con exito!");
+        return true;
     }
 
     private static void showLogs(String serverID) {
@@ -405,6 +460,8 @@ public class ControlPanel {
         label4.setText("Estado del Servidor");
         panel1.add(label4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         purchases_server_state = new JTextField();
+        purchases_server_state.setEnabled(false);
+        purchases_server_state.setText("Apagado");
         panel1.add(purchases_server_state, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JSeparator separator1 = new JSeparator();
         panel1.add(separator1, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -430,12 +487,15 @@ public class ControlPanel {
         purchases_actions.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
         purchases_panel.add(purchases_actions, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         purchases_generate_event_button = new JButton();
+        purchases_generate_event_button.setEnabled(false);
         purchases_generate_event_button.setText("Generar Evento");
         purchases_actions.add(purchases_generate_event_button, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         purchases_restart_button = new JButton();
+        purchases_restart_button.setEnabled(false);
         purchases_restart_button.setText("Reiniciar");
         purchases_actions.add(purchases_restart_button, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         purchases_shutdown_button = new JButton();
+        purchases_shutdown_button.setEnabled(false);
         purchases_shutdown_button.setText("Apagar");
         purchases_actions.add(purchases_shutdown_button, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         purchases_start_button = new JButton();
@@ -489,6 +549,8 @@ public class ControlPanel {
         label8.setText("Estado del Servidor");
         panel4.add(label8, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         payments_server_state = new JTextField();
+        payments_server_state.setEnabled(false);
+        payments_server_state.setText("Apagado");
         panel4.add(payments_server_state, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JSeparator separator2 = new JSeparator();
         panel4.add(separator2, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 10), new Dimension(-1, 10), new Dimension(-1, 10), 0, false));
@@ -512,12 +574,15 @@ public class ControlPanel {
         payments_actions.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
         payments_panel.add(payments_actions, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         payments_generate_event_button = new JButton();
+        payments_generate_event_button.setEnabled(false);
         payments_generate_event_button.setText("Generar Evento");
         payments_actions.add(payments_generate_event_button, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         payments_restart_button = new JButton();
+        payments_restart_button.setEnabled(false);
         payments_restart_button.setText("Reiniciar");
         payments_actions.add(payments_restart_button, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         payments_shutdown_button = new JButton();
+        payments_shutdown_button.setEnabled(false);
         payments_shutdown_button.setText("Apagar");
         payments_actions.add(payments_shutdown_button, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         payments_start_button = new JButton();
@@ -570,6 +635,8 @@ public class ControlPanel {
         label12.setText("Estado del Servidor");
         panel7.add(label12, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deliveries_server_state = new JTextField();
+        deliveries_server_state.setEnabled(false);
+        deliveries_server_state.setText("Apagado");
         panel7.add(deliveries_server_state, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JSeparator separator3 = new JSeparator();
         panel7.add(separator3, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -595,19 +662,22 @@ public class ControlPanel {
         deliveries_actions.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
         deliveries_panel.add(deliveries_actions, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         deliveries_generate_event_button = new JButton();
+        deliveries_generate_event_button.setEnabled(false);
         deliveries_generate_event_button.setText("Generar Evento");
         deliveries_actions.add(deliveries_generate_event_button, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deliveries_restart_button = new JButton();
+        deliveries_restart_button.setEnabled(false);
         deliveries_restart_button.setText("Reiniciar");
         deliveries_actions.add(deliveries_restart_button, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deliveries_shutdown_button = new JButton();
+        deliveries_shutdown_button.setEnabled(false);
         deliveries_shutdown_button.setText("Apagar");
         deliveries_actions.add(deliveries_shutdown_button, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deliveries_start_button = new JButton();
         deliveries_start_button.setText("Iniciar");
         deliveries_actions.add(deliveries_start_button, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deliveries_step_button = new JButton();
-        deliveries_step_button.setText("Button");
+        deliveries_step_button.setText("Step");
         deliveries_actions.add(deliveries_step_button, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         deliveries_view_logs_button = new JButton();
         deliveries_view_logs_button.setText("Ver Logs");
@@ -658,6 +728,8 @@ public class ControlPanel {
         label16.setText("Estado del Servidor");
         panel10.add(label16, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         products_server_state = new JTextField();
+        products_server_state.setEnabled(false);
+        products_server_state.setText("Apagado");
         panel10.add(products_server_state, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JSeparator separator4 = new JSeparator();
         panel10.add(separator4, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -682,12 +754,15 @@ public class ControlPanel {
         products_actions.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
         products_panel.add(products_actions, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         products_generate_event_button = new JButton();
+        products_generate_event_button.setEnabled(false);
         products_generate_event_button.setText("Generar Evento");
         products_actions.add(products_generate_event_button, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         products_restart_button = new JButton();
+        products_restart_button.setEnabled(false);
         products_restart_button.setText("Reiniciar");
         products_actions.add(products_restart_button, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         products_shutdown_button = new JButton();
+        products_shutdown_button.setEnabled(false);
         products_shutdown_button.setText("Apagar");
         products_actions.add(products_shutdown_button, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         products_start_button = new JButton();
@@ -746,6 +821,8 @@ public class ControlPanel {
         label20.setText("Estado del Servidor");
         panel13.add(label20, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         infractions_server_state = new JTextField();
+        infractions_server_state.setEnabled(false);
+        infractions_server_state.setText("Apagado");
         panel13.add(infractions_server_state, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JSeparator separator5 = new JSeparator();
         panel13.add(separator5, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -770,12 +847,15 @@ public class ControlPanel {
         infractions_actions.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
         infractions_panel.add(infractions_actions, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         infractions_generate_event_button = new JButton();
+        infractions_generate_event_button.setEnabled(false);
         infractions_generate_event_button.setText("Generar Evento");
         infractions_actions.add(infractions_generate_event_button, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         infractions_restart_button = new JButton();
+        infractions_restart_button.setEnabled(false);
         infractions_restart_button.setText("Reiniciar");
         infractions_actions.add(infractions_restart_button, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         infractions_shutdown_button = new JButton();
+        infractions_shutdown_button.setEnabled(false);
         infractions_shutdown_button.setText("Apagar");
         infractions_actions.add(infractions_shutdown_button, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         infractions_start_button = new JButton();
