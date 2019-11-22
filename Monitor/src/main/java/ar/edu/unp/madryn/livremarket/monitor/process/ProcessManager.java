@@ -4,10 +4,16 @@ import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.utils.Logging;
 import ar.edu.unp.madryn.livremarket.monitor.utils.LocalDefinitions;
 import lombok.Setter;
+import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProcessManager {
@@ -31,13 +37,11 @@ public class ProcessManager {
 
     public boolean initServer(String serverID){
         if(StringUtils.isEmpty(serverID)){
-            Logging.info("Salio por aca!");
             return false;
         }
 
         String serverPath = this.configuration.getValue(LocalDefinitions.FILE_CONFIGURATION_START_ID + serverID);
         if(StringUtils.isEmpty(serverPath)){
-            Logging.info("Salio por aca1!");
             return false;
         }
 
@@ -48,16 +52,14 @@ public class ProcessManager {
 
         String command = this.configuration.getValue(LocalDefinitions.COMMAND_CONFIGURATION_ID);
         if(StringUtils.isEmpty(command)){
-            Logging.info("Salio por aca2!");
             return false;
         }
 
         command = command.replace(LocalDefinitions.SERVER_ID_COMMAND_REPLACE, serverPath);
 
-        Logging.info("Control:", command);
-
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command(command.split(" "));
+        processBuilder.redirectErrorStream(true);
 
         try {
             Process process = processBuilder.start();
@@ -66,7 +68,6 @@ public class ProcessManager {
             return true;
         }
         catch (IOException e){
-            Logging.info("Salio por aca3!", e.getMessage());
             return false;
         }
     }
@@ -90,5 +91,39 @@ public class ProcessManager {
         Process process = this.processes.get(serverID);
 
         return process.isAlive();
+    }
+
+    public List<String> getLogs(String serverID){
+        List<String> result = new ArrayList<>();
+        if(!this.processes.containsKey(serverID)){
+            return result;
+        }
+
+        Process process = this.processes.get(serverID);
+
+        try {
+            InputStream inputStream = process.getInputStream();
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            String line = "";
+            char inputChar;
+            while(bufferedReader.ready()){
+                inputChar = (char)bufferedReader.read();
+                if(CharUtils.isAsciiControl(inputChar)){
+                    result.add(line);
+                    line = "";
+                    continue;
+                }
+
+                line += inputChar;
+            }
+        }
+        catch (IOException e){
+            Logging.error("No se pudo leer la entrada del proceso! (Servidor = " + serverID + ")");
+        }
+
+        return result;
     }
 }

@@ -254,6 +254,14 @@
                           <text value="Step"/>
                         </properties>
                       </component>
+                      <component id="f6959" class="javax.swing.JButton" binding="purchases_view_logs_button">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Ver Logs"/>
+                        </properties>
+                      </component>
                     </children>
                   </grid>
                 </children>
@@ -481,6 +489,14 @@
                               <text value="Step"/>
                             </properties>
                           </component>
+                          <component id="3fa6a" class="javax.swing.JButton" binding="payments_view_logs_button">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Ver Logs"/>
+                            </properties>
+                          </component>
                         </children>
                       </grid>
                     </children>
@@ -697,6 +713,14 @@
                             </constraints>
                             <properties>
                               <text value="Button"/>
+                            </properties>
+                          </component>
+                          <component id="f27ae" class="javax.swing.JButton" binding="deliveries_view_logs_button">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Ver Logs"/>
                             </properties>
                           </component>
                         </children>
@@ -923,6 +947,14 @@
                         </constraints>
                         <properties>
                           <text value="Step"/>
+                        </properties>
+                      </component>
+                      <component id="90686" class="javax.swing.JButton" binding="products_view_logs_button">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Ver Logs"/>
                         </properties>
                       </component>
                     </children>
@@ -1156,6 +1188,14 @@
                             </constraints>
                             <properties>
                               <text value="Step"/>
+                            </properties>
+                          </component>
+                          <component id="382cc" class="javax.swing.JButton" binding="infractions_view_logs_button">
+                            <constraints>
+                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Ver Logs"/>
                             </properties>
                           </component>
                         </children>
