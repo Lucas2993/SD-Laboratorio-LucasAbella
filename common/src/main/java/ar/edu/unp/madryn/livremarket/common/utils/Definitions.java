@@ -31,6 +31,7 @@ public class Definitions {
 
     public static final String CONNECTION_CONFIGURATION_FILE = "connection";
     public static final String SIMULATION_CONFIGURATION_FILE = "simulation";
+    public static final String SERVERS_CONFIGURATION_FILE = "servers";
 
     public static final String AUTO_SIMULATION_ID = "auto";
     public static final String STEP_SIMULATION_ID = "step";
