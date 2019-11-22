@@ -131,4 +131,18 @@ public class ProcessManager {
 
         return processData.getLogs();
     }
+
+    public void killAllServers(){
+        this.processes.forEach((s, processData) -> {
+            Process process = processData.getProcess();
+
+            process.destroy();
+        });
+
+        this.processes.clear();
+    }
+
+    public boolean hasStartedServers(){
+        return !this.processes.isEmpty();
+    }
 }

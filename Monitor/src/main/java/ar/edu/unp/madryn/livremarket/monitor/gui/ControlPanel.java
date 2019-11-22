@@ -4,7 +4,6 @@ import ar.edu.unp.madryn.livremarket.common.comunication.CommunicationHandler;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationManager;
 import ar.edu.unp.madryn.livremarket.common.configuration.ConfigurationSection;
 import ar.edu.unp.madryn.livremarket.common.messages.Controls;
-import ar.edu.unp.madryn.livremarket.common.messages.MessageCommonFields;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageHandlerManager;
 import ar.edu.unp.madryn.livremarket.common.messages.MessageType;
 import ar.edu.unp.madryn.livremarket.common.threads.MessageWorker;
@@ -16,7 +15,6 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
@@ -107,6 +105,8 @@ public class ControlPanel {
     private JButton deliveries_view_logs_button;
     private JButton infractions_view_logs_button;
     private JButton products_view_logs_button;
+    private JButton quit_button;
+    private JButton shutdown_all_button;
 
     public ControlPanel() {
         deliveries_start_button.addActionListener(new ActionListener() {
@@ -273,6 +273,52 @@ public class ControlPanel {
                 requestStep(Definitions.PURCHASES_SERVER_NAME);
             }
         });
+
+        shutdown_all_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ProcessManager processManager = ProcessManager.getInstance();
+
+                if(!processManager.hasStartedServers()) {
+                    JOptionPane.showMessageDialog(null, "No hay servidores encendidos aun!");
+                    return;
+                }
+
+                processManager.killAllServers();
+
+                deliveries_start_button.setEnabled(true);
+                deliveries_shutdown_button.setEnabled(false);
+                deliveries_server_state.setText("Apagado");
+
+                infractions_start_button.setEnabled(true);
+                infractions_shutdown_button.setEnabled(false);
+                infractions_server_state.setText("Apagado");
+
+                payments_start_button.setEnabled(true);
+                payments_shutdown_button.setEnabled(false);
+                payments_server_state.setText("Apagado");
+
+                products_start_button.setEnabled(true);
+                products_shutdown_button.setEnabled(false);
+                products_server_state.setText("Apagado");
+
+                purchases_start_button.setEnabled(true);
+                purchases_shutdown_button.setEnabled(false);
+                purchases_server_state.setText("Apagado");
+
+                JOptionPane.showMessageDialog(null, "Todos los servidores fueron apagados con exito!");
+            }
+        });
+        quit_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ProcessManager processManager = ProcessManager.getInstance();
+
+                processManager.killAllServers();
+
+                System.exit(0);
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -321,6 +367,7 @@ public class ControlPanel {
         frame.setContentPane(new ControlPanel().control_gui);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setResizable(false);
         frame.setVisible(true);
     }
 
@@ -778,10 +825,16 @@ public class ControlPanel {
         splitPane5.setDividerLocation(400);
         splitPane4.setRightComponent(splitPane5);
         common_panel = new JPanel();
-        common_panel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        common_panel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         splitPane5.setLeftComponent(common_panel);
         final Spacer spacer5 = new Spacer();
         common_panel.add(spacer5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        quit_button = new JButton();
+        quit_button.setText("Salir");
+        common_panel.add(quit_button, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        shutdown_all_button = new JButton();
+        shutdown_all_button.setText("Apagar Todo");
+        common_panel.add(shutdown_all_button, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         infractions_panel = new JPanel();
         infractions_panel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         infractions_panel.setMaximumSize(new Dimension(-1, -1));
